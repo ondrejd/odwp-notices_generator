@@ -44,22 +44,59 @@ if( ! function_exists( 'odwpng_check_requirements' ) ) :
      * @return array
      */
     function odwpng_check_requirements( array $requirements ) {
+        global $wp_version;
+
+        // Initialize locales
+        $slug = 'odwp-notices_generator';
+        load_plugin_textdomain( $slug, false, dirname( __FILE__ ) . '/languages' );
+
+        /**
+         * @var array Hold requirement errors
+         */
         $errors = [];
 
         // Check PHP version
-        //...
+        if( ! empty( $requirements['php']['version'] ) ) {
+            if( version_compare( phpversion(), $requirements['php']['version'], '<' ) ) {
+                $errors[] = sprintf(
+                        __( 'PHP nesplňuje nároky pluginu na minimální verzi (vyžadována nejméně <b>%s</b>)!', $slug ),
+                        $requirements['php']['version']
+                );
+            }
+        }
 
         // Check PHP extensions
-        //...
+        if( count( $requirements['php']['extensions'] ) > 0 ) {
+            foreach( $requirements['php']['extensions'] as $req_ext ) {
+                if( ! extension_loaded( $req_ext ) ) {
+                    $errors[] = sprintf(
+                            __( 'Je vyžadováno rozšíření PHP <b>%s</b>, to ale není nainstalováno!', $slug ),
+                            $req_ext
+                    );
+                }
+            }
+        }
 
         // Check WP version
-        //...
+        if( ! empty( $requirements['wp']['version'] ) ) {
+            if( version_compare( $wp_version, $requirements['wp']['version'], '<' ) ) {
+                $errors[] = sprintf(
+                        __( 'Plugin vyžaduje vyšší verzi platformy <b>WordPress</b> (minimálně <b>%s</b>)!', $slug ),
+                        $requirements['wp']['version']
+                );
+            }
+        }
 
         // Check WP plugins
-        $active_plugins = (array) get_option( 'active_plugins', [] );
-        foreach( $requirements['wp']['plugins'] as $req_plugin ) {
-            if( ! in_array( $req_plugin, $active_plugins ) ) {
-                // XXX Error...
+        if( count( $requirements['wp']['plugins'] ) > 0 ) {
+            $active_plugins = (array) get_option( 'active_plugins', [] );
+            foreach( $requirements['wp']['plugins'] as $req_plugin ) {
+                if( ! in_array( $req_plugin, $active_plugins ) ) {
+                    $errors[] = sprintf(
+                            __( 'Je vyžadován plugin <b>%s</b>, ten ale není nainstalován!', $slug ),
+                            $req_plugin
+                    );
+                }
             }
         }
 
@@ -76,7 +113,7 @@ if( ! function_exists( 'odwpng_deactivate_raw' ) ) :
         $active_plugins = get_option( 'active_plugins' );
         $out = [];
         foreach( $active_plugins as $key => $val ) {
-            if( $val != sprintf( "%$1s/%$1s.php", 'odwp-notices_generator' ) ) {
+            if( $val != 'odwp-notices_generator/odwp-notices_generator.php' ) {
                 $out[$key] = $val;
             }
         }
@@ -90,24 +127,33 @@ endif;
  */
 $odwpng_errs = odwpng_check_requirements( [
     'php' => [
+        // Enter minimum PHP version you needs.
         'version' => '5.6',
-        'extensions' => [],
+        // Enter extensions that your plugin needs
+        'extensions' => [
+            //'gd',
+        ],
     ],
     'wp' => [
+        // Enter minimum WP version you need
         'version' => '4.7',
+        // Enter WP plugins that your plugin needs
         'plugins' => [
             //'woocommerce/woocommerce.php',
         ],
     ],
 ] );
 
+// Check if requirements are met or not
 if( count( $odwpng_errs ) > 0 ) {
     // Requirements are not met
     odwpng_deactivate_raw();
 
+    // In administration print errors
     if( is_admin() ) {
+        $err_head = '<b>Notices Generator</b>: ';
         foreach( $odwpng_errs as $err ) {
-            printf( '<div class="%s"><p>%s</p></div>', $err['type'], $err['text'] );
+            printf( '<div class="error"><p>%s</p></div>', $err_head . $err );
         }
     }
 } else {
