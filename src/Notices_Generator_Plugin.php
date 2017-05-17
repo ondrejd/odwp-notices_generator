@@ -128,32 +128,35 @@ class Notices_Generator_Plugin {
         $path = dirname( __FILE__ ) . '/languages';
         load_plugin_textdomain( self::SLUG, false, $path );
         // Load custom post types
-        //....
+        self::init_cpt();
     }
 
+    /**
+     * Initialize custom post types.
+     * @return void
+     */
     public static function init_cpt() {
 		$labels = array(
 			'name' => _x( 'Oznámení', 'post type general name', self::SLUG ),
-			'singular_name' => _x( 'Vytvořit projekt', 'post type singular name', self::SLUG ),
-			'add_new' => __( 'Nový projekt', self::SLUG ),
-			'add_new_item' => __( 'Vytvořit nový projekt', self::SLUG ),
-			'edit_item' => __( 'Upravit projekt', self::SLUG ),
-			'new_item' => __( 'Nový projekt', self::SLUG ),
-			'view_item' => __( 'Zobrazit projekt', self::SLUG ),
-			'search_items' => __( 'Prohledat projekty', self::SLUG ),
-			'not_found' => __( 'Žádné projekty nebyly nalezeny.', self::SLUG ),
-			'not_found_in_trash' => __( 'Žádné projekty nebyly v koši nalezeny.', self::SLUG ),
-			'all_items' => __( 'Všechny projekty', self::SLUG ),
-			'archives' => __( 'Archív projektů', self::SLUG ),
-			'menu_name' => __( 'Projekty', self::SLUG ),
-			'parent_item_colon' => __( 'Nadřazený projekt:', self::SLUG ),
+			'singular_name' => _x( 'Vytvořit oznámení', 'post type singular name', self::SLUG ),
+			'add_new' => __( 'Nové oznámení', self::SLUG ),
+			'add_new_item' => __( 'Vytvořit nové oznámení', self::SLUG ),
+			'edit_item' => __( 'Upravit oznámení', self::SLUG ),
+			'new_item' => __( 'Nové oznámení', self::SLUG ),
+			'view_item' => __( 'Zobrazit oznámení', self::SLUG ),
+			'search_items' => __( 'Prohledat oznámení', self::SLUG ),
+			'not_found' => __( 'Žádná oznámení nebyly nalezeny.', self::SLUG ),
+			'not_found_in_trash' => __( 'Žádná oznámení nebyly v koši nalezeny.', self::SLUG ),
+			'all_items' => __( 'Všechny oznámení', self::SLUG ),
+			'archives' => __( 'Archív oznámení', self::SLUG ),
+			'menu_name' => __( 'Oznámení', self::SLUG ),
 		);
 
 		$args = array(
 			'labels' => $labels,
-			'hierarchical' => true,
-			'description' => __( 'Projekty...', self::SLUG ),
-			'supports' => array( 'title', 'editor', 'thumbnail', 'comments', 'revisions'/*, 'custom-fields'*/, 'page-attributes' ),
+			'hierarchical' => false,
+			'description' => __( 'Oznámení o úmrtí', self::SLUG ),
+			'supports' => array( 'title', 'editor', 'revisions', 'custom-fields', 'page-attributes' ),
 			'taxonomies' => array( 'post_tag' ),
 			'show_ui' => true,
 			'show_in_menu' => true,
@@ -170,10 +173,10 @@ class Notices_Generator_Plugin {
 		);
 
 		/**
-		 * Filter "Project" post type arguments.
+		 * Filter "Notices" post type arguments.
 		 *
 		 * @since 1.0.0
-		 * @param array $arguments "Project" post type arguments.
+		 * @param array $arguments "Notices" post type arguments.
 		 */
 		$args = apply_filters( 'odwpp_' . self::SLUG . '_post_type_arguments', $args );
 		register_post_type( self::SLUG, $args );
