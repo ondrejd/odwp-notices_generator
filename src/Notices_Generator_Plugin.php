@@ -106,12 +106,12 @@ class Notices_Generator_Plugin {
      * Initializes the plugin.
      * @return void
      */
-    public static function init() {
+    public static function initialize() {
         register_activation_hook( __FILE__, [__CLASS__, 'activate'] );
         register_deactivation_hook( __FILE__, [__CLASS__, 'deactivate'] );
         register_uninstall_hook( __FILE__, [__CLASS__, 'uninstall'] );
 
-        add_action( 'init', [__CLASS__, 'init_textdomain'] );
+        add_action( 'init', [__CLASS__, 'init'] );
         add_action( 'admin_init', [__CLASS__, 'admin_init'] );
         add_action( 'admin_menu', [__CLASS__, 'admin_menu'] );
         add_action( 'plugins_loaded', [__CLASS__, 'plugins_loaded'] );
@@ -123,9 +123,60 @@ class Notices_Generator_Plugin {
      * Hook for "init" action.
      * @return void
      */
-    public static function init_textdomain() {
+    public static function init() {
+        // Initialize locales
         $path = dirname( __FILE__ ) . '/languages';
         load_plugin_textdomain( self::SLUG, false, $path );
+        // Load custom post types
+        //....
+    }
+
+    public static function init_cpt() {
+		$labels = array(
+			'name' => _x( 'Oznámení', 'post type general name', self::SLUG ),
+			'singular_name' => _x( 'Vytvořit projekt', 'post type singular name', self::SLUG ),
+			'add_new' => __( 'Nový projekt', self::SLUG ),
+			'add_new_item' => __( 'Vytvořit nový projekt', self::SLUG ),
+			'edit_item' => __( 'Upravit projekt', self::SLUG ),
+			'new_item' => __( 'Nový projekt', self::SLUG ),
+			'view_item' => __( 'Zobrazit projekt', self::SLUG ),
+			'search_items' => __( 'Prohledat projekty', self::SLUG ),
+			'not_found' => __( 'Žádné projekty nebyly nalezeny.', self::SLUG ),
+			'not_found_in_trash' => __( 'Žádné projekty nebyly v koši nalezeny.', self::SLUG ),
+			'all_items' => __( 'Všechny projekty', self::SLUG ),
+			'archives' => __( 'Archív projektů', self::SLUG ),
+			'menu_name' => __( 'Projekty', self::SLUG ),
+			'parent_item_colon' => __( 'Nadřazený projekt:', self::SLUG ),
+		);
+
+		$args = array(
+			'labels' => $labels,
+			'hierarchical' => true,
+			'description' => __( 'Projekty...', self::SLUG ),
+			'supports' => array( 'title', 'editor', 'thumbnail', 'comments', 'revisions'/*, 'custom-fields'*/, 'page-attributes' ),
+			'taxonomies' => array( 'post_tag' ),
+			'show_ui' => true,
+			'show_in_menu' => true,
+			'menu_position' => 5,
+			'menu_icon' => 'dashicons-clock',
+			'show_in_nav_menus' => true,
+			'publicly_queryable' => true,
+			'exclude_from_search' => false,
+			'query_var' => true,
+			'can_export' => true,
+	        'public' => true,
+	        'has_archive' => true,
+	        'capability_type' => 'post',
+		);
+
+		/**
+		 * Filter "Project" post type arguments.
+		 *
+		 * @since 1.0.0
+		 * @param array $arguments "Project" post type arguments.
+		 */
+		$args = apply_filters( 'odwpp_' . self::SLUG . '_post_type_arguments', $args );
+		register_post_type( self::SLUG, $args );
     }
 
     /**

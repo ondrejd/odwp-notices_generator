@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Notices Generator
+ * Plugin Name: Generátor oznámení
  * Plugin URI: https://github.com/ondrejd/odwp-notices_generator
- * Description: Plugin that allows generate funeral (or others) notices to the users.
+ * Description: Rozšíření pro generování pohřebních oznámení.
  * Version: 1.0.0
  * Author: Ondřej Doněk
  * Author URI:
@@ -151,7 +151,7 @@ if( count( $odwpng_errs ) > 0 ) {
 
     // In administration print errors
     if( is_admin() ) {
-        $err_head = '<b>Notices Generator</b>: ';
+        $err_head = '<b>Generátor oznámení</b>: ';
         foreach( $odwpng_errs as $err ) {
             printf( '<div class="error"><p>%s</p></div>', $err_head . $err );
         }
@@ -159,5 +159,5 @@ if( count( $odwpng_errs ) > 0 ) {
 } else {
     // Requirements are met so initialize the plugin.
     include( dirname( __FILE__ ) . '/src/Notices_Generator_Plugin.php' );
-    Notices_Generator_Plugin::init();
+    Notices_Generator_Plugin::initialize();
 }
