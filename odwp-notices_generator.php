@@ -8,7 +8,7 @@
  * Author URI:
  * License: GPLv3
  * Requires at least: 4.7
- * Tested up to: 4.7.4
+ * Tested up to: 4.7.5
  *
  * Text Domain: odwp-notices_generator
  * Domain Path: /languages/

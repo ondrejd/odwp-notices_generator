@@ -137,8 +137,8 @@ class Notices_Generator_Plugin {
      */
     public static function init_cpt() {
 		$labels = array(
-			'name' => _x( 'Oznámení', 'post type general name', self::SLUG ),
-			'singular_name' => _x( 'Vytvořit oznámení', 'post type singular name', self::SLUG ),
+			'name' => __( 'Oznámení', self::SLUG ),
+			'singular_name' => __( 'Vytvořit oznámení', self::SLUG ),
 			'add_new' => __( 'Nové oznámení', self::SLUG ),
 			'add_new_item' => __( 'Vytvořit nové oznámení', self::SLUG ),
 			'edit_item' => __( 'Upravit oznámení', self::SLUG ),
@@ -157,11 +157,11 @@ class Notices_Generator_Plugin {
 			'hierarchical' => false,
 			'description' => __( 'Oznámení o úmrtí', self::SLUG ),
 			'supports' => array( 'title', 'editor', 'revisions', 'custom-fields', 'page-attributes' ),
-			'taxonomies' => array( 'post_tag' ),
+			'taxonomies' => array(),
 			'show_ui' => true,
 			'show_in_menu' => true,
 			'menu_position' => 5,
-			'menu_icon' => 'dashicons-clock',
+			'menu_icon' => 'dashicons-format-aside',
 			'show_in_nav_menus' => true,
 			'publicly_queryable' => true,
 			'exclude_from_search' => false,
@@ -178,8 +178,8 @@ class Notices_Generator_Plugin {
 		 * @since 1.0.0
 		 * @param array $arguments "Notices" post type arguments.
 		 */
-		$args = apply_filters( 'odwpp_' . self::SLUG . '_post_type_arguments', $args );
-		register_post_type( self::SLUG, $args );
+		$args = apply_filters( 'odwng_notices_post_type_arguments', $args );
+		register_post_type( 'funeral_notices', $args );
     }
 
     /**
