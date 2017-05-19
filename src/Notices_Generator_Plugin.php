@@ -117,6 +117,26 @@ class Notices_Generator_Plugin {
         add_action( 'plugins_loaded', [__CLASS__, 'plugins_loaded'] );
         add_action( 'wp_enqueue_scripts', [__CLASS__, 'enqueue_scripts'] );
         add_action( 'admin_enqueue_scripts', [__CLASS__, 'admin_enqueue_scripts'] );
+
+        add_shortcode( 'notice_designer', [__CLASS__, 'shortcode_notice_designer_render'] );
+    }
+
+    /**
+     * Renders notice designer shortcode.
+     * @param array $attributes
+     * @return string
+     */
+    public static function shortcode_notice_designer_render( $attributes ) {
+        $attrs = shortcode_atts( [
+            // Notice ID to edit, if is set than we edit notice not creating new one.
+            'notice_id' => 0,
+        ], $attributes );
+
+        ob_start(function() {});
+        //...
+        include_once dirnamenotice_designer( dirname(__FILE__)) . '/partials/shortcode-notices_generator.phtml';
+        $html = ob_get_flush();
+        return apply_filters('odwpng-notices_generator', $html);
     }
 
     /**

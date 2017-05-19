@@ -1,0 +1,39 @@
+<?php
+/**
+ * @author Ondřej Doněk <ondrejd@gmail.com>
+ * @link https://github.com/ondrejd/odwp-notices_generator for the canonical source repository
+ * @license https://www.gnu.org/licenses/gpl-3.0.en.html GNU General Public License 3.0
+ * @package odwp-notices_generator
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+/*
+ 1) obrazek a vers
+ 2) text oznameni
+ 3) jmeno zesnuleho
+ 4) fotografie zesnulého
+ 5) Datum úmrtí
+ 6) Místo posledního rozloučení
+ 7) Jménem pozůstalých
+ 8) Pozůstalí
+ 9) Projevy soustrasti
+10) Adresa
+11) Ohraničení oznámení
+12) Adresa
+ - tisk oznámení
+ - stažení oznámení
+*/
+
+?>
+<div class="odwpng-notices_generator">
+    <form action="" method="post" novalidate="novalidate">
+        <!-- TODO wpnonce! -->
+        <fieldset id="odwpng-ngform_sec1">
+            <legend><?php _e( '', Notices_Generator_Plugin::SLUG ) ?></legend>
+            <!-- ... -->
+        </fieldset>
+    </form>
+</div>
