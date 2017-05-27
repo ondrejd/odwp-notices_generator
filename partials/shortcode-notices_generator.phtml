@@ -12,29 +12,12 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-/*
- 1) obrazek a vers
- 2) text oznameni
- 3) jmeno zesnuleho
- 4) fotografie zesnulého
- 5) Datum úmrtí
- 6) Místo posledního rozloučení
- 7) Jménem pozůstalých
- 8) Pozůstalí
- 9) Projevy soustrasti
-10) Adresa
-11) Ohraničení oznámení
-12) Adresa
- - tisk oznámení
- - stažení oznámení
-*/
-
 ?>
 <div class="notices-generator">
     <form action="" method="post" novalidate="novalidate">
         <!-- TODO wpnonce! -->
         <fieldset id="notice-section-1">
-            <legend><?php _e( 'Obrázky a verš', Notices_Generator_Plugin::SLUG ) ?></legend>
+            <legend><?php _e( 'Obrázek a verš', Notices_Generator_Plugin::SLUG ) ?></legend>
             <div class="notice-image">
                 <div class="notice-image--inner"></div>
                 <p class="description notice-image--desc"><?php _e( 'Vyberte si <a href="#">obrázek</a>', Notices_Generator_Plugin::SLUG ) ?></p>
