@@ -6,6 +6,8 @@
  * @package odwp-notices_generator
  * 
  * @todo Nahradit radio inputy v sekci "Pozůstalí" obrázky (ikonkami)!
+ * @todo Umožnit náhled (a přidat pro to tlačítko dolů)!
+ * @todo Umožnit uložit oznámení (nutnost registrace uživatele)!
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -55,7 +57,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </div>
                 <p class="description notice-photo--desc"><?php _e( '', Notices_Generator_Plugin::SLUG ) ?></p>
             </div>
-            <p class="odwpng-todo"><code>TODO</code> Nahrát fotografii!</p>
+            <p class="odwpng-todo"><code>TODO</code> Nahrát fotografii <small>(a rovnou zobrazit)</small>!</p>
         </fieldset>
         <fieldset id="odwpng-ngform_sec5">
             <legend><?php _e( 'Datum úmrtí', Notices_Generator_Plugin::SLUG ) ?></legend>
@@ -77,7 +79,6 @@ if ( ! defined( 'ABSPATH' ) ) {
         </fieldset>
         <fieldset id="odwpng-ngform_sec7">
             <legend><?php _e( 'Jménem pozůstalých', Notices_Generator_Plugin::SLUG ) ?></legend>
-            <!--  -->
             <div class="notice-survivors_text">
                 <div class="inline-editor notice-survivors_text--inner">
                     <p id="notice-survivors_text-editor" contenteditable="true"><?php _e( 'Jménem pozůstalých', Notices_Generator_Plugin::SLUG ) ?></p>
@@ -124,7 +125,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <div class="inline-editor notice-address--inner">
                     <p id="notice-address-editor" contenteditable="true"><?php _e( "Vaše adresa", Notices_Generator_Plugin::SLUG ) ?></p>
                 </div>
-                <p class="description notice-address--desc"><?php _e( 'Ponechte prázdné pokud chcete vynechat ...', Notices_Generator_Plugin::SLUG ) ?></p>
+                <p class="description notice-address--desc"><?php _e( '', Notices_Generator_Plugin::SLUG ) ?></p>
             </div>
         </fieldset>
         <fieldset id="odwpng-ngform_sec11">

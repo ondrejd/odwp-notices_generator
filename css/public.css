@@ -66,9 +66,7 @@
     padding: 0 0 0 0;
     width: 48%;
 }
-.notices-generator .notice-verse--inner {
-    height: 120px;
-}
+.notices-generator .notice-verse--inner { height: 120px; }
 .notices-generator #notice-verse-editor {}
 .notices-generator .notice-verse--desc {}
 
@@ -79,9 +77,7 @@
     padding: 0 0 0 0;
     width: 100%;
 }
-.notices-generator .notice-text--inner {
-    height: 100px;
-}
+.notices-generator .notice-text--inner { height: 100px; }
 .notices-generator #notice-text-editor {}
 .notices-generator .notice-text--desc {}
 
@@ -92,9 +88,7 @@
     padding: 0 0 0 0;
     width: 100%;
 }
-.notices-generator .notice-deceased--inner {
-    height: 60px;
-}
+.notices-generator .notice-deceased--inner { height: 60px; }
 .notices-generator #notice-deceased-editor {
     font-size: 160%;
     font-weight: bold;
@@ -108,9 +102,7 @@
     padding: 0 0 0 0;
     width: 100%;
 }
-.notices-generator .notice-death_date--inner {
-    height: 40px;
-}
+.notices-generator .notice-death_date--inner { height: 40px; }
 .notices-generator #notice-death_date-editor {}
 .notices-generator .notice-death_date--desc { display: none; }
 
@@ -121,9 +113,7 @@
     padding: 0 0 0 0;
     width: 100%;
 }
-.notices-generator .notice-location--inner {
-    height: 90px;
-}
+.notices-generator .notice-location--inner { height: 90px; }
 .notices-generator #notice-location-editor {}
 .notices-generator .notice-location--desc { display: none; }
 
@@ -136,9 +126,7 @@
 }
 .notices-generator .notice-photo--inner {}
 .notices-generator .notice-photo--inner img {}
-.notices-generator .notice-photo--inner p {
-    margin: 5px 0 0 0;
-}
+.notices-generator .notice-photo--inner p { margin: 5px 0 0 0; }
 .notices-generator .notice-photo--desc {}
 
 /*
@@ -169,9 +157,7 @@
     right: -2px;
     top: 2px;
 }
-.notices-generator .notice-survivors--inner {
-    height: 90px;
-}
+.notices-generator .notice-survivors--inner { height: 90px; }
 .notices-generator #notice-survivors-editor {}
 .notices-generator .notice-survivors--desc {}
 
@@ -182,9 +168,7 @@
     padding: 0 0 0 0;
     width: 100%;
 }
-.notices-generator .notice-thanks--inner {
-    height: 70px;
-}
+.notices-generator .notice-thanks--inner { height: 70px; }
 .notices-generator #notice-thanks-editor {}
 .notices-generator .notice-thanks--desc { display: none; }
 
@@ -196,8 +180,6 @@
     padding: 0 0 0 0;
     width: 100%;
 }
-.notices-generator .notice-address--inner {
-    height: 90px;
-}
+.notices-generator .notice-address--inner { height: 90px; }
 .notices-generator #notice-address-editor {}
-.notices-generator .notice-address--desc {}
+.notices-generator .notice-address--desc { display: none; }
