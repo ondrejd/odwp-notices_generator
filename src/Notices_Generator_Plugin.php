@@ -132,11 +132,11 @@ class Notices_Generator_Plugin {
             'notice_id' => 0,
         ], $attributes );
 
-        ob_start(function() {});
+        ob_start( function() {} );
         //...
-        include_once dirnamenotice_designer( dirname(__FILE__)) . '/partials/shortcode-notices_generator.phtml';
+        include_once dirname( dirname( __FILE__ ) ) . '/partials/shortcode-notices_generator.phtml';
         $html = ob_get_flush();
-        return apply_filters('odwpng-notices_generator', $html);
+        return apply_filters( 'odwpng-notices_generator', $html );
     }
 
     /**
@@ -177,7 +177,7 @@ class Notices_Generator_Plugin {
 			'hierarchical' => false,
 			'description' => __( 'Oznámení o úmrtí', self::SLUG ),
 			'supports' => array( 'title', 'editor', 'revisions', 'custom-fields', 'page-attributes' ),
-			'taxonomies' => array(),
+			'taxonomies' => [],
 			'show_ui' => true,
 			'show_in_menu' => true,
 			'menu_position' => 5,
@@ -227,11 +227,11 @@ class Notices_Generator_Plugin {
      * @return void
      */
     public static function admin_enqueue_scripts( $hook ) {
-        wp_enqueue_script( self::SLUG, plugins_url( 'js/admin.js', __FILE__ ), ['jquery'] );
+        wp_enqueue_script( self::SLUG, plugins_url( 'js/admin.js', dirname( __FILE__ ) ), ['jquery'] );
         wp_localize_script( self::SLUG, 'odwpng', [
             //...
         ] );
-        wp_enqueue_style( self::SLUG, plugins_url( 'css/admin.css', __FILE__ ) );
+        wp_enqueue_style( self::SLUG, plugins_url( 'css/admin.css', dirname( __FILE__ ) ) );
     }
 
     /**
@@ -247,11 +247,11 @@ class Notices_Generator_Plugin {
      * @return void
      */
     public static function enqueue_scripts() {
-        wp_enqueue_script( self::SLUG, plugins_url( 'js/public.js', __FILE__ ), ['jquery'] );
+        wp_enqueue_script( self::SLUG, plugins_url( 'js/public.js', dirname( __FILE__ ) ), ['jquery'] );
         wp_localize_script( self::SLUG, 'odwpng', [
             //...
         ] );
-        wp_enqueue_style( self::SLUG, plugins_url( 'css/public.css', __FILE__ ) );
+        wp_enqueue_style( self::SLUG, plugins_url( 'css/public.css', dirname( __FILE__ ) ) );
     }
 
     /**

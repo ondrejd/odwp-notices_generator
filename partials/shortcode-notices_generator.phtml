@@ -4,6 +4,8 @@
  * @link https://github.com/ondrejd/odwp-notices_generator for the canonical source repository
  * @license https://www.gnu.org/licenses/gpl-3.0.en.html GNU General Public License 3.0
  * @package odwp-notices_generator
+ * 
+ * @todo Nahradit radio inputy v sekci "Pozůstalí" obrázky (ikonkami)!
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -28,52 +30,127 @@ if ( ! defined( 'ABSPATH' ) ) {
 */
 
 ?>
-<div class="odwpng-notices_generator">
+<div class="notices-generator">
     <form action="" method="post" novalidate="novalidate">
         <!-- TODO wpnonce! -->
-        <fieldset id="odwpng-ngform_sec1">
+        <fieldset id="notice-section-1">
             <legend><?php _e( 'Obrázky a verš', Notices_Generator_Plugin::SLUG ) ?></legend>
-            <!-- ... -->
+            <div class="notice-image">
+                <div class="notice-image--inner"></div>
+                <p class="description notice-image--desc"><?php _e( 'Vyberte si <a href="#">obrázek</a>', Notices_Generator_Plugin::SLUG ) ?></p>
+            </div>
+            <div class="notice-verse">
+                <div class="inline-editor notice-verse--inner">
+                    <p id="notice-verse-editor" contenteditable="true"><?php _e( "Kdo v naději žije, neumírá ...\nF. Hrubín", Notices_Generator_Plugin::SLUG ) ?></p>
+                </div>
+                <p class="description notice-verse--desc"><?php _e( 'Vyberte si <a href="#">jiný verš</a> nebo napište vlastní', Notices_Generator_Plugin::SLUG ) ?></p>
+            </div>
         </fieldset>
         <fieldset id="odwpng-ngform_sec2">
             <legend><?php _e( 'Text oznámení', Notices_Generator_Plugin::SLUG ) ?></legend>
-            <!-- ... -->
+            <div class="notice-text">
+                <div class="inline-editor notice-text--inner">
+                    <p id="notice-text-editor" contenteditable="true"><?php _e( "S bolestí v srdci oznamujeme všem příbuzným, přátelům a známým,\nže nás navždy opustil náš milovaný ...", Notices_Generator_Plugin::SLUG ) ?></p>
+                </div>
+                <p class="description notice-text--desc"><?php _e( 'Pokud chcete zvýraznit tučně pouze část textu, dejte před něj a za něj hvězdičku, např. <strong>*Váš*</strong> Pokud chcete text na nový řádek, stiskněte <em>ENTER</em>', Notices_Generator_Plugin::SLUG ) ?></p>
+            </div>
         </fieldset>
         <fieldset id="odwpng-ngform_sec3">
             <legend><?php _e( 'Jméno zesnulého', Notices_Generator_Plugin::SLUG ) ?></legend>
-            <!-- ... -->
+            <div class="notice-deceased">
+                <div class="inline-editor notice-deceased--inner">
+                    <p id="notice-deceased-editor" contenteditable="true"><?php _e( "Jan Novák", Notices_Generator_Plugin::SLUG ) ?></p>
+                </div>
+                <p class="description notice-thanks--desc"><?php _e( '', Notices_Generator_Plugin::SLUG ) ?></p>
+            </div>
         </fieldset>
         <fieldset id="odwpng-ngform_sec4">
             <legend><?php _e( 'Fotografie zesnulého', Notices_Generator_Plugin::SLUG ) ?></legend>
-            <!-- ... -->
+            <div class="notice-photo">
+                <div class="notice-photo--inner">
+                    <p><?php _e( 'Můžete nahrát <a href="#">fotografii zesnulého</a>', Notices_Generator_Plugin::SLUG ) ?></p>
+                </div>
+                <p class="description notice-photo--desc"><?php _e( '', Notices_Generator_Plugin::SLUG ) ?></p>
+            </div>
+            <p class="odwpng-todo"><code>TODO</code> Nahrát fotografii!</p>
         </fieldset>
         <fieldset id="odwpng-ngform_sec5">
             <legend><?php _e( 'Datum úmrtí', Notices_Generator_Plugin::SLUG ) ?></legend>
-            <!-- ... -->
+            <div class="notice-death_date">
+                <div class="inline-editor notice-death_date--inner">
+                    <p id="notice-death_date-editor" contenteditable="true"><?php _e( 'Zemřel tiše v sobotu 3. dubna 2011', Notices_Generator_Plugin::SLUG ) ?></p>
+                </div>
+                <p class="description notice-thanks--desc"><?php _e( '', Notices_Generator_Plugin::SLUG ) ?></p>
+            </div>
         </fieldset>
         <fieldset id="odwpng-ngform_sec6">
             <legend><?php _e( 'Místo posledního rozloučení', Notices_Generator_Plugin::SLUG ) ?></legend>
-            <!-- ... -->
+            <div class="notice-location">
+                <div class="inline-editor notice-location--inner">
+                    <p id="notice-location-editor" contenteditable="true"><?php _e( "S naším drahým zesnulým se naposledy rozloučíme v pátek 15. dubna 2011\nv malé obřadní síni krematoria v ...", Notices_Generator_Plugin::SLUG ) ?></p>
+                </div>
+                <p class="description notice-location--desc"><?php _e( '', Notices_Generator_Plugin::SLUG ) ?></p>
+            </div>
         </fieldset>
         <fieldset id="odwpng-ngform_sec7">
             <legend><?php _e( 'Jménem pozůstalých', Notices_Generator_Plugin::SLUG ) ?></legend>
-            <!-- ... -->
+            <!--  -->
+            <div class="notice-survivors_text">
+                <div class="inline-editor notice-survivors_text--inner">
+                    <p id="notice-survivors_text-editor" contenteditable="true"><?php _e( 'Jménem pozůstalých', Notices_Generator_Plugin::SLUG ) ?></p>
+                </div>
+                <p class="description notice-survivors_text--desc"><?php _e( '', Notices_Generator_Plugin::SLUG ) ?></p>
+            </div>
         </fieldset>
         <fieldset id="odwpng-ngform_sec8">
             <legend><?php _e( 'Pozůstalí', Notices_Generator_Plugin::SLUG ) ?></legend>
-            <!-- ... -->
+            <div class="notice-survivors">
+                <div class="notice-survivors--form">
+                    <label><?php _e( 'Zobrazit jako: ', Notices_Generator_Plugin::SLUG ) ?></label>
+                    <label class="notice-radio">
+                        <input type="radio" name="ng-survivors-columns" value="1" checked="checked">
+                        <?php _e( 'jeden sloupec', Notices_Generator_Plugin::SLUG ) ?>
+                    </label>
+                    <label class="notice-radio">
+                        <input type="radio" name="ng-survivors-columns" value="2">
+                        <?php _e( 'dva sloupce', Notices_Generator_Plugin::SLUG ) ?>
+                    </label>
+                    <label class="notice-radio">
+                        <input type="radio" name="ng-survivors-columns" value="3">
+                        <?php _e( 'tři sloupce', Notices_Generator_Plugin::SLUG ) ?>
+                    </label>
+                </div>
+                <div class="inline-editor notice-survivors--inner">
+                    <p id="notice-survivors-editor" contenteditable="true"><?php _e( "Dcera s rodinou, bratr s rodinou", Notices_Generator_Plugin::SLUG ) ?></p>
+                </div>
+                <p class="description notice-survivors--desc"><?php _e( 'Můžete napsat více jmen - oddělujte je čárkou. Jednotlivá jména pak budou zobrazena na samostatném řádku.', Notices_Generator_Plugin::SLUG ) ?></p>
+            </div>
         </fieldset>
         <fieldset id="odwpng-ngform_sec9">
             <legend><?php _e( 'Projevy a soustrasti', Notices_Generator_Plugin::SLUG ) ?></legend>
-            <!-- ... -->
+            <div class="notice-thanks">
+                <div class="inline-editor notice-thanks--inner">
+                    <p id="notice-thanks-editor" contenteditable="true"><?php _e( 'Za projevy soustrasti děkujeme', Notices_Generator_Plugin::SLUG ) ?></p>
+                </div>
+                <p class="description notice-thanks--desc"><?php _e( '', Notices_Generator_Plugin::SLUG ) ?></p>
+            </div>
         </fieldset>
         <fieldset id="odwpng-ngform_sec10">
             <legend><?php _e( 'Adresa', Notices_Generator_Plugin::SLUG ) ?></legend>
-            <!-- ... -->
+            <div class="notice-address">
+                <div class="inline-editor notice-address--inner">
+                    <p id="notice-address-editor" contenteditable="true"><?php _e( "Vaše adresa", Notices_Generator_Plugin::SLUG ) ?></p>
+                </div>
+                <p class="description notice-address--desc"><?php _e( 'Ponechte prázdné pokud chcete vynechat ...', Notices_Generator_Plugin::SLUG ) ?></p>
+            </div>
         </fieldset>
         <fieldset id="odwpng-ngform_sec11">
             <legend><?php _e( 'Ostatní', Notices_Generator_Plugin::SLUG ) ?></legend>
-            <!-- ... -->
+            <p class="odwpng-todo"><code>TODO</code> Ohraničení oznámení!</p>
+            <p class="odwpng-todo"><code>TODO</code> Pozadí oznámení!</p>
         </fieldset>
+        <p class="form-submit">
+            <input type="submit" class="button-primary" value="<?php _e( 'Tisk', Notices_Generator_Plugin::SLUG ) ?>">
+        </p>
     </form>
 </div>

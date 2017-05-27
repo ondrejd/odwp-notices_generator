@@ -1,0 +1,203 @@
+/**
+ * @author Ondřej Doněk <ondrejd@gmail.com>
+ * @link https://github.com/ondrejd/odwp-notices_generator for the canonical source repository
+ * @license https://www.gnu.org/licenses/gpl-3.0.en.html GNU General Public License 3.0
+ * @package odwp-notices_generator
+ */
+
+.odwpng-todo { color: #f30; font-size: 14px; font-weight: bold; margin: 0 0 0 0; }
+.odwpng-todo code { background-color: #f30; color: #fff; font-size: 14px; font-weight: normal; padding: 0px 3px 0px 3px; }
+
+/* Generator oznameni */
+.notices-generator {}
+
+/* Obecne styly pro formular s generatorem */
+
+/* Fieldset */
+.notices-generator form fieldset {
+    border: 0px none;
+    padding: 0px 0px 0px 0px !important;
+    margin: 0px 0px 10px 0px !important;
+    width: 100%;
+}
+.notices-generator form fieldset legend {
+    font-weight: bold;
+}
+
+/* Inline editor */
+.notices-generator form fieldset .inline-editor {
+    border: 2px solid #000;
+    padding: 8px 2% 5px 2%;
+    width: 96%;
+}
+.notices-generator form fieldset .inline-editor > p {
+    margin-bottom: 0px;
+    text-align: center;
+}
+
+/*
+ * Popisek
+ */
+.notices-generator form fieldset .description {
+    font-size: 90%;
+    margin-bottom: 0px;
+}
+
+/*
+ * Obrazek
+ */
+.notices-generator .notice-image {
+    float: left;
+    padding: 0 2% 0 0;
+    width: 48%;
+}
+.notices-generator .notice-image--inner {
+    border: 2px solid #000;
+    height: 180px;
+    width: 100%;
+}
+.notices-generator .notice-image--desc {}
+
+/*
+ * Vers
+ */
+.notices-generator .notice-verse {
+    float: left;
+    padding: 0 0 0 0;
+    width: 48%;
+}
+.notices-generator .notice-verse--inner {
+    height: 120px;
+}
+.notices-generator #notice-verse-editor {}
+.notices-generator .notice-verse--desc {}
+
+/*
+ * Text oznameni
+ */
+.notices-generator .notice-text {
+    padding: 0 0 0 0;
+    width: 100%;
+}
+.notices-generator .notice-text--inner {
+    height: 100px;
+}
+.notices-generator #notice-text-editor {}
+.notices-generator .notice-text--desc {}
+
+/*
+ * Jmeno zemreleho
+ */
+.notices-generator .notice-deceased {
+    padding: 0 0 0 0;
+    width: 100%;
+}
+.notices-generator .notice-deceased--inner {
+    height: 60px;
+}
+.notices-generator #notice-deceased-editor {
+    font-size: 160%;
+    font-weight: bold;
+}
+.notices-generator .notice-deceased--desc { display: none; }
+
+/*
+ * Datum umrti
+ */
+.notices-generator .notice-death_date {
+    padding: 0 0 0 0;
+    width: 100%;
+}
+.notices-generator .notice-death_date--inner {
+    height: 40px;
+}
+.notices-generator #notice-death_date-editor {}
+.notices-generator .notice-death_date--desc { display: none; }
+
+/*
+ * Misto posledniho rozlouceni
+ */
+.notices-generator .notice-location {
+    padding: 0 0 0 0;
+    width: 100%;
+}
+.notices-generator .notice-location--inner {
+    height: 90px;
+}
+.notices-generator #notice-location-editor {}
+.notices-generator .notice-location--desc { display: none; }
+
+/*
+ * Fotografie zesnuleho
+ */
+.notices-generator .notice-photo {
+    padding: 0 0 0 0;
+    width: 100%;
+}
+.notices-generator .notice-photo--inner {}
+.notices-generator .notice-photo--inner img {}
+.notices-generator .notice-photo--inner p {
+    margin: 5px 0 0 0;
+}
+.notices-generator .notice-photo--desc {}
+
+/*
+ * Jmenem pozustalych
+ */
+.notices-generator .notice-survivors_text {
+    padding: 0 0 0 0;
+    width: 100%;
+}
+.notices-generator .notice-survivors_text--inner {}
+.notices-generator .notice-survivors_text--desc { display: none; }
+
+/*
+ * Pozustali
+ */
+.notices-generator .notice-survivors {
+    padding: 0 0 0 0;
+    width: 100%;
+}
+.notices-generator .notice-survivors--form {}
+.notices-generator .notice-survivors--form label {
+    display: inline-block;
+    font-weight: normal;
+    padding: 0 0 0 5px;
+}
+.notices-generator .notice-survivors--form label input[type="radio"] {
+    position: relative;
+    right: -2px;
+    top: 2px;
+}
+.notices-generator .notice-survivors--inner {
+    height: 90px;
+}
+.notices-generator #notice-survivors-editor {}
+.notices-generator .notice-survivors--desc {}
+
+/*
+ * Poděkování za projevy soustrasti
+ */
+.notices-generator .notice-thanks {
+    padding: 0 0 0 0;
+    width: 100%;
+}
+.notices-generator .notice-thanks--inner {
+    height: 70px;
+}
+.notices-generator #notice-thanks-editor {}
+.notices-generator .notice-thanks--desc { display: none; }
+
+
+/*
+ * Adresa
+ */
+.notices-generator .notice-address {
+    padding: 0 0 0 0;
+    width: 100%;
+}
+.notices-generator .notice-address--inner {
+    height: 90px;
+}
+.notices-generator #notice-address-editor {}
+.notices-generator .notice-address--desc {}
