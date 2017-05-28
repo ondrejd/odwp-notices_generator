@@ -4,6 +4,12 @@
  * @link https://github.com/ondrejd/odwp-notices_generator for the canonical source repository
  * @license https://www.gnu.org/licenses/gpl-3.0.en.html GNU General Public License 3.0
  * @package odwp-notices_generator
+ *
+ * @todo Přidat tlačítko do editoru pro shortcode!
+ * @todo Přidat nastavení pluginu (včetně nastavení obrázků, veršů atp. pro editor)
+ * @todo Oznámení musí fungovat jako samostatný typ. Akorát v administraci bude 
+ *       skrytá defaultní položka menu "Nové oznámení" a místo toho tam bude přidán
+ *       odkaz, který povede na front-end.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -59,7 +65,11 @@ class Notices_Generator_Plugin {
      * @return array Default values for settings of the plugin.
      */
     public static function get_default_options() {
-        return [];
+        return [
+            'notice_borders' => self::get_default_notice_borders(),
+            'notice_images' => self::get_default_notice_images(),
+            'verses' => self::get_default_verses(),
+        ];
     }
 
     /**
@@ -134,7 +144,9 @@ class Notices_Generator_Plugin {
 
         ob_start( function() {} );
 
-        // Get verses
+        // Get default variables
+        $borders = self::get_notice_borders();
+        $images = self::get_notice_images();
         $verses = self::get_verses();
         
         include_once dirname( dirname( __FILE__ ) ) . '/partials/shortcode-notices_generator.phtml';
@@ -213,7 +225,38 @@ class Notices_Generator_Plugin {
         register_setting( self::SLUG, self::SETTINGS_KEY );
 
         $options = self::get_options();
-        //...
+
+        $section1 = self::SETTINGS_KEY . '_section_1';
+        add_settings_section(
+                $section1,
+                __( 'Defaultní hodnoty' ),
+                [__CLASS__, 'render_settings_section_1'],
+                self::SLUG
+        );
+
+        add_settings_field(
+                'notice_borders',
+                __( 'Okraje oznámení', self::SLUG ),
+                [__CLASS__, 'render_setting_notice_borders'],
+                self::SLUG,
+                $section1
+        );
+
+        add_settings_field(
+                'notice_images',
+                __( 'Obrázky pro oznámení', self::SLUG ),
+                [__CLASS__, 'render_setting_notice_images'],
+                self::SLUG,
+                $section1
+        );
+
+        add_settings_field(
+                'verses',
+                __( 'Smuteční verše', self::SLUG ),
+                [__CLASS__, 'render_setting_verses'],
+                self::SLUG,
+                $section1
+        );
     }
 
     /**
@@ -221,7 +264,13 @@ class Notices_Generator_Plugin {
      * @return void
      */
     public static function admin_menu() {
-        //...
+        add_options_page(
+                __( 'Nastavení pro plugin Smuteční oznámení', self::SLUG ),
+                __( 'Smuteční oznámení', self::SLUG ),
+                'manage_options',
+                self::SLUG . '-options',
+                [__CLASS__, 'admin_options_page']
+        );
     }
 
     /**
@@ -235,6 +284,23 @@ class Notices_Generator_Plugin {
             //...
         ] );
         wp_enqueue_style( self::SLUG, plugins_url( 'css/admin.css', dirname( __FILE__ ) ) );
+    }
+
+    /**
+     * Renders plugin's options page.
+     * @return void
+     */
+    public static function admin_options_page() {
+?>
+<form action="options.php" method="post">
+    <h2><?php _e( 'Nastavení pro plugin Smuteční oznámení', self::SLUG ) ?></h2>
+<?php
+        settings_fields( self::SLUG );
+        do_settings_sections( self::SLUG );
+        submit_button();
+?>
+</form>
+<?php
     }
 
     /**
@@ -255,6 +321,51 @@ class Notices_Generator_Plugin {
             //...
         ] );
         wp_enqueue_style( self::SLUG, plugins_url( 'css/public.css', dirname( __FILE__ ) ) );
+    }
+
+    /**
+     * @internal Renders the first settings section.
+     * @return void
+     */
+    public static function render_settings_section_1() {
+?>
+<p class="description">
+    <?php _e( 'Níže můžete zadat obrázky, okraje a verše pro editor oznámení.', self::SLUG ) ?>
+</p>
+<?php
+    }
+
+    /**
+     * @internal Renders setting `notice_borders`.
+     * @return void
+     */
+    public static function render_setting_notice_borders() {
+        $options = self::get_options();
+?>
+<code>notice_borders</code>
+<?php
+    }
+
+    /**
+     * @internal Renders setting `notice_images`.
+     * @return void
+     */
+    public static function render_setting_notice_images() {
+        $options = self::get_options();
+?>
+<code>notice_images</code>
+<?php
+    }
+
+    /**
+     * @internal Renders setting `verses`.
+     * @return void
+     */
+    public static function render_setting_verses() {
+        $options = self::get_options();
+?>
+<code>verses</code>
+<?php
     }
 
     /**
@@ -282,13 +393,87 @@ class Notices_Generator_Plugin {
     }
 
     /**
+     * @internal Returns array with notice images.
+     * @return array
+     */
+    protected static function get_notice_images() {
+        //$options = self::get_options();
+        //$images = array_key_exists( 'notice_images', $options) ? $options['notice_images'] : null;
+        $images = self::get_option( 'notice_images' );
+
+        if( ! is_array( $images ) ) {
+            $images = self::get_default_notice_images();
+        }
+
+        return apply_filters( 'odwpng_notice_images', $images );
+    }
+
+    /**
+     * @internal Returns array with notice borders.
+     * @return array
+     */
+    protected static function get_notice_borders() {
+        //$options = self::get_options();
+        //$borders = array_key_exists( 'notice_borders', $options) ? $options['notice_borders'] : null;
+        $borders = self::get_option( 'notice_borders' );
+
+        if( ! is_array( $borders ) ) {
+            $borders = self::get_default_notice_borders();
+        }
+
+        return apply_filters( 'odwpng_notice_borders', $borders );
+    }
+
+    /**
      * @internal Returns array with funeral verses.
      * @return array
-     *
-     * @todo Verše musí být brány z nastavení uživatele, ne jen defaultní!
      */
     protected static function get_verses() {
-        return self::get_default_verses();
+        //$options = self::get_options();
+        //$verses  = array_key_exists( 'verses', $options) ? $options['verses'] : null;
+        $verses  = self::get_option( 'verses' );
+
+        if( ! is_array( $verses ) ) {
+            $verses = self::get_default_verses();
+        }
+
+        return apply_filters( 'odwpng_verses', $verses );
+    }
+
+    /**
+     * @internal Returns default notice images.
+     * @return array
+     */
+    protected static function get_default_notice_images() {
+        $images = [
+            1  => plugins_url( 'img/notice-img01.jpg', dirname( __FILE__ ) ),
+            2  => plugins_url( 'img/notice-img02.jpg', dirname( __FILE__ ) ),
+            3  => plugins_url( 'img/notice-img03.jpg', dirname( __FILE__ ) ),
+            4  => plugins_url( 'img/notice-img04.jpg', dirname( __FILE__ ) ),
+            5  => plugins_url( 'img/notice-img05.jpg', dirname( __FILE__ ) ),
+            6  => plugins_url( 'img/notice-img06.jpg', dirname( __FILE__ ) ),
+            7  => plugins_url( 'img/notice-img07.jpg', dirname( __FILE__ ) ),
+            8  => plugins_url( 'img/notice-img08.jpg', dirname( __FILE__ ) ),
+            9  => plugins_url( 'img/notice-img09.jpg', dirname( __FILE__ ) ),
+            10 => plugins_url( 'img/notice-img10.jpg', dirname( __FILE__ ) ),
+        ];
+
+        return apply_filters( 'odwpng_default_notice_images', $images );
+    }
+
+    /**
+     * @internal Returns default notice borders.
+     * @return array
+     */
+    protected static function get_default_notice_borders() {
+        $borders = [
+            1  => plugins_url( 'img/notice-border01.jpg', dirname( __FILE__ ) ),
+            2  => plugins_url( 'img/notice-border02.jpg', dirname( __FILE__ ) ),
+            3  => plugins_url( 'img/notice-border03.jpg', dirname( __FILE__ ) ),
+            4  => plugins_url( 'img/notice-border04.jpg', dirname( __FILE__ ) ),
+        ];
+
+        return apply_filters( 'odwpng_default_notice_borders', $borders );
     }
 
     /**
@@ -314,7 +499,7 @@ class Notices_Generator_Plugin {
 
         ];
 
-        return apply_filters( 'odwng_default_verses', $verses );
+        return apply_filters( 'odwpng_default_verses', $verses );
     }
 } // End of Notices_Generator_Plugin
 
