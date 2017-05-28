@@ -133,7 +133,10 @@ class Notices_Generator_Plugin {
         ], $attributes );
 
         ob_start( function() {} );
-        //...
+
+        // Get verses
+        $verses = self::get_verses();
+        
         include_once dirname( dirname( __FILE__ ) ) . '/partials/shortcode-notices_generator.phtml';
         $html = ob_get_flush();
         return apply_filters( 'odwpng-notices_generator', $html );
@@ -279,17 +282,36 @@ class Notices_Generator_Plugin {
     }
 
     /**
+     * @internal Returns array with funeral verses.
+     * @return array
+     *
+     * @todo Verše musí být brány z nastavení uživatele, ne jen defaultní!
+     */
+    protected static function get_verses() {
+        return self::get_default_verses();
+    }
+
+    /**
      * @internal Returns default funeral verses for the generator.
      * @return array
      */
     protected static function get_default_verses() {
         $verses = [
-            0 => __( "Až umřu, nic na tomto světě\nse nestane a nezmění,\njen srdcí několik se zachvěje v rose\njak k ránu květiny...\n\n<em>J. Wolker</em>", self::SLUG ),
-            1 => __( "Smrti se nebojím, smrt není zlá,\nsmrt je jen kus života těžkého.\nCo strašné je, co zlé je,\nto umírání je.\n\n<em>J. Wolker</em>", self::SLUG ),
-            2 => __( "A za vše, za vše dík.\nZa lásku, jaká byla,\nza život, jaký byl..\n\n<em>Donát Šajner</em>", self::SLUG ),
-            3 => __( "Buď vůle tvá...", self::SLUG ),
-            4 => __( "Nezemřel jsem, neboť vím,\nže budu stále žít v srdcích těch,\nkteří mě milovali.", self::SLUG ),
-            5 => __( "Kdo v srdci žije, neumírá.\n\n<em>František Hrubín</em>", self::SLUG ),
+            0  => __( "Až umřu, nic na tomto světě\nse nestane a nezmění,\njen srdcí několik se zachvěje v rose\njak k ránu květiny...\n\n<em>J. Wolker</em>", self::SLUG ),
+            1  => __( "Smrti se nebojím, smrt není zlá,\nsmrt je jen kus života těžkého.\nCo strašné je, co zlé je,\nto umírání je.\n\n<em>J. Wolker</em>", self::SLUG ),
+            2  => __( "A za vše, za vše dík.\nZa lásku, jaká byla,\nza život, jaký byl..\n\n<em>Donát Šajner</em>", self::SLUG ),
+            3  => __( "Buď vůle tvá...", self::SLUG ),
+            4  => __( "Nezemřel jsem, neboť vím,\nže budu stále žít v srdcích těch,\nkteří mě milovali.", self::SLUG ),
+            5  => __( "Kdo v srdci žije, neumírá.\n\n<em>František Hrubín</em>", self::SLUG ),
+            6  => __( "Hospodin je blízko všem, kteří volají k Němu.\n\n<em>Žalm 145,18 Bible</em>", self::SLUG ),
+            7  => __( "Ježíš jí řekl: „Já jsem vzkříšení a život. Kdo věří ve mne, i kdyby umřel, bude žít.\"\n\n<em>Jan 11,25 Bible</em>", self::SLUG ),
+            8  => __( "Každý, kdo vzývá jméno Páně, bude spasen.	\n\n<em>Římanům 10,13 Bible</em>", self::SLUG ),
+            9  => __( "Kdo ke Mně přijde, toho nevyženu ven.\n\n<em>Jan 6,37 Bible</em>", self::SLUG ),
+            10 => __( "Kdo věří v Syna, má život věčný.\n\n<em>Jan 3,36 Bible</em>", self::SLUG ),
+            11 => __( "Má spása a sláva je v Bohu, On je má mocná skála, v Bohu mám útočiště.\n\n<em>Žalm 62,8 Bible</em>", self::SLUG ),
+            12 => __( "Mně těžká slova v hrdle váznou, když říci mám Ti: Sbohem buď\n\n<em>Jaroslav Vrchlický</em>", self::SLUG ),
+            13 => __( "Moje ovce slyší můj hlas, já je znám, jdou za mnou a já jim dávám věčný život: nezahynou navěky a nikdo je z mé ruky nevyrve.\n\n<em>Jan 10, 27-28 Bible</em>", self::SLUG ),
+
         ];
 
         return apply_filters( 'odwng_default_verses', $verses );
