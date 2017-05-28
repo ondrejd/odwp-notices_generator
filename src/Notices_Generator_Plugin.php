@@ -340,9 +340,18 @@ class Notices_Generator_Plugin {
      * @return void
      */
     public static function render_setting_notice_borders() {
-        $options = self::get_options();
+        $borders = self::get_notice_borders();
 ?>
-<code>notice_borders</code>
+<input type="hidden" name="odwpng_settings[notice_borders]" value="">
+<div class="odwpng-setting_images">
+    <?php foreach( $borders as $key => $border ) : ?>
+    <div class="odwpng-setting_image">
+        <img src="<?php echo $border ?>" class="odwpng-setting_image--img">
+        <span class="dashicons dashicons-no odwpng-setting_image--img_btn" title="<?php _e( 'Smazat okraj', self::SLUG ) ?>"></span>
+    </div>
+    <?php endforeach ?>
+    <div class="clearfix"></div>
+</div>
 <?php
     }
 
@@ -351,9 +360,18 @@ class Notices_Generator_Plugin {
      * @return void
      */
     public static function render_setting_notice_images() {
-        $options = self::get_options();
+        $images = self::get_notice_images();
 ?>
-<code>notice_images</code>
+<input type="hidden" name="odwpng_settings[notice_images]" value="">
+<div class="odwpng-setting_images">
+    <?php foreach( $images as $key => $image ) : ?>
+    <div class="odwpng-setting_image">
+        <img src="<?php echo $image ?>" class="odwpng-setting_image--img">
+        <span class="dashicons dashicons-no odwpng-setting_image--img_btn" title="<?php _e( 'Smazat obrázek', self::SLUG ) ?>"></span>
+    </div>
+    <?php endforeach ?>
+    <div class="clearfix"></div>
+</div>
 <?php
     }
 
@@ -362,9 +380,14 @@ class Notices_Generator_Plugin {
      * @return void
      */
     public static function render_setting_verses() {
-        $options = self::get_options();
+        $verses = self::get_verses();
 ?>
-<code>verses</code>
+<input type="hidden" name="odwpng_settings[verses]" value="">
+<ul name="odwpng-settings_verses">
+    <?php foreach( $verses as $key => $verse ) : ?>
+    <li id="verse-<?php echo $key ?>"><?php echo $verse ?></li>
+    <?php endforeach ?>
+</ul>
 <?php
     }
 
