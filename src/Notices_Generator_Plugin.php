@@ -342,16 +342,21 @@ class Notices_Generator_Plugin {
     public static function render_setting_notice_borders() {
         $borders = self::get_notice_borders();
 ?>
-<input type="hidden" name="odwpng_settings[notice_borders]" value="">
+<p class="description"><?php _e( 'Zde jsou zobrazeny aktuálně nastavené okraje pro oznámení. Jednotlivé okraje můžete vymazat, také můžete nahrát nový.', self::SLUG ) ?></p>
 <div class="odwpng-setting_images">
     <?php foreach( $borders as $key => $border ) : ?>
     <div class="odwpng-setting_image">
+        <input type="hidden" name="odwpng_settings[notice_borders][]" value="<?php echo $border ?>">
         <img src="<?php echo $border ?>" class="odwpng-setting_image--img">
         <span class="dashicons dashicons-no odwpng-setting_image--img_btn" title="<?php _e( 'Smazat okraj', self::SLUG ) ?>"></span>
     </div>
     <?php endforeach ?>
-    <div class="clearfix"></div>
+    <div style="clear: both;"></div>
 </div>
+<label for="odwpng_settings_border_new">
+    <span><?php _e( 'Nahrajte nový okraj oznámení: ', self::SLUG ) ?></span>
+    <input type="file" id="odwpng_settings_border_new" name="odwpng_settings[notice_borders][]" value="<?php _e( 'Nahrát okraj', self::SLUG ) ?>">
+</label>
 <?php
     }
 
@@ -362,16 +367,21 @@ class Notices_Generator_Plugin {
     public static function render_setting_notice_images() {
         $images = self::get_notice_images();
 ?>
-<input type="hidden" name="odwpng_settings[notice_images]" value="">
+<p class="description"><?php _e( 'Níže jsou zobrazeny aktuálně nastavené okraje pro oznámení. Jednotlivé okraje můžete vymazat nebo také můžete nahrát nový.', self::SLUG ) ?></p>
 <div class="odwpng-setting_images">
     <?php foreach( $images as $key => $image ) : ?>
     <div class="odwpng-setting_image">
+        <input type="hidden" name="odwpng_settings[notice_images][]" value="<?php echo $image ?>">
         <img src="<?php echo $image ?>" class="odwpng-setting_image--img">
         <span class="dashicons dashicons-no odwpng-setting_image--img_btn" title="<?php _e( 'Smazat obrázek', self::SLUG ) ?>"></span>
     </div>
     <?php endforeach ?>
-    <div class="clearfix"></div>
+    <div style="clear: both;"></div>
 </div>
+<label for="odwpng_settings_image_new">
+    <span><?php _e( 'Nahrajte nový obrázek: ', self::SLUG ) ?></span>
+    <input type="file" id="odwpng_settings_image_new" name="odwpng_settings[notice_images][]" value="<?php _e( 'Nahrát obrázek', self::SLUG ) ?>">
+</label>
 <?php
     }
 

@@ -5,27 +5,33 @@
 
 /* Obrazky pro vyber */
 .odwpng-setting_images {
+    margin-top: 20px;
     width: 100%;
 }
 .odwpng-setting_image {
     float: left;
     height: 104px;
-    margin-right: 10em;
+    margin-right: 20px;
+    margin-bottom: 20px;
 }
 .odwpng-setting_image .odwpng-setting_image--img {
     border: 2px solid #666;
     cursor: pointer;
     height: 100px;
-    margin: 0 5px 0 0;
+    margin: 0 0 0 0;
 }
 .odwpng-setting_image .odwpng-setting_image--img:hover {
     border: 2px solid #333;
 }
 .odwpng-setting_image .odwpng-setting_image--img_btn {
+    color: #f30;
     cursor: pointer;
     height: 24px;
+    left: -10px;
     position: relative;
-    top: -24px;
+    top: -12px;
     width: 24px;
 }
-.odwpng-setting_image .odwpng-setting_image--img_btn:hover {}
+.odwpng-setting_image .odwpng-setting_image--img_btn:hover {
+    font-weight: bold;
+}
