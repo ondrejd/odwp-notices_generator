@@ -35,3 +35,9 @@
 .odwpng-setting_image .odwpng-setting_image--img_btn:hover {
     font-weight: bold;
 }
+
+.odwpng-settings_verses {
+    width: 100%;
+}
+.odwpng-settings_verses .odwpng-settings_verses--item {}
+

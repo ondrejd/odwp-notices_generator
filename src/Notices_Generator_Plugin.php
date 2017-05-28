@@ -66,6 +66,8 @@ class Notices_Generator_Plugin {
      */
     public static function get_default_options() {
         return [
+            'new_notices_only_logged_users' => false,
+            'save_notices_from_unknown_users' => true,
             'notice_borders' => self::get_default_notice_borders(),
             'notice_images' => self::get_default_notice_images(),
             'verses' => self::get_default_verses(),
@@ -229,8 +231,32 @@ class Notices_Generator_Plugin {
         $section1 = self::SETTINGS_KEY . '_section_1';
         add_settings_section(
                 $section1,
-                __( 'Defaultní hodnoty' ),
+                __( 'Obecné nastavení pluginu' ),
                 [__CLASS__, 'render_settings_section_1'],
+                self::SLUG
+        );
+
+        add_settings_field(
+                'new_notices_only_logged_users',
+                __( 'Vytváření oznámení', self::SLUG ),
+                [__CLASS__, 'render_setting_only_logged_users'],
+                self::SLUG,
+                $section1
+        );
+
+        add_settings_field(
+                'save_notices_from_unknown_users',
+                __( 'Ukládání oznámení', self::SLUG ),
+                [__CLASS__, 'render_setting_unknown_users'],
+                self::SLUG,
+                $section1
+        );
+
+        $section2 = self::SETTINGS_KEY . '_section_2';
+        add_settings_section(
+                $section2,
+                __( 'Defaultní hodnoty' ),
+                [__CLASS__, 'render_settings_section_2'],
                 self::SLUG
         );
 
@@ -239,7 +265,7 @@ class Notices_Generator_Plugin {
                 __( 'Okraje oznámení', self::SLUG ),
                 [__CLASS__, 'render_setting_notice_borders'],
                 self::SLUG,
-                $section1
+                $section2
         );
 
         add_settings_field(
@@ -247,7 +273,7 @@ class Notices_Generator_Plugin {
                 __( 'Obrázky pro oznámení', self::SLUG ),
                 [__CLASS__, 'render_setting_notice_images'],
                 self::SLUG,
-                $section1
+                $section2
         );
 
         add_settings_field(
@@ -255,7 +281,7 @@ class Notices_Generator_Plugin {
                 __( 'Smuteční verše', self::SLUG ),
                 [__CLASS__, 'render_setting_verses'],
                 self::SLUG,
-                $section1
+                $section2
         );
     }
 
@@ -330,6 +356,52 @@ class Notices_Generator_Plugin {
     public static function render_settings_section_1() {
 ?>
 <p class="description">
+    <?php _e( 'Nastavení pro základní chování pluginu.', self::SLUG ) ?>
+</p>
+<?php
+    }
+
+    /**
+     * @internal Renders setting `new_notices_only_logged_users`.
+     * @return void
+     *
+     * @todo V budoucnu možno i specifikovat pro určité role...
+     */
+    public static function render_setting_only_logged_users() {
+        //...
+?>
+<label for="odwpng_settings_only_logged_users">
+    <input type="checkbox" id="odwpng_settings_only_logged_users" name="odwpng_settings[new_notices_only_logged_users]" checked="checked">
+    <?php _e( 'Povolit vytváření oznámení všem uživatelům', self::SLUG ) ?>
+</label>
+<p class="description"><?php _e( 'Pokud zaškrtnete, tak bude povoleno vytváření oznámení i nepřihlášeným uživatelům?', self::SLUG ) ?></p>
+<?php
+    }
+
+    /**
+     * @internal Renders setting `save_notices_from_unknown_users`.
+     * @return void
+     *
+     * @todo Udělat jinak - možnosti "Ukládat všechna oznámení", "Ukládat oznámení přihlášených uživatelů", "Neukládat žádná oznámení".
+     */
+    public static function render_setting_unknown_users() {
+        //...
+?>
+<label for="odwpng_settings_unknown_users">
+    <input type="checkbox" id="odwpng_settings_unknown_users" name="odwpng_settings[save_notices_from_unknown_users]" checked="checked">
+    <?php _e( 'Ukládat všechna oznámení', self::SLUG ) ?>
+</label>
+<p class="description"><?php _e( 'Pokud zaškrtnete, tak se budou ukládat všechna vytvořená oznámení - i ta od nepřihlášených uživatelů. Pokud ponecháte odškrtnuté, ukládají se pouze oznámení od registrovaných uživatelů.', self::SLUG ) ?></p>
+<?php
+    }
+
+    /**
+     * @internal Renders the second settings section.
+     * @return void
+     */
+    public static function render_settings_section_2() {
+?>
+<p class="description">
     <?php _e( 'Níže můžete zadat obrázky, okraje a verše pro editor oznámení.', self::SLUG ) ?>
 </p>
 <?php
@@ -392,12 +464,40 @@ class Notices_Generator_Plugin {
     public static function render_setting_verses() {
         $verses = self::get_verses();
 ?>
-<input type="hidden" name="odwpng_settings[verses]" value="">
-<ul name="odwpng-settings_verses">
-    <?php foreach( $verses as $key => $verse ) : ?>
-    <li id="verse-<?php echo $key ?>"><?php echo $verse ?></li>
-    <?php endforeach ?>
-</ul>
+<p class="description"><?php _e( 'Níže je tabulka s existujícími smutečními verši - můžete je upravovat, mazat nebo přidat nové.', self::SLUG ) ?></p>
+<table class="odwpng-settings_verses">
+    <tbody>
+        <?php
+            $idx = 1;
+            foreach( $verses as $key => $verse ) :
+                $verse = str_replace( "\n", " ", str_replace( "\"", "&quot;", $verse ) );
+        ?>
+        <tr id="verse-<?php echo $key ?>" class="odwpng-settings_verses--row">
+            <td style="text-align: center; width: 20px;">
+                <code><?php echo $idx ?>.</code>
+            </td>
+            <td style="width: auto;">
+                <input class="regular-text" name="odwpng_settings[verses][<?php echo $key ?>]" value="<?php echo $verse ?>" style="width: 100%;" type="text">
+            </td>
+            <td style="width: 80px;">
+                <button class="button"><?php _e( 'Odstranit', self::SLUG ) ?></button>
+            </td>
+        </tr>
+        <?php $idx++; endforeach ?>
+    </tbody>
+    <tbody>
+        <tr id="verse-new" class="odwpng-settings_verses--row">
+            <td style="text-align: center; width: 20px;">
+                <code><?php echo $idx ?>.</code>
+            </td>
+            <td style="width: auto;">
+                <input class="regular-text" id="odwpng_new_verse" name="odwpng_settings[verses][]" placeholder="<?php _e( 'Zadejte nový verš...', self::SLUG ) ?>" value="" style="width: 100%;" type="text">
+            </td>
+            <td style="width: 80px;">
+                <button class="button button-primary"><?php _e( 'Přidat', self::SLUG ) ?></button>
+            </td>
+    </tbody>
+</table>
 <?php
     }
 
