@@ -277,6 +277,23 @@ class Notices_Generator_Plugin {
         $_type = in_array( $type, $avail_types ) ? $type : 'info';
         printf( '<div class="%s"><p>%s</p></div>', $_type, $msg );
     }
+
+    /**
+     * @internal Returns default funeral verses for the generator.
+     * @return array
+     */
+    protected static function get_default_verses() {
+        $verses = [
+            0 => __( "Až umřu, nic na tomto světě\nse nestane a nezmění,\njen srdcí několik se zachvěje v rose\njak k ránu květiny...\n\n<em>J. Wolker</em>", self::SLUG ),
+            1 => __( "Smrti se nebojím, smrt není zlá,\nsmrt je jen kus života těžkého.\nCo strašné je, co zlé je,\nto umírání je.\n\n<em>J. Wolker</em>", self::SLUG ),
+            2 => __( "A za vše, za vše dík.\nZa lásku, jaká byla,\nza život, jaký byl..\n\n<em>Donát Šajner</em>", self::SLUG ),
+            3 => __( "Buď vůle tvá...", self::SLUG ),
+            4 => __( "Nezemřel jsem, neboť vím,\nže budu stále žít v srdcích těch,\nkteří mě milovali.", self::SLUG ),
+            5 => __( "Kdo v srdci žije, neumírá.\n\n<em>František Hrubín</em>", self::SLUG ),
+        ];
+
+        return apply_filters( 'odwng_default_verses', $verses );
+    }
 } // End of Notices_Generator_Plugin
 
 endif;
