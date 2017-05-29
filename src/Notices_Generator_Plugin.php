@@ -473,8 +473,6 @@ class Notices_Generator_Plugin {
      * @return array
      */
     protected static function get_notice_borders() {
-        //$options = self::get_options();
-        //$borders = array_key_exists( 'notice_borders', $options) ? $options['notice_borders'] : null;
         $borders = self::get_option( 'notice_borders' );
 
         if( ! is_array( $borders ) ) {
@@ -489,8 +487,6 @@ class Notices_Generator_Plugin {
      * @return array
      */
     protected static function get_verses() {
-        //$options = self::get_options();
-        //$verses  = array_key_exists( 'verses', $options) ? $options['verses'] : null;
         $verses  = self::get_option( 'verses' );
 
         if( ! is_array( $verses ) ) {
