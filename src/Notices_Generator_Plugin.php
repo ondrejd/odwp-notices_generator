@@ -151,7 +151,7 @@ class Notices_Generator_Plugin {
         $images = self::get_notice_images();
         $verses = self::get_verses();
         
-        include_once dirname( dirname( __FILE__ ) ) . '/partials/shortcode-notices_generator.phtml';
+        include dirname( dirname( __FILE__ ) ) . '/partials/shortcode-notices_generator.phtml';
         $html = ob_get_flush();
         return apply_filters( 'odwpng-notices_generator', $html );
     }
@@ -354,11 +354,9 @@ class Notices_Generator_Plugin {
      * @return void
      */
     public static function render_settings_section_1() {
-?>
-<p class="description">
-    <?php _e( 'Nastavení pro základní chování pluginu.', self::SLUG ) ?>
-</p>
-<?php
+        ob_start( function() {} );
+        include dirname( dirname( __FILE__ ) ) . '/partials/settings-section_1.phtml';
+        echo ob_get_flush();
     }
 
     /**
@@ -368,14 +366,10 @@ class Notices_Generator_Plugin {
      * @todo V budoucnu možno i specifikovat pro určité role...
      */
     public static function render_setting_only_logged_users() {
-        //...
-?>
-<label for="odwpng_settings_only_logged_users">
-    <input type="checkbox" id="odwpng_settings_only_logged_users" name="odwpng_settings[new_notices_only_logged_users]" checked="checked">
-    <?php _e( 'Povolit vytváření oznámení všem uživatelům', self::SLUG ) ?>
-</label>
-<p class="description"><?php _e( 'Pokud zaškrtnete, tak bude povoleno vytváření oznámení i nepřihlášeným uživatelům?', self::SLUG ) ?></p>
-<?php
+        $only_logged_users = ( bool ) self::get_option( 'new_notices_only_logged_users' );
+        ob_start( function() {} );
+        include dirname( dirname( __FILE__ ) ) . '/partials/setting-only_logged_users.phtml';
+        echo ob_get_flush();
     }
 
     /**
@@ -385,14 +379,10 @@ class Notices_Generator_Plugin {
      * @todo Udělat jinak - možnosti "Ukládat všechna oznámení", "Ukládat oznámení přihlášených uživatelů", "Neukládat žádná oznámení".
      */
     public static function render_setting_unknown_users() {
-        //...
-?>
-<label for="odwpng_settings_unknown_users">
-    <input type="checkbox" id="odwpng_settings_unknown_users" name="odwpng_settings[save_notices_from_unknown_users]" checked="checked">
-    <?php _e( 'Ukládat všechna oznámení', self::SLUG ) ?>
-</label>
-<p class="description"><?php _e( 'Pokud zaškrtnete, tak se budou ukládat všechna vytvořená oznámení - i ta od nepřihlášených uživatelů. Pokud ponecháte odškrtnuté, ukládají se pouze oznámení od registrovaných uživatelů.', self::SLUG ) ?></p>
-<?php
+        $unknown_users = ( bool ) self::get_option( 'save_notices_from_unknown_users' );
+        ob_start( function() {} );
+        include dirname( dirname( __FILE__ ) ) . '/partials/setting-unknown_users.phtml';
+        echo ob_get_flush();
     }
 
     /**
@@ -400,11 +390,9 @@ class Notices_Generator_Plugin {
      * @return void
      */
     public static function render_settings_section_2() {
-?>
-<p class="description">
-    <?php _e( 'Níže můžete zadat obrázky, okraje a verše pro editor oznámení.', self::SLUG ) ?>
-</p>
-<?php
+        ob_start( function() {} );
+        include dirname( dirname( __FILE__ ) ) . '/partials/settings-section_2.phtml';
+        echo ob_get_flush();
     }
 
     /**
@@ -413,23 +401,9 @@ class Notices_Generator_Plugin {
      */
     public static function render_setting_notice_borders() {
         $borders = self::get_notice_borders();
-?>
-<p class="description"><?php _e( 'Zde jsou zobrazeny aktuálně nastavené okraje pro oznámení. Jednotlivé okraje můžete vymazat, také můžete nahrát nový.', self::SLUG ) ?></p>
-<div class="odwpng-setting_images">
-    <?php foreach( $borders as $key => $border ) : ?>
-    <div class="odwpng-setting_image">
-        <input type="hidden" name="odwpng_settings[notice_borders][]" value="<?php echo $border ?>">
-        <img src="<?php echo $border ?>" class="odwpng-setting_image--img">
-        <span class="dashicons dashicons-no odwpng-setting_image--img_btn" title="<?php _e( 'Smazat okraj', self::SLUG ) ?>"></span>
-    </div>
-    <?php endforeach ?>
-    <div style="clear: both;"></div>
-</div>
-<label for="odwpng_settings_border_new">
-    <span><?php _e( 'Nahrajte nový okraj oznámení: ', self::SLUG ) ?></span>
-    <input type="file" id="odwpng_settings_border_new" name="odwpng_settings[notice_borders][]" value="<?php _e( 'Nahrát okraj', self::SLUG ) ?>">
-</label>
-<?php
+        ob_start( function() {} );
+        include dirname( dirname( __FILE__ ) ) . '/partials/setting-notice_borders.phtml';
+        echo ob_get_flush();
     }
 
     /**
@@ -438,23 +412,9 @@ class Notices_Generator_Plugin {
      */
     public static function render_setting_notice_images() {
         $images = self::get_notice_images();
-?>
-<p class="description"><?php _e( 'Níže jsou zobrazeny aktuálně nastavené okraje pro oznámení. Jednotlivé okraje můžete vymazat nebo také můžete nahrát nový.', self::SLUG ) ?></p>
-<div class="odwpng-setting_images">
-    <?php foreach( $images as $key => $image ) : ?>
-    <div class="odwpng-setting_image">
-        <input type="hidden" name="odwpng_settings[notice_images][]" value="<?php echo $image ?>">
-        <img src="<?php echo $image ?>" class="odwpng-setting_image--img">
-        <span class="dashicons dashicons-no odwpng-setting_image--img_btn" title="<?php _e( 'Smazat obrázek', self::SLUG ) ?>"></span>
-    </div>
-    <?php endforeach ?>
-    <div style="clear: both;"></div>
-</div>
-<label for="odwpng_settings_image_new">
-    <span><?php _e( 'Nahrajte nový obrázek: ', self::SLUG ) ?></span>
-    <input type="file" id="odwpng_settings_image_new" name="odwpng_settings[notice_images][]" value="<?php _e( 'Nahrát obrázek', self::SLUG ) ?>">
-</label>
-<?php
+        ob_start( function() {} );
+        include dirname( dirname( __FILE__ ) ) . '/partials/setting-notice_images.phtml';
+        echo ob_get_flush();
     }
 
     /**
@@ -463,42 +423,9 @@ class Notices_Generator_Plugin {
      */
     public static function render_setting_verses() {
         $verses = self::get_verses();
-?>
-<p class="description"><?php _e( 'Níže je tabulka s existujícími smutečními verši - můžete je upravovat, mazat nebo přidat nové.', self::SLUG ) ?></p>
-<table class="odwpng-settings_verses">
-    <tbody>
-        <?php
-            $idx = 1;
-            foreach( $verses as $key => $verse ) :
-                $verse = str_replace( "\n", " ", str_replace( "\"", "&quot;", $verse ) );
-        ?>
-        <tr id="verse-<?php echo $key ?>" class="odwpng-settings_verses--row">
-            <td style="text-align: center; width: 20px;">
-                <code><?php echo $idx ?>.</code>
-            </td>
-            <td style="width: auto;">
-                <input class="regular-text" name="odwpng_settings[verses][<?php echo $key ?>]" value="<?php echo $verse ?>" style="width: 100%;" type="text">
-            </td>
-            <td style="width: 80px;">
-                <button class="button"><?php _e( 'Odstranit', self::SLUG ) ?></button>
-            </td>
-        </tr>
-        <?php $idx++; endforeach ?>
-    </tbody>
-    <tbody>
-        <tr id="verse-new" class="odwpng-settings_verses--row">
-            <td style="text-align: center; width: 20px;">
-                <code><?php echo $idx ?>.</code>
-            </td>
-            <td style="width: auto;">
-                <input class="regular-text" id="odwpng_new_verse" name="odwpng_settings[verses][]" placeholder="<?php _e( 'Zadejte nový verš...', self::SLUG ) ?>" value="" style="width: 100%;" type="text">
-            </td>
-            <td style="width: 80px;">
-                <button class="button button-primary"><?php _e( 'Přidat', self::SLUG ) ?></button>
-            </td>
-    </tbody>
-</table>
-<?php
+        ob_start( function() {} );
+        include dirname( dirname( __FILE__ ) ) . '/partials/setting-verses.phtml';
+        echo ob_get_flush();
     }
 
     /**

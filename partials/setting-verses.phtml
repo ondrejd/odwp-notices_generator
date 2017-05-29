@@ -1,0 +1,52 @@
+<?php
+/**
+ * @author Ondřej Doněk <ondrejd@gmail.com>
+ * @link https://github.com/ondrejd/odwp-notices_generator for the canonical source repository
+ * @license https://www.gnu.org/licenses/gpl-3.0.en.html GNU General Public License 3.0
+ * @package odwp-notices_generator
+ *
+ * @see Notices_Generator_Plugin::render_setting_verses()
+ *
+ * Variables passed:
+ * @var array $verses
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+?>
+<p class="description"><?php _e( 'Níže je tabulka s existujícími smutečními verši - můžete je upravovat, mazat nebo přidat nové.', Notices_Generator_Plugin::SLUG ) ?></p>
+<table class="odwpng-settings_verses">
+    <tbody>
+        <?php
+            $idx = 1;
+            foreach( $verses as $key => $verse ) :
+                $verse = str_replace( "\n", " ", str_replace( "\"", "&quot;", $verse ) );
+        ?>
+        <tr id="verse-<?php echo $key ?>" class="odwpng-settings_verses--row">
+            <td style="text-align: center; width: 20px;">
+                <code><?php echo $idx ?>.</code>
+            </td>
+            <td style="width: auto;">
+                <input class="regular-text" name="odwpng_settings[verses][<?php echo $key ?>]" value="<?php echo $verse ?>" style="width: 100%;" type="text">
+            </td>
+            <td style="width: 80px;">
+                <button class="button"><?php _e( 'Odstranit', Notices_Generator_Plugin::SLUG ) ?></button>
+            </td>
+        </tr>
+        <?php $idx++; endforeach ?>
+    </tbody>
+    <tbody>
+        <tr id="verse-new" class="odwpng-settings_verses--row">
+            <td style="text-align: center; width: 20px;">
+                <code><?php echo $idx ?>.</code>
+            </td>
+            <td style="width: auto;">
+                <input class="regular-text" id="odwpng_new_verse" name="odwpng_settings[verses][]" placeholder="<?php _e( 'Zadejte nový verš...', Notices_Generator_Plugin::SLUG ) ?>" value="" style="width: 100%;" type="text">
+            </td>
+            <td style="width: 80px;">
+                <button class="button button-primary"><?php _e( 'Přidat', Notices_Generator_Plugin::SLUG ) ?></button>
+            </td>
+    </tbody>
+</table>

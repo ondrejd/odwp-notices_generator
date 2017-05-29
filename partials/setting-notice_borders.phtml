@@ -1,0 +1,33 @@
+<?php
+/**
+ * @author Ondřej Doněk <ondrejd@gmail.com>
+ * @link https://github.com/ondrejd/odwp-notices_generator for the canonical source repository
+ * @license https://www.gnu.org/licenses/gpl-3.0.en.html GNU General Public License 3.0
+ * @package odwp-notices_generator
+ *
+ * @see Notices_Generator_Plugin::render_setting_notice_borders()
+ *
+ * Variables passed:
+ * @var array $borders
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+?>
+<p class="description"><?php _e( 'Zde jsou zobrazeny aktuálně nastavené okraje pro oznámení. Jednotlivé okraje můžete vymazat, také můžete nahrát nový.', Notices_Generator_Plugin::SLUG ) ?></p>
+<div class="odwpng-setting_images">
+    <?php foreach( $borders as $key => $border ) : ?>
+    <div class="odwpng-setting_image">
+        <input type="hidden" name="odwpng_settings[notice_borders][]" value="<?php echo $border ?>">
+        <img src="<?php echo $border ?>" class="odwpng-setting_image--img">
+        <span class="dashicons dashicons-no odwpng-setting_image--img_btn" title="<?php _e( 'Smazat okraj', Notices_Generator_Plugin::SLUG ) ?>"></span>
+    </div>
+    <?php endforeach ?>
+    <div style="clear: both;"></div>
+</div>
+<label for="odwpng_settings_border_new">
+    <span><?php _e( 'Nahrajte nový okraj oznámení: ', Notices_Generator_Plugin::SLUG ) ?></span>
+    <input type="file" id="odwpng_settings_border_new" name="odwpng_settings[notice_borders][]" value="<?php _e( 'Nahrát okraj', Notices_Generator_Plugin::SLUG ) ?>">
+</label>
