@@ -457,8 +457,6 @@ class Notices_Generator_Plugin {
      * @return array
      */
     protected static function get_notice_images() {
-        //$options = self::get_options();
-        //$images = array_key_exists( 'notice_images', $options) ? $options['notice_images'] : null;
         $images = self::get_option( 'notice_images' );
 
         if( ! is_array( $images ) ) {
