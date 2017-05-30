@@ -20,8 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="odwpng-setting_images">
     <?php foreach( $images as $key => $image ) : ?>
     <div class="odwpng-setting_image">
-        <input type="hidden" name="odwpng_settings[notice_images][]" value="<?php echo $image ?>">
-        <img src="<?php echo $image ?>" class="odwpng-setting_image--img">
+        <input type="hidden" name="odwpng_settings[notice_images][<?php echo $key ?>]" value="<?php echo $image ?>">
+        <img src="<?php echo $image ?>" class="odwpng-setting_image--img" title="<?php echo $image ?>">
         <span class="dashicons dashicons-no odwpng-setting_image--img_btn" title="<?php _e( 'Smazat obrázek', Notices_Generator_Plugin::SLUG ) ?>"></span>
     </div>
     <?php endforeach ?>
@@ -29,5 +29,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 </div>
 <label for="odwpng_settings_image_new">
     <span><?php _e( 'Nahrajte nový obrázek: ', Notices_Generator_Plugin::SLUG ) ?></span>
-    <input type="file" id="odwpng_settings_image_new" name="odwpng_settings[notice_images][]" value="<?php _e( 'Nahrát obrázek', Notices_Generator_Plugin::SLUG ) ?>">
+    <input type="file" id="odwpng_settings_image_new" name="odwpng_settings_image_new" value="<?php _e( 'Nahrát obrázek', Notices_Generator_Plugin::SLUG ) ?>">
 </label>
