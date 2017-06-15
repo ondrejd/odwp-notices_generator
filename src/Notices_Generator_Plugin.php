@@ -46,6 +46,21 @@ class Notices_Generator_Plugin {
     const TABLE_NAME = 'odwpng';
 
     /**
+     * @var string The first value for screen options for options page.
+     */
+    const OPTIONS_SS_COMPACT = 'compact';
+
+    /** 
+     * @var string The second value for screen options for options page.
+     */
+    const OPTIONS_SS_FULL = 'full';
+
+    /**
+     * @var string
+     */
+    public static $options_page_hook;
+
+    /**
      * @internal Activates the plugin.
      * @return void
      */
@@ -283,6 +298,9 @@ class Notices_Generator_Plugin {
                 self::SLUG,
                 $section2
         );
+
+        // Save screen options on the options page
+        add_filter( 'set-screen-option', [__CLASS__, 'set_screen_option'], 10, 3 );
     }
 
     /**
@@ -290,13 +308,43 @@ class Notices_Generator_Plugin {
      * @return void
      */
     public static function admin_menu() {
-        add_options_page(
+        Notices_Generator_Plugin::$options_page_hook = add_options_page(
                 __( 'Nastavení pro plugin Smuteční oznámení', self::SLUG ),
                 __( 'Smuteční oznámení', self::SLUG ),
                 'manage_options',
-                self::SLUG . '-options',
+                self::SLUG . '-options', // Result is "settings_page_odwp-notices_generator-options".
                 [__CLASS__, 'admin_options_page']
         );
+
+        /**
+         * @param string $settings
+         * @param \WP_Screen $screen
+         */
+        add_filter( 'screen_settings', function( $settings, \WP_Screen $screen ) {
+            if( $screen->base !== Notices_Generator_Plugin::$options_page_hook ) {
+                return $settings;
+            }
+
+            $display_style = filter_input( INPUT_GET, 'display_style' );
+
+            return sprintf(
+                    '<label for="odwpng-display_style">' . __( 'Styl zobrazení:', Notices_Generator_Plugin::SLUG ) . '</label>' .
+                    '<select id="odwpng-display_style" name="display_style">' .
+                        '<option value="' . Notices_Generator_Plugin::OPTIONS_SS_COMPACT . '">' . __( 'Kompaktní', Notices_Generator_Plugin::SLUG ) . '</option>' .
+                        '<option value="' . Notices_Generator_Plugin::OPTIONS_SS_FULL . '">' . __( 'Plné', Notices_Generator_Plugin::SLUG ) . '</option>' .
+                    '</select>' .
+                    get_submit_button( __( 'Ulož', Notices_Generator_Plugin::SLUG ), 'secondary', 'submit-button', false ),
+                    $display_style
+            );
+        }, 10, 2 );
+    }
+
+    /**
+     * Hook for "set-screen-option" filter.
+     * @return void
+     */
+    public static function set_screen_options() {
+        //...
     }
 
     /**
@@ -317,16 +365,9 @@ class Notices_Generator_Plugin {
      * @return void
      */
     public static function admin_options_page() {
-?>
-<form action="options.php" method="post">
-    <h2><?php _e( 'Nastavení pro plugin Smuteční oznámení', self::SLUG ) ?></h2>
-<?php
-        settings_fields( self::SLUG );
-        do_settings_sections( self::SLUG );
-        submit_button();
-?>
-</form>
-<?php
+        ob_start( function() {} );
+        include dirname( dirname( __FILE__ ) ) . '/partials/settings-page.phtml';
+        echo ob_get_flush();
     }
 
     /**
