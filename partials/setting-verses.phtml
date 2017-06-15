@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             $verse = str_replace( "\n", " ", str_replace( "\"", "&quot;", $verse ) );
     ?>
     <p id="verse-<?php echo $key ?>" class="odwpng-settings_verses--row">
-        <code><?php echo $idx ?>.</code>
+        <code><?php echo ( $key < 10 ) ? '&nbsp;' . $key : $key ?>.</code>
         <input class="regular-text" name="odwpng_settings[verses][<?php echo $key ?>]" value="<?php echo $verse ?>" type="text">
         <button class="button"><?php _e( 'Odstranit', Notices_Generator_Plugin::SLUG ) ?></button>
     </p>
