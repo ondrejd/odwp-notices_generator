@@ -26,11 +26,6 @@ if ( ! class_exists( 'Notices_Generator_Plugin' ) ) :
  */
 class Notices_Generator_Plugin {
     /**
-     * @const string Plugin's slug.
-     */
-    const SLUG = 'odwp-notices_generator';
-
-    /**
      * @const string Plugin's version.
      */
     const VERSION = '1.0.0';
@@ -166,7 +161,7 @@ class Notices_Generator_Plugin {
         $images = self::get_notice_images();
         $verses = self::get_verses();
         
-        include dirname( dirname( __FILE__ ) ) . '/partials/shortcode-notices_generator.phtml';
+        include( NG_PATH . 'partials/shortcode-notices_generator.phtml' );
         $html = ob_get_flush();
         return apply_filters( 'odwpng-notices_generator', $html );
     }
@@ -177,8 +172,8 @@ class Notices_Generator_Plugin {
      */
     public static function init() {
         // Initialize locales
-        $path = dirname( __FILE__ ) . '/languages';
-        load_plugin_textdomain( self::SLUG, false, $path );
+        $path = NG_PATH . 'languages';
+        load_plugin_textdomain( NG_SLUG, false, $path );
         // Load custom post types
         self::init_cpt();
     }
@@ -188,50 +183,50 @@ class Notices_Generator_Plugin {
      * @return void
      */
     public static function init_cpt() {
-		$labels = array(
-			'name' => __( 'Oznámení', self::SLUG ),
-			'singular_name' => __( 'Vytvořit oznámení', self::SLUG ),
-			'add_new' => __( 'Nové oznámení', self::SLUG ),
-			'add_new_item' => __( 'Vytvořit nové oznámení', self::SLUG ),
-			'edit_item' => __( 'Upravit oznámení', self::SLUG ),
-			'new_item' => __( 'Nové oznámení', self::SLUG ),
-			'view_item' => __( 'Zobrazit oznámení', self::SLUG ),
-			'search_items' => __( 'Prohledat oznámení', self::SLUG ),
-			'not_found' => __( 'Žádná oznámení nebyly nalezeny.', self::SLUG ),
-			'not_found_in_trash' => __( 'Žádná oznámení nebyly v koši nalezeny.', self::SLUG ),
-			'all_items' => __( 'Všechny oznámení', self::SLUG ),
-			'archives' => __( 'Archív oznámení', self::SLUG ),
-			'menu_name' => __( 'Oznámení', self::SLUG ),
-		);
+        $labels = [
+            'name' => __( 'Oznámení', NG_SLUG ),
+            'singular_name' => __( 'Vytvořit oznámení', NG_SLUG ),
+            'add_new' => __( 'Nové oznámení', NG_SLUG ),
+            'add_new_item' => __( 'Vytvořit nové oznámení', NG_SLUG ),
+            'edit_item' => __( 'Upravit oznámení', NG_SLUG ),
+            'new_item' => __( 'Nové oznámení', NG_SLUG ),
+            'view_item' => __( 'Zobrazit oznámení', NG_SLUG ),
+            'search_items' => __( 'Prohledat oznámení', NG_SLUG ),
+            'not_found' => __( 'Žádná oznámení nebyly nalezeny.', NG_SLUG ),
+            'not_found_in_trash' => __( 'Žádná oznámení nebyly v koši nalezeny.', NG_SLUG ),
+            'all_items' => __( 'Všechny oznámení', NG_SLUG ),
+            'archives' => __( 'Archív oznámení', NG_SLUG ),
+            'menu_name' => __( 'Oznámení', NG_SLUG ),
+        ];
 
-		$args = array(
-			'labels' => $labels,
-			'hierarchical' => false,
-			'description' => __( 'Oznámení o úmrtí', self::SLUG ),
-			'supports' => array( 'title', 'editor', 'revisions', 'custom-fields', 'page-attributes' ),
-			'taxonomies' => [],
-			'show_ui' => true,
-			'show_in_menu' => true,
-			'menu_position' => 5,
-			'menu_icon' => 'dashicons-format-aside',
-			'show_in_nav_menus' => true,
-			'publicly_queryable' => true,
-			'exclude_from_search' => false,
-			'query_var' => true,
-			'can_export' => true,
-	        'public' => true,
-	        'has_archive' => true,
-	        'capability_type' => 'post',
-		);
+        $args = [
+            'labels' => $labels,
+            'hierarchical' => false,
+            'description' => __( 'Oznámení o úmrtí', NG_SLUG ),
+            'supports' => array( 'title', 'editor', 'revisions', 'custom-fields', 'page-attributes' ),
+            'taxonomies' => [],
+            'show_ui' => true,
+            'show_in_menu' => true,
+            'menu_position' => 5,
+            'menu_icon' => 'dashicons-format-aside',
+            'show_in_nav_menus' => true,
+            'publicly_queryable' => true,
+            'exclude_from_search' => false,
+            'query_var' => true,
+            'can_export' => true,
+            'public' => true,
+            'has_archive' => true,
+            'capability_type' => 'post',
+        ];
 
-		/**
-		 * Filter "Notices" post type arguments.
-		 *
-		 * @since 1.0.0
-		 * @param array $arguments "Notices" post type arguments.
-		 */
-		$args = apply_filters( 'odwng_notices_post_type_arguments', $args );
-		register_post_type( 'funeral_notices', $args );
+        /**
+         * Filter "Notices" post type arguments.
+         *
+         * @since 1.0.0
+         * @param array $arguments "Notices" post type arguments.
+         */
+        $args = apply_filters( 'odwng_notices_post_type_arguments', $args );
+        register_post_type( 'funeral_notices', $args );
     }
 
     /**
@@ -239,7 +234,7 @@ class Notices_Generator_Plugin {
      * @return void
      */
     public static function admin_init() {
-        register_setting( self::SLUG, self::SETTINGS_KEY );
+        register_setting( NG_SLUG, self::SETTINGS_KEY );
 
         $options = self::get_options();
 
@@ -248,22 +243,22 @@ class Notices_Generator_Plugin {
                 $section1,
                 __( 'Obecné nastavení pluginu' ),
                 [__CLASS__, 'render_settings_section_1'],
-                self::SLUG
+                NG_SLUG
         );
 
         add_settings_field(
                 'new_notices_only_logged_users',
-                __( 'Vytváření oznámení', self::SLUG ),
+                __( 'Vytváření oznámení', NG_SLUG ),
                 [__CLASS__, 'render_setting_only_logged_users'],
-                self::SLUG,
+                NG_SLUG,
                 $section1
         );
 
         add_settings_field(
                 'save_notices_from_unknown_users',
-                __( 'Ukládání oznámení', self::SLUG ),
+                __( 'Ukládání oznámení', NG_SLUG ),
                 [__CLASS__, 'render_setting_unknown_users'],
-                self::SLUG,
+                NG_SLUG,
                 $section1
         );
 
@@ -272,30 +267,30 @@ class Notices_Generator_Plugin {
                 $section2,
                 __( 'Defaultní hodnoty' ),
                 [__CLASS__, 'render_settings_section_2'],
-                self::SLUG
+                NG_SLUG
         );
 
         add_settings_field(
                 'notice_borders',
-                __( 'Okraje oznámení', self::SLUG ),
+                __( 'Okraje oznámení', NG_SLUG ),
                 [__CLASS__, 'render_setting_notice_borders'],
-                self::SLUG,
+                NG_SLUG,
                 $section2
         );
 
         add_settings_field(
                 'notice_images',
-                __( 'Obrázky pro oznámení', self::SLUG ),
+                __( 'Obrázky pro oznámení', NG_SLUG ),
                 [__CLASS__, 'render_setting_notice_images'],
-                self::SLUG,
+                NG_SLUG,
                 $section2
         );
 
         add_settings_field(
                 'verses',
-                __( 'Smuteční verše', self::SLUG ),
+                __( 'Smuteční verše', NG_SLUG ),
                 [__CLASS__, 'render_setting_verses'],
-                self::SLUG,
+                NG_SLUG,
                 $section2
         );
 
@@ -309,10 +304,10 @@ class Notices_Generator_Plugin {
      */
     public static function admin_menu() {
         Notices_Generator_Plugin::$options_page_hook = add_options_page(
-                __( 'Nastavení pro plugin Smuteční oznámení', self::SLUG ),
-                __( 'Smuteční oznámení', self::SLUG ),
+                __( 'Nastavení pro plugin Smuteční oznámení', NG_SLUG ),
+                __( 'Smuteční oznámení', NG_SLUG ),
                 'manage_options',
-                self::SLUG . '-options', // Result is "settings_page_odwp-notices_generator-options".
+                NG_SLUG . '-options', // Result is "settings_page_odwp-notices_generator-options".
                 [__CLASS__, 'admin_options_page']
         );
 
@@ -328,12 +323,12 @@ class Notices_Generator_Plugin {
             $display_style = filter_input( INPUT_GET, 'display_style' );
 
             return sprintf(
-                    '<label for="odwpng-display_style">' . __( 'Styl zobrazení:', Notices_Generator_Plugin::SLUG ) . '</label>' .
+                    '<label for="odwpng-display_style">' . __( 'Styl zobrazení:', NG_SLUG ) . '</label>' .
                     '<select id="odwpng-display_style" name="display_style">' .
-                        '<option value="' . Notices_Generator_Plugin::OPTIONS_SS_COMPACT . '">' . __( 'Kompaktní', Notices_Generator_Plugin::SLUG ) . '</option>' .
-                        '<option value="' . Notices_Generator_Plugin::OPTIONS_SS_FULL . '">' . __( 'Plné', Notices_Generator_Plugin::SLUG ) . '</option>' .
+                        '<option value="' . Notices_Generator_Plugin::OPTIONS_SS_COMPACT . '">' . __( 'Kompaktní', NG_SLUG ) . '</option>' .
+                        '<option value="' . Notices_Generator_Plugin::OPTIONS_SS_FULL . '">' . __( 'Plné', NG_SLUG ) . '</option>' .
                     '</select>' .
-                    get_submit_button( __( 'Ulož', Notices_Generator_Plugin::SLUG ), 'secondary', 'submit-button', false ),
+                    get_submit_button( __( 'Ulož', NG_SLUG ), 'secondary', 'submit-button', false ),
                     $display_style
             );
         }, 10, 2 );
@@ -353,11 +348,11 @@ class Notices_Generator_Plugin {
      * @return void
      */
     public static function admin_enqueue_scripts( $hook ) {
-        wp_enqueue_script( self::SLUG, plugins_url( 'js/admin.js', dirname( __FILE__ ) ), ['jquery'] );
-        wp_localize_script( self::SLUG, 'odwpng', [
+        wp_enqueue_script( NG_SLUG, plugins_url( 'js/admin.js', NG_PATH ), ['jquery'] );
+        wp_localize_script( NG_SLUG, 'odwpng', [
             //...
         ] );
-        wp_enqueue_style( self::SLUG, plugins_url( 'css/admin.css', dirname( __FILE__ ) ) );
+        wp_enqueue_style( NG_SLUG, plugins_url( 'css/admin.css', NG_PATH ) );
     }
 
     /**
@@ -366,7 +361,7 @@ class Notices_Generator_Plugin {
      */
     public static function admin_options_page() {
         ob_start( function() {} );
-        include dirname( dirname( __FILE__ ) ) . '/partials/settings-page.phtml';
+        include( NG_PATH . 'partials/settings-page.phtml');
         echo ob_get_flush();
     }
 
@@ -383,11 +378,11 @@ class Notices_Generator_Plugin {
      * @return void
      */
     public static function enqueue_scripts() {
-        wp_enqueue_script( self::SLUG, plugins_url( 'js/public.js', dirname( __FILE__ ) ), ['jquery'] );
-        wp_localize_script( self::SLUG, 'odwpng', [
+        wp_enqueue_script( NG_SLUG, plugins_url( 'js/public.js', NG_PATH ), ['jquery'] );
+        wp_localize_script( NG_SLUG, 'odwpng', [
             //...
         ] );
-        wp_enqueue_style( self::SLUG, plugins_url( 'css/public.css', dirname( __FILE__ ) ) );
+        wp_enqueue_style( NG_SLUG, plugins_url( 'css/public.css', NG_PATH ) );
     }
 
     /**
@@ -396,7 +391,7 @@ class Notices_Generator_Plugin {
      */
     public static function render_settings_section_1() {
         ob_start( function() {} );
-        include dirname( dirname( __FILE__ ) ) . '/partials/settings-section_1.phtml';
+        include( NG_PATH . 'partials/settings-section_1.phtml' );
         echo ob_get_flush();
     }
 
@@ -409,7 +404,7 @@ class Notices_Generator_Plugin {
     public static function render_setting_only_logged_users() {
         $only_logged_users = ( bool ) self::get_option( 'new_notices_only_logged_users' );
         ob_start( function() {} );
-        include dirname( dirname( __FILE__ ) ) . '/partials/setting-only_logged_users.phtml';
+        include( NG_PATH . 'partials/setting-only_logged_users.phtml' );
         echo ob_get_flush();
     }
 
@@ -422,7 +417,7 @@ class Notices_Generator_Plugin {
     public static function render_setting_unknown_users() {
         $unknown_users = ( bool ) self::get_option( 'save_notices_from_unknown_users' );
         ob_start( function() {} );
-        include dirname( dirname( __FILE__ ) ) . '/partials/setting-unknown_users.phtml';
+        include( NG_PATH . 'partials/setting-unknown_users.phtml' );
         echo ob_get_flush();
     }
 
@@ -432,7 +427,7 @@ class Notices_Generator_Plugin {
      */
     public static function render_settings_section_2() {
         ob_start( function() {} );
-        include dirname( dirname( __FILE__ ) ) . '/partials/settings-section_2.phtml';
+        include( NG_PATH . 'partials/settings-section_2.phtml' );
         echo ob_get_flush();
     }
 
@@ -443,7 +438,7 @@ class Notices_Generator_Plugin {
     public static function render_setting_notice_borders() {
         $borders = self::get_notice_borders();
         ob_start( function() {} );
-        include dirname( dirname( __FILE__ ) ) . '/partials/setting-notice_borders.phtml';
+        include( NG_PATH . '/partials/setting-notice_borders.phtml' );
         echo ob_get_flush();
     }
 
@@ -454,7 +449,7 @@ class Notices_Generator_Plugin {
     public static function render_setting_notice_images() {
         $images = self::get_notice_images();
         ob_start( function() {} );
-        include dirname( dirname( __FILE__ ) ) . '/partials/setting-notice_images.phtml';
+        include( NG_PATH . 'partials/setting-notice_images.phtml' );
         echo ob_get_flush();
     }
 
@@ -465,7 +460,7 @@ class Notices_Generator_Plugin {
     public static function render_setting_verses() {
         $verses = self::get_verses();
         ob_start( function() {} );
-        include dirname( dirname( __FILE__ ) ) . '/partials/setting-verses.phtml';
+        include( NG_PATH . 'partials/setting-verses.phtml' );
         echo ob_get_flush();
     }
 
@@ -541,16 +536,16 @@ class Notices_Generator_Plugin {
      */
     protected static function get_default_notice_images() {
         $images = [
-            1  => plugins_url( 'img/notice-img01.jpg', dirname( __FILE__ ) ),
-            2  => plugins_url( 'img/notice-img02.jpg', dirname( __FILE__ ) ),
-            3  => plugins_url( 'img/notice-img03.jpg', dirname( __FILE__ ) ),
-            4  => plugins_url( 'img/notice-img04.jpg', dirname( __FILE__ ) ),
-            5  => plugins_url( 'img/notice-img05.jpg', dirname( __FILE__ ) ),
-            6  => plugins_url( 'img/notice-img06.jpg', dirname( __FILE__ ) ),
-            7  => plugins_url( 'img/notice-img07.jpg', dirname( __FILE__ ) ),
-            8  => plugins_url( 'img/notice-img08.jpg', dirname( __FILE__ ) ),
-            9  => plugins_url( 'img/notice-img09.jpg', dirname( __FILE__ ) ),
-            10 => plugins_url( 'img/notice-img10.jpg', dirname( __FILE__ ) ),
+            1  => plugins_url( 'img/notice-img01.jpg', NG_PATH ),
+            2  => plugins_url( 'img/notice-img02.jpg', NG_PATH ),
+            3  => plugins_url( 'img/notice-img03.jpg', NG_PATH ),
+            4  => plugins_url( 'img/notice-img04.jpg', NG_PATH ),
+            5  => plugins_url( 'img/notice-img05.jpg', NG_PATH ),
+            6  => plugins_url( 'img/notice-img06.jpg', NG_PATH ),
+            7  => plugins_url( 'img/notice-img07.jpg', NG_PATH ),
+            8  => plugins_url( 'img/notice-img08.jpg', NG_PATH ),
+            9  => plugins_url( 'img/notice-img09.jpg', NG_PATH ),
+            10 => plugins_url( 'img/notice-img10.jpg', NG_PATH ),
         ];
 
         return apply_filters( 'odwpng_default_notice_images', $images );
@@ -562,10 +557,10 @@ class Notices_Generator_Plugin {
      */
     protected static function get_default_notice_borders() {
         $borders = [
-            1  => plugins_url( 'img/notice-border01.jpg', dirname( __FILE__ ) ),
-            2  => plugins_url( 'img/notice-border02.jpg', dirname( __FILE__ ) ),
-            3  => plugins_url( 'img/notice-border03.jpg', dirname( __FILE__ ) ),
-            4  => plugins_url( 'img/notice-border04.jpg', dirname( __FILE__ ) ),
+            1  => plugins_url( 'img/notice-border01.jpg', NG_PATH ),
+            2  => plugins_url( 'img/notice-border02.jpg', NG_PATH ),
+            3  => plugins_url( 'img/notice-border03.jpg', NG_PATH ),
+            4  => plugins_url( 'img/notice-border04.jpg', NG_PATH ),
         ];
 
         return apply_filters( 'odwpng_default_notice_borders', $borders );
@@ -577,20 +572,20 @@ class Notices_Generator_Plugin {
      */
     protected static function get_default_verses() {
         $verses = [
-            0  => __( "Až umřu, nic na tomto světě\nse nestane a nezmění,\njen srdcí několik se zachvěje v rose\njak k ránu květiny...\n\n<em>J. Wolker</em>", self::SLUG ),
-            1  => __( "Smrti se nebojím, smrt není zlá,\nsmrt je jen kus života těžkého.\nCo strašné je, co zlé je,\nto umírání je.\n\n<em>J. Wolker</em>", self::SLUG ),
-            2  => __( "A za vše, za vše dík.\nZa lásku, jaká byla,\nza život, jaký byl..\n\n<em>Donát Šajner</em>", self::SLUG ),
-            3  => __( "Buď vůle tvá...", self::SLUG ),
-            4  => __( "Nezemřel jsem, neboť vím,\nže budu stále žít v srdcích těch,\nkteří mě milovali.", self::SLUG ),
-            5  => __( "Kdo v srdci žije, neumírá.\n\n<em>František Hrubín</em>", self::SLUG ),
-            6  => __( "Hospodin je blízko všem, kteří volají k Němu.\n\n<em>Žalm 145,18 Bible</em>", self::SLUG ),
-            7  => __( "Ježíš jí řekl: „Já jsem vzkříšení a život. Kdo věří ve mne, i kdyby umřel, bude žít.\"\n\n<em>Jan 11,25 Bible</em>", self::SLUG ),
-            8  => __( "Každý, kdo vzývá jméno Páně, bude spasen.	\n\n<em>Římanům 10,13 Bible</em>", self::SLUG ),
-            9  => __( "Kdo ke Mně přijde, toho nevyženu ven.\n\n<em>Jan 6,37 Bible</em>", self::SLUG ),
-            10 => __( "Kdo věří v Syna, má život věčný.\n\n<em>Jan 3,36 Bible</em>", self::SLUG ),
-            11 => __( "Má spása a sláva je v Bohu, On je má mocná skála, v Bohu mám útočiště.\n\n<em>Žalm 62,8 Bible</em>", self::SLUG ),
-            12 => __( "Mně těžká slova v hrdle váznou, když říci mám Ti: Sbohem buď\n\n<em>Jaroslav Vrchlický</em>", self::SLUG ),
-            13 => __( "Moje ovce slyší můj hlas, já je znám, jdou za mnou a já jim dávám věčný život: nezahynou navěky a nikdo je z mé ruky nevyrve.\n\n<em>Jan 10, 27-28 Bible</em>", self::SLUG ),
+            0  => __( "Až umřu, nic na tomto světě\nse nestane a nezmění,\njen srdcí několik se zachvěje v rose\njak k ránu květiny...\n\n<em>J. Wolker</em>", NG_SLUG ),
+            1  => __( "Smrti se nebojím, smrt není zlá,\nsmrt je jen kus života těžkého.\nCo strašné je, co zlé je,\nto umírání je.\n\n<em>J. Wolker</em>", NG_SLUG ),
+            2  => __( "A za vše, za vše dík.\nZa lásku, jaká byla,\nza život, jaký byl..\n\n<em>Donát Šajner</em>", NG_SLUG ),
+            3  => __( "Buď vůle tvá...", NG_SLUG ),
+            4  => __( "Nezemřel jsem, neboť vím,\nže budu stále žít v srdcích těch,\nkteří mě milovali.", NG_SLUG ),
+            5  => __( "Kdo v srdci žije, neumírá.\n\n<em>František Hrubín</em>", NG_SLUG ),
+            6  => __( "Hospodin je blízko všem, kteří volají k Němu.\n\n<em>Žalm 145,18 Bible</em>", NG_SLUG ),
+            7  => __( "Ježíš jí řekl: „Já jsem vzkříšení a život. Kdo věří ve mne, i kdyby umřel, bude žít.\"\n\n<em>Jan 11,25 Bible</em>", NG_SLUG ),
+            8  => __( "Každý, kdo vzývá jméno Páně, bude spasen.	\n\n<em>Římanům 10,13 Bible</em>", NG_SLUG ),
+            9  => __( "Kdo ke Mně přijde, toho nevyženu ven.\n\n<em>Jan 6,37 Bible</em>", NG_SLUG ),
+            10 => __( "Kdo věří v Syna, má život věčný.\n\n<em>Jan 3,36 Bible</em>", NG_SLUG ),
+            11 => __( "Má spása a sláva je v Bohu, On je má mocná skála, v Bohu mám útočiště.\n\n<em>Žalm 62,8 Bible</em>", NG_SLUG ),
+            12 => __( "Mně těžká slova v hrdle váznou, když říci mám Ti: Sbohem buď\n\n<em>Jaroslav Vrchlický</em>", NG_SLUG ),
+            13 => __( "Moje ovce slyší můj hlas, já je znám, jdou za mnou a já jim dávám věčný život: nezahynou navěky a nikdo je z mé ruky nevyrve.\n\n<em>Jan 10, 27-28 Bible</em>", NG_SLUG ),
 
         ];
 

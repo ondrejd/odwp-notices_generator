@@ -13,10 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 <form action="options.php" method="post">
-    <h2><?php _e( 'Nastavení pro plugin Smuteční oznámení', Notices_Generator_Plugin::SLUG ) ?></h2>
+    <h2><?php _e( 'Nastavení pro plugin Smuteční oznámení', NG_SLUG ) ?></h2>
 <?php
-        settings_fields( Notices_Generator_Plugin::SLUG );
-        do_settings_sections( Notices_Generator_Plugin::SLUG );
+        settings_fields( NG_SLUG );
+        do_settings_sections( NG_SLUG );
         submit_button();
 ?>
 </form>

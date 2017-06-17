@@ -37,6 +37,11 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+// Some widely used constants
+defined( 'NG_SLUG' ) || define( 'NG_SLUG', 'odwpng' );
+defined( 'NG_NAME' ) || define( 'NG_NAME', 'odwp-notices_generator' );
+defined( 'NG_PATH' ) || define( 'NG_PATH', dirname( __FILE__ ) . '/' );
+
 if( ! function_exists( 'odwpng_check_requirements' ) ) :
     /**
      * Checks requirements of our plugin.
@@ -47,8 +52,7 @@ if( ! function_exists( 'odwpng_check_requirements' ) ) :
         global $wp_version;
 
         // Initialize locales
-        $slug = 'odwp-notices_generator';
-        load_plugin_textdomain( $slug, false, dirname( __FILE__ ) . '/languages' );
+        load_plugin_textdomain( NG_SLUG, false, dirname( __FILE__ ) . '/languages' );
 
         /**
          * @var array Hold requirement errors
@@ -59,7 +63,7 @@ if( ! function_exists( 'odwpng_check_requirements' ) ) :
         if( ! empty( $requirements['php']['version'] ) ) {
             if( version_compare( phpversion(), $requirements['php']['version'], '<' ) ) {
                 $errors[] = sprintf(
-                        __( 'PHP nesplňuje nároky pluginu na minimální verzi (vyžadována nejméně <b>%s</b>)!', $slug ),
+                        __( 'PHP nesplňuje nároky pluginu na minimální verzi (vyžadována nejméně <b>%s</b>)!', NG_SLUG ),
                         $requirements['php']['version']
                 );
             }
@@ -70,7 +74,7 @@ if( ! function_exists( 'odwpng_check_requirements' ) ) :
             foreach( $requirements['php']['extensions'] as $req_ext ) {
                 if( ! extension_loaded( $req_ext ) ) {
                     $errors[] = sprintf(
-                            __( 'Je vyžadováno rozšíření PHP <b>%s</b>, to ale není nainstalováno!', $slug ),
+                            __( 'Je vyžadováno rozšíření PHP <b>%s</b>, to ale není nainstalováno!', NG_SLUG ),
                             $req_ext
                     );
                 }
@@ -81,7 +85,7 @@ if( ! function_exists( 'odwpng_check_requirements' ) ) :
         if( ! empty( $requirements['wp']['version'] ) ) {
             if( version_compare( $wp_version, $requirements['wp']['version'], '<' ) ) {
                 $errors[] = sprintf(
-                        __( 'Plugin vyžaduje vyšší verzi platformy <b>WordPress</b> (minimálně <b>%s</b>)!', $slug ),
+                        __( 'Plugin vyžaduje vyšší verzi platformy <b>WordPress</b> (minimálně <b>%s</b>)!', NG_SLUG ),
                         $requirements['wp']['version']
                 );
             }
@@ -151,13 +155,14 @@ if( count( $odwpng_errs ) > 0 ) {
 
     // In administration print errors
     if( is_admin() ) {
-        $err_head = '<b>Generátor oznámení</b>: ';
+        $err_head = __( '<b>Generátor oznámení</b>: ', NG_SLUG );
         foreach( $odwpng_errs as $err ) {
             printf( '<div class="error"><p>%s</p></div>', $err_head . $err );
         }
     }
 } else {
     // Requirements are met so initialize the plugin.
-    include( dirname( __FILE__ ) . '/src/Notices_Generator_Plugin.php' );
+    include( NG_PATH . 'src/NG_Screen_Prototype.php' );
+    include( NG_PATH . 'src/Notices_Generator_Plugin.php' );
     Notices_Generator_Plugin::initialize();
 }

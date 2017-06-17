@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<p class="description"><?php _e( 'Níže je tabulka s existujícími smutečními verši - můžete je upravovat, mazat nebo přidat nové.', Notices_Generator_Plugin::SLUG ) ?></p>
+<p class="description"><?php _e( 'Níže je tabulka s existujícími smutečními verši - můžete je upravovat, mazat nebo přidat nové.', NG_SLUG ) ?></p>
 <div>
     <?php
         $idx = 1;
@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     <p id="verse-<?php echo $key ?>" class="odwpng-settings_verses--row">
         <code><?php echo ( $key < 10 ) ? '&nbsp;' . $key : $key ?>.</code>
         <input class="regular-text" name="odwpng_settings[verses][<?php echo $key ?>]" value="<?php echo $verse ?>" type="text">
-        <button class="button"><?php _e( 'Odstranit', Notices_Generator_Plugin::SLUG ) ?></button>
+        <button class="button"><?php _e( 'Odstranit', NG_SLUG ) ?></button>
     </p>
     <?php $idx++; endforeach ?>
 </div>

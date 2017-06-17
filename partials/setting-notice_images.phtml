@@ -16,18 +16,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<p class="description"><?php _e( 'Níže jsou zobrazeny aktuálně nastavené okraje pro oznámení. Jednotlivé okraje můžete vymazat nebo také můžete nahrát nový.', Notices_Generator_Plugin::SLUG ) ?></p>
+<p class="description"><?php _e( 'Níže jsou zobrazeny aktuálně nastavené okraje pro oznámení. Jednotlivé okraje můžete vymazat nebo také můžete nahrát nový.', NG_SLUG ) ?></p>
 <div class="odwpng-setting_images">
     <?php foreach( $images as $key => $image ) : ?>
     <div class="odwpng-setting_image">
         <input type="hidden" name="odwpng_settings[notice_images][<?php echo $key ?>]" value="<?php echo $image ?>">
         <img src="<?php echo $image ?>" class="odwpng-setting_image--img" title="<?php echo $image ?>">
-        <span class="dashicons dashicons-no odwpng-setting_image--img_btn" title="<?php _e( 'Smazat obrázek', Notices_Generator_Plugin::SLUG ) ?>"></span>
+        <span class="dashicons dashicons-no odwpng-setting_image--img_btn" title="<?php _e( 'Smazat obrázek', NG_SLUG ) ?>"></span>
     </div>
     <?php endforeach ?>
     <div style="clear: both;"></div>
 </div>
 <label for="odwpng_settings_image_new">
-    <span><?php _e( 'Nahrajte nový obrázek: ', Notices_Generator_Plugin::SLUG ) ?></span>
-    <input type="file" id="odwpng_settings_image_new" name="odwpng_settings_image_new" value="<?php _e( 'Nahrát obrázek', Notices_Generator_Plugin::SLUG ) ?>">
+    <span><?php _e( 'Nahrajte nový obrázek: ', NG_SLUG ) ?></span>
+    <input type="file" id="odwpng_settings_image_new" name="odwpng_settings_image_new" value="<?php _e( 'Nahrát obrázek', NG_SLUG ) ?>">
 </label>
