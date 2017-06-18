@@ -41,6 +41,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 defined( 'NG_SLUG' ) || define( 'NG_SLUG', 'odwpng' );
 defined( 'NG_NAME' ) || define( 'NG_NAME', 'odwp-notices_generator' );
 defined( 'NG_PATH' ) || define( 'NG_PATH', dirname( __FILE__ ) . '/' );
+defined( 'NG_FILE' ) || define( 'NG_FILE', __FILE__ );
 
 if( ! function_exists( 'odwpng_check_requirements' ) ) :
     /**

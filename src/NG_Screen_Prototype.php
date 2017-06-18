@@ -6,10 +6,7 @@
  * @package odwp-notices_generator
  */
 
-/**
- * @package odwp-devhelper
- */
-if( !class_exists('NG_Screen_Prototype')):
+if( ! class_exists( 'NG_Screen_Prototype' ) ):
 
 /**
  * @since 1.0

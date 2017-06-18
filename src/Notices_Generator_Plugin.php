@@ -230,13 +230,11 @@ class Notices_Generator_Plugin {
     }
 
     /**
-     * Hook for "admin_init" action.
+     * Initialize settings using <b>WordPress Settings API</b>.
+     * @link https://developer.wordpress.org/plugins/settings/settings-api/
      * @return void
      */
-    public static function admin_init() {
-        register_setting( NG_SLUG, self::SETTINGS_KEY );
-
-        $options = self::get_options();
+    protected static function init_settings() {
 
         $section1 = self::SETTINGS_KEY . '_section_1';
         add_settings_section(
@@ -293,17 +291,46 @@ class Notices_Generator_Plugin {
                 NG_SLUG,
                 $section2
         );
+    }
+
+    /**
+     * Hook for "admin_init" action.
+     * @return void
+     */
+    public static function admin_init() {
+        register_setting( NG_SLUG, self::SETTINGS_KEY );
+
+        // Initialize options and settings page
+        $options = self::get_options();
+        self::init_settings();
 
         // Save screen options on the options page
-        add_filter( 'set-screen-option', [__CLASS__, 'set_screen_option'], 10, 3 );
+        //add_filter( 'set-screen-option', [__CLASS__, 'set_screen_option'], 10, 3 );
     }
+
+    /**
+     * @var array $admin_screens Array with admin screens.
+     */
+    public static $admin_screens = [];
 
     /**
      * Hook for "admin_menu" action.
      * @return void
      */
     public static function admin_menu() {
-        Notices_Generator_Plugin::$options_page_hook = add_options_page(
+        include( NG_PATH . 'src/NG_Screen_Prototype.php' );
+        include( NG_PATH . 'src/NG_Options_Screen.php' );
+
+        /**
+         * @var NG_Options_Screen $options_screen
+         */
+        $options_screen = new NG_Options_Screen();
+        self::$admin_screens[] = $options_screen;
+
+        // Call action for `admin_menu` hook on all screens.
+        self::screens_call_method( 'admin_menu' );
+
+        /*Notices_Generator_Plugin::$options_page_hook = add_options_page(
                 __( 'Nastavení pro plugin Smuteční oznámení', NG_SLUG ),
                 __( 'Smuteční oznámení', NG_SLUG ),
                 'manage_options',
@@ -314,7 +341,7 @@ class Notices_Generator_Plugin {
         /**
          * @param string $settings
          * @param \WP_Screen $screen
-         */
+         * /
         add_filter( 'screen_settings', function( $settings, \WP_Screen $screen ) {
             if( $screen->base !== Notices_Generator_Plugin::$options_page_hook ) {
                 return $settings;
@@ -331,7 +358,7 @@ class Notices_Generator_Plugin {
                     get_submit_button( __( 'Ulož', NG_SLUG ), 'secondary', 'submit-button', false ),
                     $display_style
             );
-        }, 10, 2 );
+        }, 10, 2 );*/
     }
 
     /**
@@ -348,21 +375,11 @@ class Notices_Generator_Plugin {
      * @return void
      */
     public static function admin_enqueue_scripts( $hook ) {
-        wp_enqueue_script( NG_SLUG, plugins_url( 'js/admin.js', NG_PATH ), ['jquery'] );
+        wp_enqueue_script( NG_SLUG, plugins_url( 'js/admin.js', NG_FILE ), ['jquery'] );
         wp_localize_script( NG_SLUG, 'odwpng', [
             //...
         ] );
-        wp_enqueue_style( NG_SLUG, plugins_url( 'css/admin.css', NG_PATH ) );
-    }
-
-    /**
-     * Renders plugin's options page.
-     * @return void
-     */
-    public static function admin_options_page() {
-        ob_start( function() {} );
-        include( NG_PATH . 'partials/settings-page.phtml');
-        echo ob_get_flush();
+        wp_enqueue_style( NG_SLUG, plugins_url( 'css/admin.css', NG_FILE ) );
     }
 
     /**
@@ -378,11 +395,11 @@ class Notices_Generator_Plugin {
      * @return void
      */
     public static function enqueue_scripts() {
-        wp_enqueue_script( NG_SLUG, plugins_url( 'js/public.js', NG_PATH ), ['jquery'] );
+        wp_enqueue_script( NG_SLUG, plugins_url( 'js/public.js', NG_FILE ), ['jquery'] );
         wp_localize_script( NG_SLUG, 'odwpng', [
             //...
         ] );
-        wp_enqueue_style( NG_SLUG, plugins_url( 'css/public.css', NG_PATH ) );
+        wp_enqueue_style( NG_SLUG, plugins_url( 'css/public.css', NG_FILE ) );
     }
 
     /**
@@ -590,6 +607,27 @@ class Notices_Generator_Plugin {
         ];
 
         return apply_filters( 'odwpng_default_verses', $verses );
+    }
+
+    /**
+     * On all screens call method with given name.
+     *
+     * Used for calling hook's actions of the existing screens.
+     * See {@see Notices_Generator_Plugin::admin_init} for an example how is used.
+     *
+     * If method doesn't exist in the screen object it means that screen
+     * do not provide action for the hook.
+     *
+     * @access private
+     * @param  string  $method
+     * @return void
+     */
+    private static function screens_call_method( $method ) {
+        foreach ( self::$admin_screens as $slug => $screen ) {
+            if ( method_exists( $screen, $method ) ) {
+                    call_user_func( [ $screen, $method ] );
+            }
+        }
     }
 } // End of Notices_Generator_Plugin
 
