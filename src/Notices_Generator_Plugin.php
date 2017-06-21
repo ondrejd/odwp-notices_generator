@@ -140,7 +140,7 @@ class Notices_Generator_Plugin {
         add_action( 'wp_enqueue_scripts', [__CLASS__, 'enqueue_scripts'] );
         add_action( 'admin_enqueue_scripts', [__CLASS__, 'admin_enqueue_scripts'] );
 
-        add_shortcode( 'notice_designer', [__CLASS__, 'shortcode_notice_designer_render'] );
+        add_shortcode( 'notice_designer', [__CLASS__, 'render_shortcode'] );
     }
 
     /**
@@ -148,7 +148,7 @@ class Notices_Generator_Plugin {
      * @param array $attributes
      * @return string
      */
-    public static function shortcode_notice_designer_render( $attributes ) {
+    public static function render_shortcode( $attributes ) {
         $attrs = shortcode_atts( [
             // Notice ID to edit, if is set than we edit notice not creating new one.
             'notice_id' => 0,
@@ -157,9 +157,9 @@ class Notices_Generator_Plugin {
         ob_start( function() {} );
 
         // Get default variables
-        $borders = self::get_notice_borders();
-        $images = self::get_notice_images();
-        $verses = self::get_verses();
+        // XXX $borders = self::get_notice_borders();
+        $notice_images = self::get_notice_images();
+        $notice_verses = self::get_verses();
         
         include( NG_PATH . 'partials/shortcode-notices_generator.phtml' );
         $html = ob_get_flush();
@@ -553,16 +553,16 @@ class Notices_Generator_Plugin {
      */
     protected static function get_default_notice_images() {
         $images = [
-            1  => plugins_url( 'img/notice-img01.jpg', NG_PATH ),
-            2  => plugins_url( 'img/notice-img02.jpg', NG_PATH ),
-            3  => plugins_url( 'img/notice-img03.jpg', NG_PATH ),
-            4  => plugins_url( 'img/notice-img04.jpg', NG_PATH ),
-            5  => plugins_url( 'img/notice-img05.jpg', NG_PATH ),
-            6  => plugins_url( 'img/notice-img06.jpg', NG_PATH ),
-            7  => plugins_url( 'img/notice-img07.jpg', NG_PATH ),
-            8  => plugins_url( 'img/notice-img08.jpg', NG_PATH ),
-            9  => plugins_url( 'img/notice-img09.jpg', NG_PATH ),
-            10 => plugins_url( 'img/notice-img10.jpg', NG_PATH ),
+            1  => plugins_url( 'img/notice-img01.jpg', NG_FILE ),
+            2  => plugins_url( 'img/notice-img02.jpg', NG_FILE ),
+            3  => plugins_url( 'img/notice-img03.jpg', NG_FILE ),
+            4  => plugins_url( 'img/notice-img04.jpg', NG_FILE ),
+            5  => plugins_url( 'img/notice-img05.jpg', NG_FILE ),
+            6  => plugins_url( 'img/notice-img06.jpg', NG_FILE ),
+            7  => plugins_url( 'img/notice-img07.jpg', NG_FILE ),
+            8  => plugins_url( 'img/notice-img08.jpg', NG_FILE ),
+            9  => plugins_url( 'img/notice-img09.jpg', NG_FILE ),
+            10 => plugins_url( 'img/notice-img10.jpg', NG_FILE ),
         ];
 
         return apply_filters( 'odwpng_default_notice_images', $images );
@@ -574,10 +574,10 @@ class Notices_Generator_Plugin {
      */
     protected static function get_default_notice_borders() {
         $borders = [
-            1  => plugins_url( 'img/notice-border01.jpg', NG_PATH ),
-            2  => plugins_url( 'img/notice-border02.jpg', NG_PATH ),
-            3  => plugins_url( 'img/notice-border03.jpg', NG_PATH ),
-            4  => plugins_url( 'img/notice-border04.jpg', NG_PATH ),
+            1  => plugins_url( 'img/notice-border01.jpg', NG_FILE ),
+            2  => plugins_url( 'img/notice-border02.jpg', NG_FILE ),
+            3  => plugins_url( 'img/notice-border03.jpg', NG_FILE ),
+            4  => plugins_url( 'img/notice-border04.jpg', NG_FILE ),
         ];
 
         return apply_filters( 'odwpng_default_notice_borders', $borders );

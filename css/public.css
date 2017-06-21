@@ -8,8 +8,19 @@
 .odwpng-todo { color: #f30; font-size: 14px; font-weight: bold; margin: 0 0 0 0; }
 .odwpng-todo code { background-color: #f30; color: #fff; font-size: 14px; font-weight: normal; padding: 0px 3px 0px 3px; }
 
+html {}
+body {
+    font-family: sans-serif;
+}
+
 /* Generator oznameni */
-.notices-generator {}
+.notices-generator {
+    margin: 1% auto 1% auto;
+    width: 98%;
+}
+
+.notices-generator > form {}
+.notices-generator > form .notices-generator--cont {}
 
 /* Obecne styly pro formular s generatorem */
 
@@ -22,6 +33,13 @@
 }
 .notices-generator form fieldset legend {
     font-weight: bold;
+    padding: 0px 0px 5px 0px;
+}
+
+/* Links (from <span>s) */
+.span-link {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 /* Inline editor */
@@ -36,12 +54,40 @@
     text-align: center;
 }
 
+/* Tlacitka */
+.notices-generator .button {
+    background-color: #000;
+    border: 1px solid #000;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px 10px 5px 10px;
+    text-align: center;
+    min-width: 90px;
+}
+.notices-generator .button:hover {
+    text-decoration: underline;
+}
+.notices-generator .button-primary {
+    font-weight: bold;
+}
+.notices-generator .button-secondary {}
+.notices-generator .button-cancel {}
+.notices-generator .button-disabled {
+    cursor: default;
+    opacity: 0.25;
+}
+.notices-generator .button-disabled:hover {
+    text-decoration: none;
+}
+
 /*
  * Popisek
  */
 .notices-generator form fieldset .description {
     font-size: 90%;
     margin-bottom: 0px;
+    margin-top: 1px;
 }
 
 /*
@@ -54,33 +100,43 @@
 }
 .notices-generator .notice-image--inner {
     border: 2px solid #000;
-    height: 180px;
+    height: 200px;
+    text-align: center;
     width: 100%;
 }
+.notices-generator .notice-image--inner img {
+    cursor: pointer;
+    height: 180px;
+    margin: 10px 0px 10px 0px;
+}
 .notices-generator .notice-image--desc {}
+.notices-generator .notice-images-dlg-link {}
 
 /*
  * Vers
  */
 .notices-generator .notice-verse {
     float: left;
-    padding: 0 0 0 0;
+    padding: 0 0 0 2%;
     width: 48%;
 }
-.notices-generator .notice-verse--inner { height: 120px; }
-.notices-generator #notice-verse-editor {}
-.notices-generator .notice-verse--desc {}
-.notices-generator .notice-verses-dlg-link {
-    cursor: pointer;
-    text-decoration: underline;
+.notices-generator .notice-verse--inner {
+    height: 200px;
+    padding: 0 0 0 0 !important;
 }
+.notices-generator #notice-verse-editor {
+    height: 180px;
+    margin: 10px 0px 10px 0px;
+}
+.notices-generator .notice-verse--desc {}
+.notices-generator .notice-verses-dlg-link {}
 
 /*
  * Text oznameni
  */
 .notices-generator .notice-text {
     padding: 0 0 0 0;
-    width: 100%;
+    width: 98%;
 }
 .notices-generator .notice-text--inner { height: 100px; }
 .notices-generator #notice-text-editor {}
@@ -91,7 +147,7 @@
  */
 .notices-generator .notice-deceased {
     padding: 0 0 0 0;
-    width: 100%;
+    width: 98%;
 }
 .notices-generator .notice-deceased--inner { height: 60px; }
 .notices-generator #notice-deceased-editor {
@@ -101,11 +157,20 @@
 .notices-generator .notice-deceased--desc { display: none; }
 
 /*
+ * Fotografie zesnuleho
+ */
+.notices-generator .notice-photo {
+    padding: 0 0 0 0;
+    width: 98%;
+}
+.notices-generator .notice-photo--inner { height: 180px; }
+
+/*
  * Datum umrti
  */
 .notices-generator .notice-death_date {
     padding: 0 0 0 0;
-    width: 100%;
+    width: 98%;
 }
 .notices-generator .notice-death_date--inner { height: 40px; }
 .notices-generator #notice-death_date-editor {}
@@ -116,7 +181,7 @@
  */
 .notices-generator .notice-location {
     padding: 0 0 0 0;
-    width: 100%;
+    width: 98%;
 }
 .notices-generator .notice-location--inner { height: 90px; }
 .notices-generator #notice-location-editor {}
@@ -127,7 +192,7 @@
  */
 .notices-generator .notice-photo {
     padding: 0 0 0 0;
-    width: 100%;
+    width: 98%;
 }
 .notices-generator .notice-photo--inner {}
 .notices-generator .notice-photo--inner img {}
@@ -139,7 +204,7 @@
  */
 .notices-generator .notice-survivors_text {
     padding: 0 0 0 0;
-    width: 100%;
+    width: 98%;
 }
 .notices-generator .notice-survivors_text--inner {}
 .notices-generator .notice-survivors_text--desc { display: none; }
@@ -149,7 +214,7 @@
  */
 .notices-generator .notice-survivors {
     padding: 0 0 0 0;
-    width: 100%;
+    width: 98%;
 }
 .notices-generator .notice-survivors--form {}
 .notices-generator .notice-survivors--form label {
@@ -171,7 +236,7 @@
  */
 .notices-generator .notice-thanks {
     padding: 0 0 0 0;
-    width: 100%;
+    width: 98%;
 }
 .notices-generator .notice-thanks--inner { height: 70px; }
 .notices-generator #notice-thanks-editor {}
@@ -182,7 +247,7 @@
  */
 .notices-generator .notice-address {
     padding: 0 0 0 0;
-    width: 100%;
+    width: 98%;
 }
 .notices-generator .notice-address--inner { height: 90px; }
 .notices-generator #notice-address-editor {}
@@ -195,14 +260,14 @@
 
 /* Obal dialogu */
 .dlg-container {
-    background-color: #ccc;
-    border: 3px solid #ccc;
+    background-color: #000;
+    border: 3px solid #000;
     border-radius: 5px 5px 5px 5px;
     left: 50%;
     overflow: no-display;
     padding: 0 0 0 0;
     position: absolute;
-    top: 10%;
+    top: 50%;
     transform: translateX(-50%) translateY(-50%);
     width: 60%;
     max-width: 800px;
@@ -210,13 +275,17 @@
 }
 /* Hlavicka dialogu */
 .dlg-container .dlg-header {
-    background-color: #ccc;
-    height: 75px;
-    padding: 25px 0 0 0;
+    background-color: #000;
+    height: 3em;
+    padding: 1em 0 0 0;
+    text-align: center;
     width: 100%;
 }
-.dlg-container .dlg-header > * {
-    margin: 0 0 0 30px;
+.dlg-container .dlg-header > h3 {
+    color: #fff;
+    font-size: 1em;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
 }
 /* Telo dialogu */
 .dlg-container .dlg-body {
@@ -229,17 +298,46 @@
 }
 /* Paticka dialogu */
 .dlg-container .dlg-footer {
-    background-color: #ccc;
-    height: 75px;
-    padding: 10px 0 0 0;
+    background-color: #fff;
+    height: 3em;
+    padding: 1em 0 0 0;
+    text-align: right;
     width: 100%;
 }
-.dlg-container .dlg-footer button {
-    margin: 0 0 0 30px;
+.dlg-container .dlg-footer .button-cancel {
+    margin: 0 1em 0 0;
 }
 
 /*
- * Dialog s projevy soustrasti.
+ * Dialog s obrazky.
+ */
+#notice-images-dlg {
+    display: none;
+}
+#notice-images-dlg .images-list {
+    list-style: none;
+}
+#notice-images-dlg .images-list .images-item {
+    border: 5px solid #fff;
+    display: block;
+    float: left;
+    height: 210px;
+}
+#notice-images-dlg .images-list .images-item .images-item--cont {
+    border: 5px solid #ccc;
+    display: block;
+    padding: 10px;
+}
+#notice-images-dlg .images-list .images-item .images-item--cont:hover {
+    border: 5px solid #666;
+}
+#notice-images-dlg .images-list .images-item .images-item--cont img {
+    cursor: pointer;
+    height: 180px;
+}
+
+/*
+ * Dialog s versi.
  */
 #notice-verses-dlg {
     display: none;
@@ -257,3 +355,46 @@
 #notice-verses-dlg .verses-list .verses-item:hover {
     background-color: white;
 }
+
+/*
+ * Dialog s ohranicenim
+ */
+#notice-borders-dlg {
+    display: none;
+}
+#notice-borders-dlg .borders-list {
+    list-style: none;
+}
+#notice-borders-dlg .borders-list .borders-item {
+    cursor: pointer;
+    display: block;
+    float: left;
+    height: 4em;
+    width: 4em;
+}
+#notice-borders-dlg .borders-list .borders-item:hover {
+    background-color: #ccc;
+}
+
+/*
+ * Jednotlive okraje
+ */
+.border {
+    border-color: #000;
+    border-width: 0.5em;
+    margin: 1em;
+    padding: 1em;
+}
+.border.border-01 {
+    border-style: solid;
+}
+.border.border-02 {
+    border-style: double;
+}
+.border.border-03 {
+    border-style: groove;
+}
+.border.border-04 {
+    border-style: dashed;
+}
+
