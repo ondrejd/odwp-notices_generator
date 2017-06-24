@@ -236,7 +236,7 @@ class NG_Screen_Prototype {
         $templates = $this->get_source_templates();
 
         ob_start();
-        include( NG_PATH . 'partials/screen_options-wizard.phtml' );
+        include( NG_PATH . 'partials/screen-plugin_options.phtml' );
         $output = ob_get_clean();
 
         /**
