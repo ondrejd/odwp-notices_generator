@@ -19,7 +19,7 @@ class NG_Options_Screen extends NG_Screen_Prototype {
      */
     public function __construct( \WP_Screen $screen = null ) {
         // Main properties
-        $this->slug = 'plugin_options';
+        $this->slug = NG_SLUG . '-plugin_options';
         $this->menu_title = __( 'Smuteční oznámení', NG_SLUG );
         $this->page_title = __( 'Nastavení pro plugin <em>Smuteční oznámení</em>', NG_SLUG );
 
