@@ -122,7 +122,7 @@ if( ! function_exists( 'odwpng_deactivate_raw' ) ) :
         $active_plugins = get_option( 'active_plugins' );
         $out = [];
         foreach( $active_plugins as $key => $val ) {
-            if( $val != NG_NAME . '/' NG_NAME . '.php' ) {
+            if( $val != NG_NAME . '/' . NG_NAME . '.php' ) {
                 $out[$key] = $val;
             }
         }
