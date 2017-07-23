@@ -5,10 +5,12 @@
  * Description: Rozšíření pro generování pohřebních oznámení.
  * Version: 1.0.0
  * Author: Ondřej Doněk
- * Author URI:
+ * Author URI: https://ondrejd.com/
  * License: GPLv3
  * Requires at least: 4.7
  * Tested up to: 4.7.5
+ * Tags: custom post type,notices generator,ecommerce
+ * Donate link: https://www.paypal.me/ondrejd
  *
  * Text Domain: odwp-notices_generator
  * Domain Path: /languages/
@@ -17,6 +19,7 @@
  * @link https://github.com/ondrejd/odwp-notices_generator for the canonical source repository
  * @license https://www.gnu.org/licenses/gpl-3.0.en.html GNU General Public License 3.0
  * @package odwp-notices_generator
+ * Donate link: https://www.paypal.me/ondrejd
  */
 
 /**
@@ -42,6 +45,7 @@ defined( 'NG_SLUG' ) || define( 'NG_SLUG', 'odwpng' );
 defined( 'NG_NAME' ) || define( 'NG_NAME', 'odwp-notices_generator' );
 defined( 'NG_PATH' ) || define( 'NG_PATH', dirname( __FILE__ ) . '/' );
 defined( 'NG_FILE' ) || define( 'NG_FILE', __FILE__ );
+defined( 'NG_LOG' )  || define( 'NG_LOG', WP_CONTENT_DIR . '/debug.log' );
 
 if( ! function_exists( 'odwpng_check_requirements' ) ) :
     /**
@@ -98,7 +102,7 @@ if( ! function_exists( 'odwpng_check_requirements' ) ) :
             foreach( $requirements['wp']['plugins'] as $req_plugin ) {
                 if( ! in_array( $req_plugin, $active_plugins ) ) {
                     $errors[] = sprintf(
-                            __( 'Je vyžadován plugin <b>%s</b>, ten ale není nainstalován!', $slug ),
+                            __( 'Je vyžadován plugin <b>%s</b>, ten ale není nainstalován!', NG_SLUG ),
                             $req_plugin
                     );
                 }
@@ -118,7 +122,7 @@ if( ! function_exists( 'odwpng_deactivate_raw' ) ) :
         $active_plugins = get_option( 'active_plugins' );
         $out = [];
         foreach( $active_plugins as $key => $val ) {
-            if( $val != 'odwp-notices_generator/odwp-notices_generator.php' ) {
+            if( $val != NG_NAME . '/' NG_NAME . '.php' ) {
                 $out[$key] = $val;
             }
         }
@@ -149,6 +153,42 @@ $odwpng_errs = odwpng_check_requirements( [
     ],
 ] );
 
+if( ! function_exists( 'odwpng_error_log' ) ) :
+    /**
+     * @internal Write message to the `wp-content/debug.log` file.
+     * @param string $message
+     * @param integer $message_type (Optional.)
+     * @param string $destination (Optional.)
+     * @param string $extra_headers (Optional.)
+     * @return void
+     * @since 1.0.0
+     */
+    function odwpng_error_log( string $message, int $message_type = 0, string $destination = null, string $extra_headers = '' ) {
+        if( ! file_exists( DL_LOG ) || ! is_writable( DL_LOG ) ) {
+            return;
+        }
+
+        $record = '[' . date( 'd-M-Y H:i:s', time() ) . ' UTC] ' . $message;
+        file_put_contents( DL_LOG, PHP_EOL . $record, FILE_APPEND );
+    }
+endif;
+
+if( ! function_exists( 'odwpng_write_log' ) ) :
+    /**
+     * Write record to the `wp-content/debug.log` file.
+     * @param mixed $log
+     * @return void
+     * @since 1.0.0
+     */
+    function odwpng_write_log( $log ) {
+        if( is_array( $log ) || is_object( $log ) ) {
+            odwpng_error_log( print_r( $log, true ) );
+        } else {
+            odwpng_error_log( $log );
+        }
+    }
+endif;
+
 // Check if requirements are met or not
 if( count( $odwpng_errs ) > 0 ) {
     // Requirements are not met
@@ -164,6 +204,6 @@ if( count( $odwpng_errs ) > 0 ) {
 } else {
     // Requirements are met so initialize the plugin.
     include( NG_PATH . 'src/NG_Screen_Prototype.php' );
-    include( NG_PATH . 'src/Notices_Generator_Plugin.php' );
+    include( NG_PATH . 'src/NG_Plugin.php' );
     Notices_Generator_Plugin::initialize();
 }
