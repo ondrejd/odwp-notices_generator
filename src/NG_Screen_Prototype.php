@@ -7,13 +7,17 @@
  * @since 1.0.0
  */
 
+if( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 if( ! class_exists( 'NG_Screen_Prototype' ) ):
 
 /**
  * Prototype class for administration screens.
  * @since 1.0.0
  */
-class NG_Screen_Prototype {
+abstract class NG_Screen_Prototype {
     /**
      * @var string $slug
      * @since 1.0.0

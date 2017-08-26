@@ -323,8 +323,8 @@ class NG_Plugin {
      * @since 1.0.0
      */
     protected static function init_screens() {
-        include( DL_PATH . 'src/NG_Screen_Prototype.php' );
-        include( DL_PATH . 'src/NG_Options_Screen.php' );
+        include( NG_PATH . 'src/NG_Screen_Prototype.php' );
+        include( NG_PATH . 'src/NG_Options_Screen.php' );
 
         /**
          * @var NG_Options_Screen $options_screen
@@ -339,14 +339,14 @@ class NG_Plugin {
      * @since 1.0.0
      */
     public static function admin_init() {
-        register_setting( DL_SLUG, self::SETTINGS_KEY );
+        register_setting( NG_SLUG, self::SETTINGS_KEY );
 
         self::check_environment();
         self::init_settings();
         self::screens_call_method( 'admin_init' );
 
         // Initialize dashboard widgets
-        //include( DL_PATH . 'src/NG_Dashboard_Widget.php' );
+        //include( NG_PATH . 'src/NG_Dashboard_Widget.php' );
         //add_action( 'wp_dashboard_setup', ['NG_Dashboard_Widget', 'init'] );
     }
 
@@ -378,11 +378,11 @@ class NG_Plugin {
      * @since 1.0.0
      */
     public static function admin_enqueue_scripts( $hook ) {
-        wp_enqueue_script( DL_SLUG, plugins_url( 'js/admin.js', DL_FILE ), ['jquery'] );
-        wp_localize_script( DL_SLUG, 'odwpng', [
+        wp_enqueue_script( NG_SLUG, plugins_url( 'js/admin.js', NG_FILE ), ['jquery'] );
+        wp_localize_script( NG_SLUG, 'odwpng', [
             //...
         ] );
-        wp_enqueue_style( DL_SLUG, plugins_url( 'css/admin.css', DL_FILE ) );
+        wp_enqueue_style( NG_SLUG, plugins_url( 'css/admin.css', NG_FILE ) );
     }
 
     /**
