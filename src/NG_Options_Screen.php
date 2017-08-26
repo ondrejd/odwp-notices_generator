@@ -4,18 +4,21 @@
  * @link https://github.com/ondrejd/odwp-notices_generator for the canonical source repository
  * @license https://www.gnu.org/licenses/gpl-3.0.en.html GNU General Public License 3.0
  * @package odwp-notices_generator
+ * @since 1.0.0
  */
 
 if ( ! class_exists( 'NG_Options_Screen' ) ):
 
 /**
- * @since 0.0.1
+ * Screen with plugin's options.
+ * @since 1.0.0
  */
 class NG_Options_Screen extends NG_Screen_Prototype {
     /**
      * Constructor.
      * @param WP_Screen $screen Optional.
      * @return void
+     * @since 1.0.0
      */
     public function __construct( \WP_Screen $screen = null ) {
         // Main properties
@@ -24,19 +27,14 @@ class NG_Options_Screen extends NG_Screen_Prototype {
         $this->page_title = __( 'Nastavení pro plugin <em>Smuteční oznámení</em>', NG_SLUG );
 
         // Specify help tabs
-        $this->help_tabs[] = array(
-            'id'      => $this->slug . '-help_tab',
-            'title'   => __( 'Tables', NG_SLUG ),
-            'content' => __( '<p style"colof: #f30;"><code>XXX</code> Fill this screen help!<p>', NG_SLUG ),
-        );
+        $this->help_tabs = [];
 
         // Specify help sidebars
-        $this->help_sidebars[] = sprintf(
-            __( '<b>Usefull links</b><p><a href="%1$s" target="blank"><code>WP_List_Table</code></a> on <b>WordPress Codex</b>.</p><p><a href="%2$s" target="blank"><code>WP_List_Table</code></a> on <b>WordPress Code Reference</b>.</a></p><!-- <p><a href="%3$s" target="blank">Link 3</a> is the third link.</p> -->', NG_SLUG ),
-            'http://codex.wordpress.org/Class_Reference/WP_List_Table',
-            'https://developer.wordpress.org/reference/classes/wp_list_table/',
-            '#'
-        );
+        $this->help_sidebars = [];
+
+        // Specify screen options
+        $this->options = [];
+        $this->enable_screen_options = false;
 
         // Finish screen constuction
         parent::__construct( $screen );
@@ -45,6 +43,7 @@ class NG_Options_Screen extends NG_Screen_Prototype {
     /**
      * Action for `admin_menu` hook.
      * @return void
+     * @since 1.0.0
      */
     public function admin_menu() {
         $this->hookname = add_options_page(

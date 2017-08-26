@@ -4,6 +4,8 @@
  * @link https://github.com/ondrejd/odwp-notices_generator for the canonical source repository
  * @license https://www.gnu.org/licenses/gpl-3.0.en.html GNU General Public License 3.0
  * @package odwp-notices_generator
+ * @see NG_Plugin::render_shortcode()
+ * @since 1.0.0
  *
  * @todo Přidat `wpnonce`!
  * @todo Nahradit radio inputy v sekci "Pozůstalí" obrázky (ikonkami)!
@@ -22,6 +24,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div class="notices-generator">
+    <?php if( count( $notice_images ) == 0 ) : ?>
+    <div class="notices-generator--options_error">
+        <p><?php _e( 'Nejsou definované žádné obrázky, okraje či smuteční verše. V případě přetrvávajících problémů kontaktujte <a href="#">administrátora</a>.', NG_SLUG ) ?></p>
+    </div>
+    <?php endif ?>
     <form action="" method="post" novalidate="novalidate">
         <div class="notices-generator--cont border border-01">
             <input id="odwpng-notice_border" name="notice-border" type="hidden" value="border01">

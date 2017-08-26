@@ -4,6 +4,7 @@
  * @link https://github.com/ondrejd/odwp-notices_generator for the canonical source repository
  * @license https://www.gnu.org/licenses/gpl-3.0.en.html GNU General Public License 3.0
  * @package odwp-notices_generator
+ * @since 1.0.0
  *
  * @todo Přidat tlačítko do editoru pro shortcode!
  * @todo Přidat nastavení pluginu (včetně nastavení obrázků, veršů atp. pro editor)
@@ -16,17 +17,16 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-if ( ! class_exists( 'Notices_Generator_Plugin' ) ) :
+if ( ! class_exists( 'NG_Plugin' ) ) :
 
 /**
- * Main class.
- *
- * @author Ondřej Doněk, <ondrejd@gmail.com>
- * @since 1.0
+ * Main plugin's class.
+ * @since 1.0.0
  */
-class Notices_Generator_Plugin {
+class NG_Plugin {
     /**
      * @const string Plugin's version.
+     * @since 1.0.0
      */
     const VERSION = '1.0.0';
 
@@ -51,7 +51,14 @@ class Notices_Generator_Plugin {
     const OPTIONS_SS_FULL = 'full';
 
     /**
+     * @var array $admin_screens Array with admin screens.
+     * @since 1.0.0
+     */
+    public static $admin_screens = [];
+
+    /**
      * @var string
+     * @since 1.0.0
      */
     public static $options_page_hook;
 
@@ -111,10 +118,11 @@ class Notices_Generator_Plugin {
     /**
      * Returns value of option with given key.
      * @param string $key Option's key.
+     * @param mixed $value Option's value.
      * @return mixed Option's value.
      * @throws Exception Whenever option with given key doesn't exist.
      */
-    public static function get_option( $key ) {
+    public static function get_option( $key, $default = null ) {
         $options = self::get_options();
 
         if( ! array_key_exists( $key, $options ) ) {
@@ -122,6 +130,24 @@ class Notices_Generator_Plugin {
         }
 
         return $options[$key];
+    }
+
+    /**
+     * @param string $file (Optional.) Relative path to a file.
+     * @return string Path to the specified file inside plugin's folder or to the folder self.
+     * @since 1.0.0
+     */
+    public static function get_path( $file = null ) {
+        //...
+    }
+
+    /**
+     * @param string $file (Optional.) Relative path to a file.
+     * @return string URL to the specified file inside plugin's folder or to the folder self.
+     * @since 1.0.0
+     */
+    public static function get_url( $file = null ) {
+        //...
     }
 
     /**
@@ -136,53 +162,42 @@ class Notices_Generator_Plugin {
         add_action( 'init', [__CLASS__, 'init'] );
         add_action( 'admin_init', [__CLASS__, 'admin_init'] );
         add_action( 'admin_menu', [__CLASS__, 'admin_menu'] );
+        add_action( 'admin_bar_menu', [__CLASS__, 'admin_menu_bar'], 100 );
         add_action( 'plugins_loaded', [__CLASS__, 'plugins_loaded'] );
         add_action( 'wp_enqueue_scripts', [__CLASS__, 'enqueue_scripts'] );
         add_action( 'admin_enqueue_scripts', [__CLASS__, 'admin_enqueue_scripts'] );
-
-        add_shortcode( 'notice_designer', [__CLASS__, 'render_shortcode'] );
-    }
-
-    /**
-     * Renders notice designer shortcode.
-     * @param array $attributes
-     * @return string
-     */
-    public static function render_shortcode( $attributes ) {
-        $attrs = shortcode_atts( [
-            // Notice ID to edit, if is set than we edit notice not creating new one.
-            'notice_id' => 0,
-        ], $attributes );
-
-        ob_start( function() {} );
-
-        // Get default variables
-        // XXX $borders = self::get_notice_borders();
-        $notice_images = self::get_notice_images();
-        $notice_verses = self::get_verses();
-        
-        include( NG_PATH . 'partials/shortcode-notices_generator.phtml' );
-        $html = ob_get_flush();
-        return apply_filters( 'odwpng-notices_generator', $html );
     }
 
     /**
      * Hook for "init" action.
      * @return void
+     * @since 1.0.0
      */
     public static function init() {
         // Initialize locales
         $path = NG_PATH . 'languages';
         load_plugin_textdomain( NG_SLUG, false, $path );
-        // Load custom post types
-        self::init_cpt();
+
+        // Initialize options
+        $options = self::get_options();
+
+        // Initialize custom post types
+        self::init_custom_post_types();
+
+        // Initialize shortcodes
+        self::init_shortcodes();
+
+        // Initialize admin screens
+        self::init_screens();
+        self::screens_call_method( 'init' );
     }
 
     /**
      * Initialize custom post types.
      * @return void
+     * @since 1.0.0
      */
-    public static function init_cpt() {
+    public static function init_custom_post_types() {
         $labels = [
             'name' => __( 'Oznámení', NG_SLUG ),
             'singular_name' => __( 'Vytvořit oznámení', NG_SLUG ),
@@ -222,20 +237,29 @@ class Notices_Generator_Plugin {
         /**
          * Filter "Notices" post type arguments.
          *
-         * @since 1.0.0
          * @param array $arguments "Notices" post type arguments.
+         * @since 1.0.0
          */
         $args = apply_filters( 'odwng_notices_post_type_arguments', $args );
         register_post_type( 'funeral_notices', $args );
     }
 
     /**
+     * Registers our shortcodes.
+     * @return void
+     * @since 1.0.0
+     */
+    public static function init_shortcodes() {
+        add_shortcode( 'notice_designer', [__CLASS__, 'render_shortcode'] );
+    }
+
+    /**
      * Initialize settings using <b>WordPress Settings API</b>.
      * @link https://developer.wordpress.org/plugins/settings/settings-api/
      * @return void
+     * @since 1.0.0
      */
     protected static function init_settings() {
-
         $section1 = self::SETTINGS_KEY . '_section_1';
         add_settings_section(
                 $section1,
@@ -294,78 +318,56 @@ class Notices_Generator_Plugin {
     }
 
     /**
-     * Hook for "admin_init" action.
+     * Initialize admin screens.
      * @return void
+     * @since 1.0.0
      */
-    public static function admin_init() {
-        register_setting( NG_SLUG, self::SETTINGS_KEY );
-
-        // Initialize options and settings page
-        $options = self::get_options();
-        self::init_settings();
-
-        // Save screen options on the options page
-        //add_filter( 'set-screen-option', [__CLASS__, 'set_screen_option'], 10, 3 );
-    }
-
-    /**
-     * @var array $admin_screens Array with admin screens.
-     */
-    public static $admin_screens = [];
-
-    /**
-     * Hook for "admin_menu" action.
-     * @return void
-     */
-    public static function admin_menu() {
-        include( NG_PATH . 'src/NG_Screen_Prototype.php' );
-        include( NG_PATH . 'src/NG_Options_Screen.php' );
+    protected static function init_screens() {
+        include( DL_PATH . 'src/NG_Screen_Prototype.php' );
+        include( DL_PATH . 'src/NG_Options_Screen.php' );
 
         /**
          * @var NG_Options_Screen $options_screen
          */
         $options_screen = new NG_Options_Screen();
-        self::$admin_screens[] = $options_screen;
-
-        // Call action for `admin_menu` hook on all screens.
-        self::screens_call_method( 'admin_menu' );
-
-        /*Notices_Generator_Plugin::$options_page_hook = add_options_page(
-                __( 'Nastavení pro plugin Smuteční oznámení', NG_SLUG ),
-                __( 'Smuteční oznámení', NG_SLUG ),
-                'manage_options',
-                NG_SLUG . '-options', // Result is "settings_page_odwp-notices_generator-options".
-                [__CLASS__, 'admin_options_page']
-        );
-
-        /**
-         * @param string $settings
-         * @param \WP_Screen $screen
-         * /
-        add_filter( 'screen_settings', function( $settings, \WP_Screen $screen ) {
-            if( $screen->base !== Notices_Generator_Plugin::$options_page_hook ) {
-                return $settings;
-            }
-
-            $display_style = filter_input( INPUT_GET, 'display_style' );
-
-            return sprintf(
-                    '<label for="odwpng-display_style">' . __( 'Styl zobrazení:', NG_SLUG ) . '</label>' .
-                    '<select id="odwpng-display_style" name="display_style">' .
-                        '<option value="' . Notices_Generator_Plugin::OPTIONS_SS_COMPACT . '">' . __( 'Kompaktní', NG_SLUG ) . '</option>' .
-                        '<option value="' . Notices_Generator_Plugin::OPTIONS_SS_FULL . '">' . __( 'Plné', NG_SLUG ) . '</option>' .
-                    '</select>' .
-                    get_submit_button( __( 'Ulož', NG_SLUG ), 'secondary', 'submit-button', false ),
-                    $display_style
-            );
-        }, 10, 2 );*/
+        self::$admin_screens[$options_screen->get_slug()] = $options_screen;
     }
 
     /**
-     * Hook for "set-screen-option" filter.
+     * Hook for "admin_init" action.
      * @return void
+     * @since 1.0.0
      */
-    public static function set_screen_options() {
+    public static function admin_init() {
+        register_setting( DL_SLUG, self::SETTINGS_KEY );
+
+        self::check_environment();
+        self::init_settings();
+        self::screens_call_method( 'admin_init' );
+
+        // Initialize dashboard widgets
+        //include( DL_PATH . 'src/NG_Dashboard_Widget.php' );
+        //add_action( 'wp_dashboard_setup', ['NG_Dashboard_Widget', 'init'] );
+    }
+
+    /**
+     * Hook for "admin_menu" action.
+     * @return void
+     * @since 1.0.0
+     */
+    public static function admin_menu() {
+        // Call action for `admin_menu` hook on all screens.
+        self::screens_call_method( 'admin_menu' );
+    }
+
+    /**
+     * Hook for "admin_menu_bar" action.
+     * @link https://codex.wordpress.org/Class_Reference/WP_Admin_Bar/add_menu
+     * @param \WP_Admin_Bar $bar
+     * @return void
+     * @since 1.0.0
+     */
+    public static function admin_menu_bar( \WP_Admin_Bar $bar ) {
         //...
     }
 
@@ -373,18 +375,29 @@ class Notices_Generator_Plugin {
      * Hook for "admin_enqueue_scripts" action.
      * @param string $hook
      * @return void
+     * @since 1.0.0
      */
     public static function admin_enqueue_scripts( $hook ) {
-        wp_enqueue_script( NG_SLUG, plugins_url( 'js/admin.js', NG_FILE ), ['jquery'] );
-        wp_localize_script( NG_SLUG, 'odwpng', [
+        wp_enqueue_script( DL_SLUG, plugins_url( 'js/admin.js', DL_FILE ), ['jquery'] );
+        wp_localize_script( DL_SLUG, 'odwpng', [
             //...
         ] );
-        wp_enqueue_style( NG_SLUG, plugins_url( 'css/admin.css', NG_FILE ) );
+        wp_enqueue_style( DL_SLUG, plugins_url( 'css/admin.css', DL_FILE ) );
+    }
+
+    /**
+     * Checks environment we're running and prints admin messages if needed.
+     * @return void
+     * @since 1.0.0
+     */
+    public static function check_environment() {
+        //...
     }
 
     /**
      * Hook for "plugins_loaded" action.
      * @return void
+     * @since 1.0.0
      */
     public static function plugins_loaded() {
         //...
@@ -393,6 +406,7 @@ class Notices_Generator_Plugin {
     /**
      * Hook for "wp_enqueue_scripts" action.
      * @return void
+     * @since 1.0.0
      */
     public static function enqueue_scripts() {
         wp_enqueue_script( NG_SLUG, plugins_url( 'js/public.js', NG_FILE ), ['jquery'] );
@@ -405,6 +419,7 @@ class Notices_Generator_Plugin {
     /**
      * @internal Renders the first settings section.
      * @return void
+     * @since 1.0.0
      */
     public static function render_settings_section_1() {
         ob_start( function() {} );
@@ -415,7 +430,7 @@ class Notices_Generator_Plugin {
     /**
      * @internal Renders setting `new_notices_only_logged_users`.
      * @return void
-     *
+     * @since 1.0.0
      * @todo V budoucnu možno i specifikovat pro určité role...
      */
     public static function render_setting_only_logged_users() {
@@ -428,7 +443,7 @@ class Notices_Generator_Plugin {
     /**
      * @internal Renders setting `save_notices_from_unknown_users`.
      * @return void
-     *
+     * @since 1.0.0
      * @todo Udělat jinak - možnosti "Ukládat všechna oznámení", "Ukládat oznámení přihlášených uživatelů", "Neukládat žádná oznámení".
      */
     public static function render_setting_unknown_users() {
@@ -441,6 +456,7 @@ class Notices_Generator_Plugin {
     /**
      * @internal Renders the second settings section.
      * @return void
+     * @since 1.0.0
      */
     public static function render_settings_section_2() {
         ob_start( function() {} );
@@ -451,6 +467,7 @@ class Notices_Generator_Plugin {
     /**
      * @internal Renders setting `notice_borders`.
      * @return void
+     * @since 1.0.0
      */
     public static function render_setting_notice_borders() {
         $borders = self::get_notice_borders();
@@ -462,6 +479,7 @@ class Notices_Generator_Plugin {
     /**
      * @internal Renders setting `notice_images`.
      * @return void
+     * @since 1.0.0
      */
     public static function render_setting_notice_images() {
         $images = self::get_notice_images();
@@ -473,6 +491,7 @@ class Notices_Generator_Plugin {
     /**
      * @internal Renders setting `verses`.
      * @return void
+     * @since 1.0.0
      */
     public static function render_setting_verses() {
         $verses = self::get_verses();
@@ -482,8 +501,40 @@ class Notices_Generator_Plugin {
     }
 
     /**
+     * Renders notice designer shortcode.
+     * @param array $attributes
+     * @return string
+     * @since 1.0.0
+     */
+    public static function render_shortcode( $attributes ) {
+        $attrs = shortcode_atts( [
+            // Notice ID to edit, if is set than we edit notice not creating new one.
+            'notice_id' => 0,
+        ], $attributes );
+
+        ob_start( function() {} );
+
+        // Get default variables
+        // XXX $borders = self::get_notice_borders();
+        $notice_images = self::get_notice_images();
+        $notice_verses = self::get_verses();
+        
+        include( NG_PATH . 'partials/shortcode-notices_generator.phtml' );
+        $html = ob_get_flush();
+
+        /**
+         * Filter for notices generator shortcode.
+         *
+         * @param string $output Rendered HTML.
+         * @since 1.0.0
+         */
+        return apply_filters( 'odwpng-notices_generator', $html );
+    }
+
+    /**
      * @internal Uninstalls the plugin.
      * @return void
+     * @since 1.0.0
      */
     public static function uninstall() {
         if( !defined( 'WP_UNINSTALL_PLUGIN' ) ) {
@@ -498,6 +549,7 @@ class Notices_Generator_Plugin {
      * @param string $msg Error message.
      * @param string $type (Optional.) One of ['info','updated','error'].
      * @return void
+     * @since 1.0.0
      */
     protected static function print_admin_error( $msg, $type = 'info' ) {
         $avail_types = ['error', 'info', 'updated'];
@@ -508,6 +560,7 @@ class Notices_Generator_Plugin {
     /**
      * @internal Returns array with notice images.
      * @return array
+     * @since 1.0.0
      */
     protected static function get_notice_images() {
         $images = self::get_option( 'notice_images' );
@@ -516,12 +569,19 @@ class Notices_Generator_Plugin {
             $images = self::get_default_notice_images();
         }
 
+        /**
+         * Filter for images used in notices generator form.
+         *
+         * @param string $output Rendered HTML.
+         * @since 1.0.0
+         */
         return apply_filters( 'odwpng_notice_images', $images );
     }
 
     /**
      * @internal Returns array with notice borders.
      * @return array
+     * @since 1.0.0
      */
     protected static function get_notice_borders() {
         $borders = self::get_option( 'notice_borders' );
@@ -530,12 +590,19 @@ class Notices_Generator_Plugin {
             $borders = self::get_default_notice_borders();
         }
 
+        /**
+         * Filter for borders used in notices generator form.
+         *
+         * @param string $output Rendered HTML.
+         * @since 1.0.0
+         */
         return apply_filters( 'odwpng_notice_borders', $borders );
     }
 
     /**
      * @internal Returns array with funeral verses.
      * @return array
+     * @since 1.0.0
      */
     protected static function get_verses() {
         $verses  = self::get_option( 'verses' );
@@ -544,12 +611,19 @@ class Notices_Generator_Plugin {
             $verses = self::get_default_verses();
         }
 
+        /**
+         * Filter for verses used in notices generator form.
+         *
+         * @param string $output Rendered HTML.
+         * @since 1.0.0
+         */
         return apply_filters( 'odwpng_verses', $verses );
     }
 
     /**
      * @internal Returns default notice images.
      * @return array
+     * @since 1.0.0
      */
     protected static function get_default_notice_images() {
         $images = [
@@ -565,12 +639,19 @@ class Notices_Generator_Plugin {
             10 => plugins_url( 'img/notice-img10.jpg', NG_FILE ),
         ];
 
+        /**
+         * Filter for default images used in notices generator form.
+         *
+         * @param string $output Rendered HTML.
+         * @since 1.0.0
+         */
         return apply_filters( 'odwpng_default_notice_images', $images );
     }
 
     /**
      * @internal Returns default notice borders.
      * @return array
+     * @since 1.0.0
      */
     protected static function get_default_notice_borders() {
         $borders = [
@@ -580,12 +661,19 @@ class Notices_Generator_Plugin {
             4  => plugins_url( 'img/notice-border04.jpg', NG_FILE ),
         ];
 
+        /**
+         * Filter for default borders used in notices generator form.
+         *
+         * @param string $output Rendered HTML.
+         * @since 1.0.0
+         */
         return apply_filters( 'odwpng_default_notice_borders', $borders );
     }
 
     /**
      * @internal Returns default funeral verses for the generator.
      * @return array
+     * @since 1.0.0
      */
     protected static function get_default_verses() {
         $verses = [
@@ -606,6 +694,12 @@ class Notices_Generator_Plugin {
 
         ];
 
+        /**
+         * Filter for default verses used in notices generator form.
+         *
+         * @param string $output Rendered HTML.
+         * @since 1.0.0
+         */
         return apply_filters( 'odwpng_default_verses', $verses );
     }
 
@@ -613,7 +707,7 @@ class Notices_Generator_Plugin {
      * On all screens call method with given name.
      *
      * Used for calling hook's actions of the existing screens.
-     * See {@see Notices_Generator_Plugin::admin_init} for an example how is used.
+     * See {@see NG_Plugin::admin_init} for an example how is used.
      *
      * If method doesn't exist in the screen object it means that screen
      * do not provide action for the hook.
@@ -621,6 +715,7 @@ class Notices_Generator_Plugin {
      * @access private
      * @param  string  $method
      * @return void
+     * @since 1.0.0
      */
     private static function screens_call_method( $method ) {
         foreach ( self::$admin_screens as $slug => $screen ) {
@@ -629,6 +724,6 @@ class Notices_Generator_Plugin {
             }
         }
     }
-} // End of Notices_Generator_Plugin
+} // End of NG_Plugin
 
 endif;

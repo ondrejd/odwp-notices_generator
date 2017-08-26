@@ -8,7 +8,7 @@
  * Author URI: https://ondrejd.com/
  * License: GPLv3
  * Requires at least: 4.7
- * Tested up to: 4.7.5
+ * Tested up to: 4.8.1
  * Tags: custom post type,notices generator,ecommerce
  * Donate link: https://www.paypal.me/ondrejd
  *
@@ -19,20 +19,22 @@
  * @link https://github.com/ondrejd/odwp-notices_generator for the canonical source repository
  * @license https://www.gnu.org/licenses/gpl-3.0.en.html GNU General Public License 3.0
  * @package odwp-notices_generator
- * Donate link: https://www.paypal.me/ondrejd
+ * @since 1.0.0
  */
 
 /**
- * This file is just a bootstrap. It checks if requirements of plugins are met
- * and accordingly either initializes the plugin or halts the process.
+ * This file is just a bootstrap. It checks if requirements of plugins
+ * are met and accordingly either allow activating the plugin or stops
+ * the activation process.
  *
- * Requirements can be specified for PHP and the WordPress self - version
- * for both, required extensions for PHP and requireds plugins for WP.
+ * Requirements can be specified either for PHP interperter or for
+ * the WordPress self. In both cases you can specify minimal required
+ * version and required extensions/plugins.
  *
  * If you are using copy of original file in your plugin you shoud change
- * prefix "odwpng" and name "odwpng-notices_generator" to your own values.
+ * prefix "odwpng" and name "odwp-notices_generator" to your own values.
  *
- * For setting the requirements go down to line 67 and define array that
+ * To set the requirements go down to line 133 and define array that
  * is used as a parameter for `odwpng_check_requirements` function.
  */
 
@@ -40,24 +42,27 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-// Some widely used constants
+// Some constants
 defined( 'NG_SLUG' ) || define( 'NG_SLUG', 'odwpng' );
 defined( 'NG_NAME' ) || define( 'NG_NAME', 'odwp-notices_generator' );
 defined( 'NG_PATH' ) || define( 'NG_PATH', dirname( __FILE__ ) . '/' );
 defined( 'NG_FILE' ) || define( 'NG_FILE', __FILE__ );
 defined( 'NG_LOG' )  || define( 'NG_LOG', WP_CONTENT_DIR . '/debug.log' );
 
+
 if( ! function_exists( 'odwpng_check_requirements' ) ) :
     /**
      * Checks requirements of our plugin.
+     * @global string $wp_version
      * @param array $requirements
      * @return array
+     * @since 1.0.0
      */
     function odwpng_check_requirements( array $requirements ) {
         global $wp_version;
 
         // Initialize locales
-        load_plugin_textdomain( NG_SLUG, false, dirname( __FILE__ ) . '/languages' );
+        load_plugin_textdomain( NG_SLUG, false, NG_PATH . 'languages' );
 
         /**
          * @var array Hold requirement errors
@@ -113,10 +118,12 @@ if( ! function_exists( 'odwpng_check_requirements' ) ) :
     }
 endif;
 
+
 if( ! function_exists( 'odwpng_deactivate_raw' ) ) :
     /**
-     * Deactivate plugin by the raw way.
+     * Deactivate plugin by the raw way (it updates directly WP options).
      * @return void
+     * @since 1.0.0
      */
     function odwpng_deactivate_raw() {
         $active_plugins = get_option( 'active_plugins' );
@@ -130,28 +137,6 @@ if( ! function_exists( 'odwpng_deactivate_raw' ) ) :
     }
 endif;
 
-/**
- * Errors from the requirements check
- * @var array
- */
-$odwpng_errs = odwpng_check_requirements( [
-    'php' => [
-        // Enter minimum PHP version you needs.
-        'version' => '5.6',
-        // Enter extensions that your plugin needs
-        'extensions' => [
-            //'gd',
-        ],
-    ],
-    'wp' => [
-        // Enter minimum WP version you need
-        'version' => '4.7',
-        // Enter WP plugins that your plugin needs
-        'plugins' => [
-            //'woocommerce/woocommerce.php',
-        ],
-    ],
-] );
 
 if( ! function_exists( 'odwpng_error_log' ) ) :
     /**
@@ -173,6 +158,7 @@ if( ! function_exists( 'odwpng_error_log' ) ) :
     }
 endif;
 
+
 if( ! function_exists( 'odwpng_write_log' ) ) :
     /**
      * Write record to the `wp-content/debug.log` file.
@@ -188,6 +174,47 @@ if( ! function_exists( 'odwpng_write_log' ) ) :
         }
     }
 endif;
+
+
+if( ! function_exists( 'readonly' ) ) :
+    /**
+     * Prints HTML readonly attribute. It's an addition to WP original
+     * functions {@see disabled()} and {@see checked()}.
+     * @param mixed $value
+     * @param mixed $current (Optional.) Defaultly TRUE.
+     * @return string
+     * @since 1.0.0
+     */
+    function readonly( $current, $value = true ) {
+        if( $current == $value ) {
+            echo ' readonly';
+        }
+    }
+endif;
+
+/**
+ * Errors from the requirements check
+ * @var array
+ */
+$odwpng_errs = odwpng_check_requirements( [
+    'php' => [
+        // Enter minimum PHP version you needs
+        'version' => '5.6',
+        // Enter extensions that your plugin needs
+        'extensions' => [
+            //'gd',
+        ],
+    ],
+    'wp' => [
+        // Enter minimum WP version you need
+        'version' => '4.7',
+        // Enter WP plugins that your plugin needs
+        'plugins' => [
+            //'woocommerce/woocommerce.php',
+        ],
+    ],
+] );
+
 
 // Check if requirements are met or not
 if( count( $odwpng_errs ) > 0 ) {
@@ -205,5 +232,5 @@ if( count( $odwpng_errs ) > 0 ) {
     // Requirements are met so initialize the plugin.
     include( NG_PATH . 'src/NG_Screen_Prototype.php' );
     include( NG_PATH . 'src/NG_Plugin.php' );
-    Notices_Generator_Plugin::initialize();
+    NG_Plugin::initialize();
 }
