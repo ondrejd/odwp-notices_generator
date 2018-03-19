@@ -1,0 +1,25 @@
+<?php
+/**
+ * @author Ondřej Doněk <ondrejd@gmail.com>
+ * @link https://github.com/ondrejd/odwp-notices_generator for the canonical source repository
+ * @license https://www.gnu.org/licenses/gpl-3.0.en.html GNU General Public License 3.0
+ * @package odwp-notices_generator
+ * @see NG_Plugin::render_setting_img_type_whitelist()
+ * @since 1.0.0
+ *
+ * Variables passed:
+ * @var array $img_type_whitelist
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+?>
+<label for="odwpng_settings_img_type_whitelist">
+  <?php foreach( $img_type_whitelist as $type_key => $type ) : ?>
+  <input type="checkbox" id="odwpng_settings_img_type_whitelist_<?php echo $type_key ?>" name="odwpng_settings[img_type_whitelist][<?php echo $type_key ?>]" checked disabled>
+  <span><?php printf( 'Typ: <em>%s</em>', $type ) ?></span><br>
+  <?php endforeach ?>
+</label>
+<p class="description"><?php _e( 'Vyberte povolené typy obrázků. Pokud nevyberete žádný budou povolené <b>všechny</b> typy.', NG_SLUG ) ?></p>

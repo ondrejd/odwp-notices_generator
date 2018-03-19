@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 <label for="odwpng_settings_only_logged_users">
-    <input type="checkbox" id="odwpng_settings_only_logged_users" name="odwpng_settings[new_notices_only_logged_users]" <?php checked( $only_logged_users ) ?>>
+    <input type="checkbox" id="odwpng_settings_only_logged_users" name="odwpng_settings[new_notices_only_logged_users]" <?php checked( $only_logged_users ) ?> disabled>
     <?php _e( 'Povolit vytváření oznámení všem uživatelům', NG_SLUG ) ?>
 </label>
 <p class="description"><?php _e( 'Pokud zaškrtnete, tak bude povoleno vytváření oznámení i nepřihlášeným uživatelům?', NG_SLUG ) ?></p>

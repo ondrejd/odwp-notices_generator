@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div class="notices-generator">
-    <?php if( count( $notice_images ) == 0 ) : ?>
+    <?php if( count( $notice_images ) === 0 ) : ?>
     <div class="notices-generator--options_error">
         <p><?php _e( 'Nejsou definované žádné obrázky, okraje či smuteční verše. V případě přetrvávajících problémů kontaktujte <a href="#">administrátora</a>.', NG_SLUG ) ?></p>
     </div>
@@ -36,18 +36,17 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <legend><?php _e( 'Obrázek a verš', NG_SLUG ) ?></legend>
                 <div class="notice-image">
                     <div class="notice-image--inner">
-                        <img id="selected_notice_img" 
-                             src="<?php echo $notice_images[0] ?>"
-                             title="<?php _e( 'Kliknutím na obrázek zobrazíte dialog pro jeho výběr.', NG_SLUG ) ?>">
+                        <?php printf(
+                            '<img id="selected_notice_img" src="%s" title="%s">',
+                            ( isset( $notice_images[0] ) ) ? $notice_images[0] : '',
+                            __( 'Kliknutím na obrázek zobrazíte dialog pro jeho výběr.', NG_SLUG )
+                        ) ?>
                     </div>
                     <p class="description notice-image--desc">
                         <?php printf(
-                                __( 'Vyberte si %sobrázek%s (aktuálně vybraný: %s%s%s).', NG_SLUG ),
-                                '<span class="notice-images-dlg-link span-link">',
-                                '</span>',
-                                '<code id="selected_notice_img_c">',
-                                $notice_images[0],
-                                '</code>'
+                            __( 'Vyberte si %sobrázek%s.', NG_SLUG ),
+                            '<span class="notice-images-dlg-link span-link">',
+                            '</span>'
                         ) ?>
                     </p>
                 </div>
@@ -134,7 +133,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <div class="inline-editor notice-survivors--inner">
                         <p id="notice-survivors-editor" contenteditable="true"><?php _e( "Dcera s rodinou, bratr s rodinou", NG_SLUG ) ?></p>
                     </div>
-                    <p class="description notice-survivors--desc"><?php _e( 'Můžete napsat více jmen - oddělujte je čárkou. Jednotlivá jména pak budou zobrazena na samostatném řádku.', NG_SLUG ) ?></p>
+                    <p class="description notice-survivors--desc"><?php _e( 'Můžete napsat více jmen - oddělujte je čárkou. Jednotlivá jména pak budou zobrazena na samostatném řádku. Do sloupců budou jména případně rozřazena automaticky.', NG_SLUG ) ?></p>
                 </div>
             </fieldset>
             <fieldset id="ngform_sec9">
@@ -156,7 +155,8 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </div>
             </fieldset>
             <p class="buttons">
-                <span id="odwpng-button_print" class="button button-primary"><?php _e( 'Tisk', NG_SLUG ) ?></span>
+                <span id="odwpng-button_print" class="button button-primary"><?php _e( 'Pokračovat', NG_SLUG ) ?></span>
+                <span id="odwpng-button_preview" class="button button-primary"><?php _e( 'Náhled', NG_SLUG ) ?></span>
                 <span id="odwpng-button_borders" class="button button-secondary"><?php _e( 'Vybrat ohraničení', NG_SLUG ) ?></span>
                 <span id="odwpng-button_background" class="button button-secondary button-disabled"><?php _e( 'Vybrat pozadí', NG_SLUG ) ?></span>
             </p>

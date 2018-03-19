@@ -148,7 +148,7 @@ if( ! function_exists( 'odwpng_error_log' ) ) :
      * @return void
      * @since 1.0.0
      */
-    function odwpng_error_log( string $message, int $message_type = 0, string $destination = null, string $extra_headers = '' ) {
+    function odwpng_error_log( $message, $message_type = 0, $destination = null, $extra_headers = '' ) {
         if( ! file_exists( DL_LOG ) || ! is_writable( DL_LOG ) ) {
             return;
         }

@@ -19,7 +19,6 @@ jQuery( document ).ready( function() {
     jQuery( "#notice-images-dlg .images-item--cont" ).click( function( e ) {
         var image = jQuery( this ).find( "img" ).attr( "src" );
         jQuery( "#selected_notice_img" ).attr( "src", image );
-        jQuery( "#selected_notice_img_c" ).text( image );
         hideDlg( "#notice-images-dlg" );
     } );
 

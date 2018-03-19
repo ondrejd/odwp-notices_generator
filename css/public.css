@@ -5,8 +5,12 @@
  * @package odwp-notices_generator
  */
 
+/*
+ XXX REMOVE THIS!
+*/
 .odwpng-todo { color: #f30; font-size: 14px; font-weight: bold; margin: 0 0 0 0; }
 .odwpng-todo code { background-color: #f30; color: #fff; font-size: 14px; font-weight: normal; padding: 0px 3px 0px 3px; }
+/* #@! */
 
 html {}
 body {
@@ -125,8 +129,9 @@ body {
     padding: 0 0 0 0 !important;
 }
 .notices-generator #notice-verse-editor {
-    height: 180px;
-    margin: 10px 0px 10px 0px;
+  height: 180px;
+  margin: 5px 5px 5px 5px;
+  overflow: hidden;
 }
 .notices-generator .notice-verse--desc {}
 .notices-generator .notice-verses-dlg-link {}
@@ -172,7 +177,7 @@ body {
     padding: 0 0 0 0;
     width: 98%;
 }
-.notices-generator .notice-death_date--inner { height: 40px; }
+.notices-generator .notice-death_date--inner { height: 50px; }
 .notices-generator #notice-death_date-editor {}
 .notices-generator .notice-death_date--desc { display: none; }
 
@@ -219,6 +224,7 @@ body {
 .notices-generator .notice-survivors--form {}
 .notices-generator .notice-survivors--form label {
     display: inline-block;
+    font-size: 1rem;
     font-weight: normal;
     padding: 0 0 0 5px;
 }
@@ -227,7 +233,7 @@ body {
     right: -2px;
     top: 2px;
 }
-.notices-generator .notice-survivors--inner { height: 90px; }
+.notices-generator .notice-survivors--inner { height: 120px; }
 .notices-generator #notice-survivors-editor {}
 .notices-generator .notice-survivors--desc {}
 
@@ -238,7 +244,7 @@ body {
     padding: 0 0 0 0;
     width: 98%;
 }
-.notices-generator .notice-thanks--inner { height: 70px; }
+.notices-generator .notice-thanks--inner { height: 90px; }
 .notices-generator #notice-thanks-editor {}
 .notices-generator .notice-thanks--desc { display: none; }
 
@@ -249,7 +255,7 @@ body {
     padding: 0 0 0 0;
     width: 98%;
 }
-.notices-generator .notice-address--inner { height: 90px; }
+.notices-generator .notice-address--inner { height: 110px; }
 .notices-generator #notice-address-editor {}
 .notices-generator .notice-address--desc { display: none; }
 
@@ -266,7 +272,7 @@ body {
     left: 50%;
     overflow: no-display;
     padding: 0 0 0 0;
-    position: absolute;
+    position: fixed;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
     width: 60%;
@@ -298,11 +304,13 @@ body {
 }
 /* Paticka dialogu */
 .dlg-container .dlg-footer {
-    background-color: #fff;
-    height: 3em;
-    padding: 1em 0 0 0;
-    text-align: right;
-    width: 100%;
+  background-color: #fff;
+  height: 4em;
+  padding: 1em 0 2em 0;
+  text-align: right;
+  width: 100%;
+  clear: both;
+  border-top: 1px solid #666;
 }
 .dlg-container .dlg-footer .button-cancel {
     margin: 0 1em 0 0;
@@ -397,4 +405,3 @@ body {
 .border.border-04 {
     border-style: dashed;
 }
-

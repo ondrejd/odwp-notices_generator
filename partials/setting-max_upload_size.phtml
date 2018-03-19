@@ -1,0 +1,23 @@
+<?php
+/**
+ * @author Ondřej Doněk <ondrejd@gmail.com>
+ * @link https://github.com/ondrejd/odwp-notices_generator for the canonical source repository
+ * @license https://www.gnu.org/licenses/gpl-3.0.en.html GNU General Public License 3.0
+ * @package odwp-notices_generator
+ * @see NG_Plugin::render_setting_max_upload_size()
+ * @since 1.0.0
+ *
+ * Variables passed:
+ * @var int $max_upload_size
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+?>
+<label for="odwpng_settings_max_upload_size">
+    <input type="text" id="odwpng_settings_max_upload_size" name="odwpng_settings[max_upload_size]" value="<?php echo $max_upload_size ?>" disabled>
+    <span><?php _e( 'B', NG_SLUG ) ?></span>
+</label>
+<p class="description"><?php _e( 'Nastavte maximální velikost obrázků pro nahrání fotografií zesnulých v bajtech. Pokud ponecháte prázdné, použije se limit převzatý ze systému <b>WordPress</b>.', NG_SLUG ) ?></p>

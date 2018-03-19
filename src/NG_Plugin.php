@@ -8,7 +8,7 @@
  *
  * @todo Přidat tlačítko do editoru pro shortcode!
  * @todo Přidat nastavení pluginu (včetně nastavení obrázků, veršů atp. pro editor)
- * @todo Oznámení musí fungovat jako samostatný typ. Akorát v administraci bude 
+ * @todo Oznámení musí fungovat jako samostatný typ. Akorát v administraci bude
  *       skrytá defaultní položka menu "Nové oznámení" a místo toho tam bude přidán
  *       odkaz, který povede na front-end.
  */
@@ -45,7 +45,7 @@ class NG_Plugin {
      */
     const OPTIONS_SS_COMPACT = 'compact';
 
-    /** 
+    /**
      * @var string The second value for screen options for options page.
      */
     const OPTIONS_SS_FULL = 'full';
@@ -88,6 +88,12 @@ class NG_Plugin {
             'notice_borders' => self::get_default_notice_borders(),
             'notice_images' => self::get_default_notice_images(),
             'verses' => self::get_default_verses(),
+            'max_upload_size' => null,
+            'img_type_whitelist' => [
+                'image/jpeg',
+                'image/png',
+                'image/gif'
+            ]
         ];
     }
 
@@ -315,6 +321,30 @@ class NG_Plugin {
                 NG_SLUG,
                 $section2
         );
+
+        $section3 = self::SETTINGS_KEY . '_section_3';
+        add_settings_section(
+                $section3,
+                __( 'Nastavení uploadu fotografií' ),
+                [__CLASS__, 'render_settings_section_3'],
+                NG_SLUG
+        );
+
+        add_settings_field(
+                'max_upload_size',
+                __( 'Max. velikost obrázků', NG_SLUG ),
+                [__CLASS__, 'render_setting_max_upload_size'],
+                NG_SLUG,
+                $section3
+        );
+
+        add_settings_field(
+                'img_type_whitelist',
+                __( 'Povolené typy obrázků', NG_SLUG ),
+                [__CLASS__, 'render_setting_img_type_whitelist'],
+                NG_SLUG,
+                $section3
+        );
     }
 
     /**
@@ -501,6 +531,41 @@ class NG_Plugin {
     }
 
     /**
+     * @internal Renders the third settings section.
+     * @return void
+     * @since 1.0.0
+     */
+    public static function render_settings_section_3() {
+        ob_start( function() {} );
+        include( NG_PATH . 'partials/settings-section_3.phtml' );
+        echo ob_get_flush();
+    }
+
+    /**
+     * @internal Renders setting `max_upload_size`.
+     * @return void
+     * @since 1.0.0
+     */
+    public static function render_setting_max_upload_size() {
+        $max_upload_size = ( int ) self::get_option( 'max_upload_size' );
+        ob_start( function() {} );
+        include( NG_PATH . 'partials/setting-max_upload_size.phtml' );
+        echo ob_get_flush();
+    }
+
+    /**
+     * @internal Renders setting `img_type_whitelist`.
+     * @return void
+     * @since 1.0.0
+     */
+    public static function render_setting_img_type_whitelist() {
+        $img_type_whitelist = self::get_option( 'img_type_whitelist' );
+        ob_start( function() {} );
+        include( NG_PATH . 'partials/setting-img_type_whitelist.phtml' );
+        echo ob_get_flush();
+    }
+
+    /**
      * Renders notice designer shortcode.
      * @param array $attributes
      * @return string
@@ -518,7 +583,7 @@ class NG_Plugin {
         // XXX $borders = self::get_notice_borders();
         $notice_images = self::get_notice_images();
         $notice_verses = self::get_verses();
-        
+
         include( NG_PATH . 'partials/shortcode-notices_generator.phtml' );
         $html = ob_get_flush();
 

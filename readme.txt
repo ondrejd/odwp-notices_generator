@@ -28,6 +28,7 @@ Instalace pluginu
 
 1. `screenshot-01.png`
 2. `screenshot-02.png`
+3. `screenshot-03.png`
 
 == Changelog ==
 
