@@ -19,46 +19,64 @@ body {
 
 /* Generator oznameni */
 .notices-generator {
-    margin: 1% auto 1% auto;
-    width: 98%;
+    margin: 1em auto 1em auto;
+    width: 100%;
 }
 
 .notices-generator > form {}
 .notices-generator > form .notices-generator--cont {}
 
+/* Chybove hlasky */
+.notices-generator--auth_error, .notices-generator--options_error {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
 /* Obecne styly pro formular s generatorem */
 
 /* Fieldset */
 .notices-generator form fieldset {
-    border: 0px none;
-    padding: 0px 0px 0px 0px !important;
-    margin: 0px 0px 10px 0px !important;
-    width: 100%;
+  border: 0px none;
+  padding: 0px 0px 0px 0px !important;
+  margin: 0px 0px 10px 0px !important;
+  width: 100%;
 }
 .notices-generator form fieldset legend {
-    font-weight: bold;
-    padding: 0px 0px 5px 0px;
+  color: #999;
+  font-weight: 200;
+  line-height: 1em;
+  padding: 0;
+  text-transform: uppercase;
 }
 
 /* Links (from <span>s) */
 .span-link {
-    cursor: pointer;
-    text-decoration: underline;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 /* Inline editor */
 .notices-generator form fieldset .inline-editor {
-    border: 2px solid #000;
-    overflow: auto;
-    padding: 8px 2% 5px 2%;
-    width: 96%;
+  border: 1px dashed #999;
+  display: table;
+  overflow: auto;
+  padding: 8px 1em 5px 1em;
+  width: 100%;
 }
-.notices-generator form fieldset .inline-editor > p {
-    margin-bottom: 0px;
-    text-align: center;
+.notices-generator form fieldset .inline-editor--inner {
+  display: table-row;
+}
+.notices-generator form fieldset .inline-editor--inner > p {
+  margin-bottom: 0px;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 /* Tlacitka */
+.notices-generator .buttons {
+  margin: 0 0 0 1em
+}
 .notices-generator .button {
     background-color: #000;
     border: 1px solid #000;
@@ -89,9 +107,10 @@ body {
  * Popisek
  */
 .notices-generator form fieldset .description {
-    font-size: 90%;
-    margin-bottom: 0px;
-    margin-top: 1px;
+  color: #999;
+  font-size: 0.85rem;
+  margin-bottom: 0px;
+  margin-top: 1px;
 }
 
 /*
@@ -100,10 +119,10 @@ body {
 .notices-generator .notice-image {
     float: left;
     padding: 0 2% 0 0;
-    width: 48%;
+    width: 50%;
 }
 .notices-generator .notice-image--inner {
-    border: 2px solid #000;
+    border: 1px dashed #999;
     height: 200px;
     text-align: center;
     width: 100%;
@@ -126,7 +145,6 @@ body {
 }
 .notices-generator .notice-verse--inner {
     height: 200px;
-    padding: 0 0 0 0 !important;
 }
 .notices-generator #notice-verse-editor {
   height: 180px;
@@ -141,7 +159,7 @@ body {
  */
 .notices-generator .notice-text {
     padding: 0 0 0 0;
-    width: 98%;
+    width: 100%;
 }
 .notices-generator .notice-text--inner { height: 100px; }
 .notices-generator #notice-text-editor {}
@@ -152,7 +170,7 @@ body {
  */
 .notices-generator .notice-deceased {
     padding: 0 0 0 0;
-    width: 98%;
+    width: 100%;
 }
 .notices-generator .notice-deceased--inner { height: 60px; }
 .notices-generator #notice-deceased-editor {
@@ -166,7 +184,7 @@ body {
  */
 .notices-generator .notice-photo {
     padding: 0 0 0 0;
-    width: 98%;
+    width: 100%;
 }
 .notices-generator .notice-photo--inner { height: 180px; }
 
@@ -175,7 +193,7 @@ body {
  */
 .notices-generator .notice-death_date {
     padding: 0 0 0 0;
-    width: 98%;
+    width: 100%;
 }
 .notices-generator .notice-death_date--inner { height: 50px; }
 .notices-generator #notice-death_date-editor {}
@@ -186,7 +204,7 @@ body {
  */
 .notices-generator .notice-location {
     padding: 0 0 0 0;
-    width: 98%;
+    width: 100%;
 }
 .notices-generator .notice-location--inner { height: 90px; }
 .notices-generator #notice-location-editor {}
@@ -197,7 +215,7 @@ body {
  */
 .notices-generator .notice-photo {
     padding: 0 0 0 0;
-    width: 98%;
+    width: 100%;
 }
 .notices-generator .notice-photo--inner {}
 .notices-generator .notice-photo--inner img {}
@@ -209,7 +227,7 @@ body {
  */
 .notices-generator .notice-survivors_text {
     padding: 0 0 0 0;
-    width: 98%;
+    width: 100%;
 }
 .notices-generator .notice-survivors_text--inner {}
 .notices-generator .notice-survivors_text--desc { display: none; }
@@ -218,20 +236,23 @@ body {
  * Pozustali
  */
 .notices-generator .notice-survivors {
-    padding: 0 0 0 0;
-    width: 98%;
+  padding: 0 0 0 0;
+  width: 100%;
 }
-.notices-generator .notice-survivors--form {}
+.notices-generator .notice-survivors--form {
+  font-size: 0.89rem;
+  font-weight: 200;
+}
 .notices-generator .notice-survivors--form label {
-    display: inline-block;
-    font-size: 1rem;
-    font-weight: normal;
-    padding: 0 0 0 5px;
+  color: #666;
+  display: inline-block;
+  font-weight: normal;
+  padding: 0;
 }
 .notices-generator .notice-survivors--form label input[type="radio"] {
-    position: relative;
-    right: -2px;
-    top: 2px;
+  position: relative;
+  right: -2px;
+  top: 2px;
 }
 .notices-generator .notice-survivors--inner { height: 120px; }
 .notices-generator #notice-survivors-editor {}
@@ -242,7 +263,7 @@ body {
  */
 .notices-generator .notice-thanks {
     padding: 0 0 0 0;
-    width: 98%;
+    width: 100%;
 }
 .notices-generator .notice-thanks--inner { height: 90px; }
 .notices-generator #notice-thanks-editor {}
@@ -253,7 +274,7 @@ body {
  */
 .notices-generator .notice-address {
     padding: 0 0 0 0;
-    width: 98%;
+    width: 100%;
 }
 .notices-generator .notice-address--inner { height: 110px; }
 .notices-generator #notice-address-editor {}
@@ -367,22 +388,21 @@ body {
 /*
  * Dialog s ohranicenim
  */
-#notice-borders-dlg {
-    display: none;
-}
-#notice-borders-dlg .borders-list {
-    list-style: none;
-}
+#notice-borders-dlg { display: none; }
+#notice-borders-dlg .borders-list { list-style: none; }
 #notice-borders-dlg .borders-list .borders-item {
-    cursor: pointer;
-    display: block;
-    float: left;
-    height: 4em;
-    width: 4em;
+  color: #000;
+  cursor: pointer;
+  display: block;
+  float: left;
+  font-size: smaller;
+  font-weight: 600;
+  font-family: sans-serif;
+  height: 4.3em;
+  text-align: center;
+  width: 4.5em;
 }
-#notice-borders-dlg .borders-list .borders-item:hover {
-    background-color: #ccc;
-}
+#notice-borders-dlg .borders-list .borders-item:hover { background-color: #ccc; }
 
 /*
  * Jednotlive okraje

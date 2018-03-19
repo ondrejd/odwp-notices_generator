@@ -187,10 +187,9 @@ class NG_Plugin {
         // Initialize options
         $options = self::get_options();
 
-        // Initialize custom post types
+        // Initialize custom post types, user roles and shortcodes
         self::init_custom_post_types();
-
-        // Initialize shortcodes
+        self::init_user_roles();
         self::init_shortcodes();
 
         // Initialize admin screens
@@ -364,6 +363,19 @@ class NG_Plugin {
     }
 
     /**
+     * Initialize admin user roles.
+     * @return void
+     * @since 1.0.0
+     */
+    protected static function init_user_roles() {
+      $subscriber = get_role( 'subscriber' );
+
+      if( !$subscriber->has_cap( 'upload_files' ) ) {
+        $subscriber->add_cap( 'upload_files' );
+      }
+    }
+
+    /**
      * Hook for "admin_init" action.
      * @return void
      * @since 1.0.0
@@ -441,7 +453,13 @@ class NG_Plugin {
     public static function enqueue_scripts() {
         wp_enqueue_script( NG_SLUG, plugins_url( 'js/public.js', NG_FILE ), ['jquery'] );
         wp_localize_script( NG_SLUG, 'odwpng', [
-            //...
+            'upload_url' => admin_url( 'async-upload.php' ),
+            'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'nonce' => wp_create_nonce( NG_SLUG ),
+            'msg01' => __( 'Nahrávám obrázek&hellip;', NG_SLUG ),
+            'msg02' => __( 'Nahrávám obrázek (dokončeno %%DONE%%%)&hellip;', NG_SLUG ),
+            'msg03' => __( 'Obrázek byl úspěšně nahrán. <a href="#" class="btn-change-image">Změnit?</a>', NG_SLUG ),
+            'msg04' => __( 'Obrázek nebyl úspěšně nahrán. Zkuste to znovu.', NG_SLUG )
         ] );
         wp_enqueue_style( NG_SLUG, plugins_url( 'css/public.css', NG_FILE ) );
     }
@@ -580,9 +598,12 @@ class NG_Plugin {
         ob_start( function() {} );
 
         // Get default variables
-        // XXX $borders = self::get_notice_borders();
-        $notice_images = self::get_notice_images();
-        $notice_verses = self::get_verses();
+        // XXX $notice_bckgs = self::get_notice_backgrounds();
+        // XXX $notice_borders = self::get_notice_borders();
+        $notice_bckgs   = [];
+        $notice_borders = [];
+        $notice_images  = self::get_notice_images();
+        $notice_verses  = self::get_verses();
 
         include( NG_PATH . 'partials/shortcode-notices_generator.phtml' );
         $html = ob_get_flush();

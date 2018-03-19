@@ -7,14 +7,12 @@
  * @see NG_Plugin::render_shortcode()
  * @since 1.0.0
  *
- * @todo Přidat `wpnonce`!
  * @todo Nahradit radio inputy v sekci "Pozůstalí" obrázky (ikonkami)!
- * @todo Umožnit náhled (a přidat pro to tlačítko dolů)!
- * @todo Umožnit uložit oznámení (nutnost registrace uživatele)!
- * @todo JavaScript nakonec přesunout do samostatného souboru!
  *
  * Parameters passed from {@see Notices_Generator_Plugin::shortcode_notice_designer_render}:
  *
+ * @var array $notice_bckgs   Array with notice backgrounds.
+ * @var array $notice_borders Array with notice borders.
  * @var array $notice_images  Array with notice images.
  * @var array $notice_verses  Array with funeral verses.
  */
@@ -22,195 +20,228 @@
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
+
 ?>
 <div class="notices-generator">
-    <?php if( count( $notice_images ) === 0 ) : ?>
-    <div class="notices-generator--options_error">
-        <p><?php _e( 'Nejsou definované žádné obrázky, okraje či smuteční verše. V případě přetrvávajících problémů kontaktujte <a href="#">administrátora</a>.', NG_SLUG ) ?></p>
+  <?php if( is_user_logged_in() ) : ?>
+  <?php if( count( $notice_images ) === 0 ) : ?>
+  <div class="notices-generator--options_error">
+    <p><?php printf(
+        __( 'Nejsou definované žádné obrázky, okraje či smuteční verše. V případě přetrvávajících problémů kontaktujte <a href="%s">administrátora</a>.', NG_SLUG ),
+        'about:blank'
+    ) ?></p>
+  </div>
+  <?php endif ?>
+  <p class="form-notice"></p>
+  <form action="" method="post" novalidate="novalidate">
+    <?php wp_nonce_field( 'photo_submission' ) ?>
+    <input type="hidden" name="action" value="photo_submission">
+    <input type="hidden" name="photo_id">
+    <div class="notices-generator--cont border border-01">
+      <input id="odwpng-notice_border" name="notice-border" type="hidden" value="border01">
+      <fieldset id="notice-section-1">
+        <legend><?php _e( 'Obrázek a verš', NG_SLUG ) ?></legend>
+        <div class="notice-image">
+          <div class="notice-image--inner">
+            <?php printf(
+                '<img id="selected_notice_img" src="%s" title="%s">',
+                ( isset( $notice_images[1] ) ) ? $notice_images[1] : '',
+                __( 'Kliknutím na obrázek zobrazíte dialog pro jeho výběr.', NG_SLUG )
+            ) ?>
+          </div>
+          <p class="description notice-image--desc">
+            <?php printf(
+                __( 'Vyberte si %sobrázek%s.', NG_SLUG ),
+                '<span class="notice-images-dlg-link span-link">',
+                '</span>'
+            ) ?>
+          </p>
+        </div>
+        <div class="notice-verse">
+          <div class="inline-editor notice-verse--inner">
+            <div class="inline-editor--inner">
+              <p id="notice-verse-editor" contenteditable="true"><?php _e( "Kdo v naději žije, neumírá ...\n\n<em>F. Hrubín</em>", NG_SLUG ) ?></p>
+            </div>
+          </div>
+          <p class="description notice-verse--desc"><?php printf( __( 'Vyberte si %sjiný verš%s nebo napište vlastní.', NG_SLUG ), '<span class="notice-verses-dlg-link span-link">', '</span>' ) ?></p>
+        </div>
+      </fieldset>
+      <fieldset id="ngform_sec2">
+        <legend><?php _e( 'Text oznámení', NG_SLUG ) ?></legend>
+        <div class="notice-text">
+          <div class="inline-editor notice-text--inner">
+            <div class="inline-editor--inner">
+              <p id="notice-text-editor" contenteditable="true"><?php _e( "S bolestí v srdci oznamujeme všem příbuzným, přátelům a známým,\nže nás navždy opustil náš milovaný ...", NG_SLUG ) ?></p>
+            </div>
+          </div>
+          <p class="description notice-text--desc"><?php _e( 'Pokud chcete zvýraznit tučně pouze část textu, dejte před něj a za něj hvězdičku, např. <strong>*Váš*</strong> Pokud chcete text na nový řádek, stiskněte <em>ENTER</em>', NG_SLUG ) ?></p>
+        </div>
+      </fieldset>
+      <fieldset id="ngform_sec3">
+        <legend><?php _e( 'Jméno zesnulého', NG_SLUG ) ?></legend>
+        <div class="notice-deceased">
+          <div class="inline-editor notice-deceased--inner">
+            <div class="inline-editor--inner">
+              <p id="notice-deceased-editor" contenteditable="true"><?php _e( "Jan Novák", NG_SLUG ) ?></p>
+            </div>
+          </div>
+          <p class="description notice-thanks--desc"><?php _e( '', NG_SLUG ) ?></p>
+        </div>
+      </fieldset>
+      <fieldset id="ngform_sec4">
+        <legend><?php _e( 'Fotografie zesnulého', NG_SLUG ) ?></legend>
+        <div class="notice-photo">
+          <div class="inline-editor notice-photo--inner">
+            <div class="inline-editor--inner">
+              <p id="photo-upload-noimg"><input type="file" name="photo-upload" accept="image/*" required></p>
+              <div id="photo-upload-preview"></div>
+              <p id="photo-upload-notice"></p>
+            </div>
+          </div>
+          <p class="description notice-photo--desc"><?php _e( 'Můžete nahrát fotografii zesnulého', NG_SLUG ) ?></p>
+        </div>
+      </fieldset>
+      <fieldset id="ngform_sec5">
+        <legend><?php _e( 'Datum úmrtí', NG_SLUG ) ?></legend>
+        <div class="notice-death_date">
+          <div class="inline-editor notice-death_date--inner">
+            <div class="inline-editor--inner">
+              <p id="notice-death_date-editor" contenteditable="true"><?php _e( 'Zemřel tiše v sobotu 3. dubna 2011', NG_SLUG ) ?></p>
+            </div>
+          </div>
+          <p class="description notice-thanks--desc"><?php _e( '', NG_SLUG ) ?></p>
+        </div>
+      </fieldset>
+      <fieldset id="ngform_sec6">
+        <legend><?php _e( 'Místo posledního rozloučení', NG_SLUG ) ?></legend>
+        <div class="notice-location">
+          <div class="inline-editor notice-location--inner">
+            <div class="inline-editor--inner">
+              <p id="notice-location-editor" contenteditable="true"><?php _e( "S naším drahým zesnulým se naposledy rozloučíme v pátek 15. dubna 2011\nv malé obřadní síni krematoria v ...", NG_SLUG ) ?></p>
+            </div>
+          </div>
+          <p class="description notice-location--desc"><?php _e( '', NG_SLUG ) ?></p>
+        </div>
+      </fieldset>
+      <fieldset id="ngform_sec7">
+        <legend><?php _e( 'Jménem pozůstalých', NG_SLUG ) ?></legend>
+        <div class="notice-survivors_text">
+          <div class="inline-editor notice-survivors_text--inner">
+            <div class="inline-editor--inner">
+              <p id="notice-survivors_text-editor" contenteditable="true"><?php _e( 'Jménem pozůstalých', NG_SLUG ) ?></p>
+            </div>
+          </div>
+          <p class="description notice-survivors_text--desc"><?php _e( '', NG_SLUG ) ?></p>
+        </div>
+      </fieldset>
+      <fieldset id="ngform_sec8">
+        <legend><?php _e( 'Pozůstalí', NG_SLUG ) ?></legend>
+        <div class="notice-survivors">
+          <div class="inline-editor notice-survivors--inner">
+            <div class="inline-editor--inner">
+              <p id="notice-survivors-editor" contenteditable="true"><?php _e( "Dcera s rodinou, bratr s rodinou", NG_SLUG ) ?></p>
+            </div>
+          </div>
+          <div class="notice-survivors--form">
+            <label><?php _e( 'Zobrazit jako: ', NG_SLUG ) ?></label>
+            <label class="notice-radio">
+              <input type="radio" name="ng-survivors-columns" value="1" checked="checked">
+              <?php _e( 'jeden sloupec', NG_SLUG ) ?>
+            </label>
+            <label class="notice-radio">
+              <input type="radio" name="ng-survivors-columns" value="2">
+              <?php _e( 'dva sloupce', NG_SLUG ) ?>
+            </label>
+          </div>
+          <p class="description notice-survivors--desc"><?php _e( 'Můžete napsat více jmen - oddělujte je čárkou. Jednotlivá jména pak budou zobrazena na samostatném řádku. Do sloupců budou jména případně rozřazena automaticky.', NG_SLUG ) ?></p>
+        </div>
+      </fieldset>
+      <fieldset id="ngform_sec9">
+        <legend><?php _e( 'Projevy a soustrasti', NG_SLUG ) ?></legend>
+        <div class="notice-thanks">
+          <div class="inline-editor notice-thanks--inner">
+            <div class="inline-editor--inner">
+              <p id="notice-thanks-editor" contenteditable="true"><?php _e( 'Za projevy soustrasti děkujeme', NG_SLUG ) ?></p>
+            </div>
+          </div>
+          <p class="description notice-thanks--desc"><?php _e( '', NG_SLUG ) ?></p>
+        </div>
+      </fieldset>
+      <fieldset id="ngform_sec10">
+        <legend><?php _e( 'Adresa', NG_SLUG ) ?></legend>
+        <div class="notice-address">
+          <div class="inline-editor notice-address--inner">
+            <div class="inline-editor--inner">
+              <p id="notice-address-editor" contenteditable="true"><?php _e( "Vaše adresa", NG_SLUG ) ?></p>
+            </div>
+          </div>
+          <p class="description notice-address--desc"><?php _e( '', NG_SLUG ) ?></p>
+        </div>
+      </fieldset>
     </div>
-    <?php endif ?>
-    <form action="" method="post" novalidate="novalidate">
-        <div class="notices-generator--cont border border-01">
-            <input id="odwpng-notice_border" name="notice-border" type="hidden" value="border01">
-            <fieldset id="notice-section-1">
-                <legend><?php _e( 'Obrázek a verš', NG_SLUG ) ?></legend>
-                <div class="notice-image">
-                    <div class="notice-image--inner">
-                        <?php printf(
-                            '<img id="selected_notice_img" src="%s" title="%s">',
-                            ( isset( $notice_images[0] ) ) ? $notice_images[0] : '',
-                            __( 'Kliknutím na obrázek zobrazíte dialog pro jeho výběr.', NG_SLUG )
-                        ) ?>
-                    </div>
-                    <p class="description notice-image--desc">
-                        <?php printf(
-                            __( 'Vyberte si %sobrázek%s.', NG_SLUG ),
-                            '<span class="notice-images-dlg-link span-link">',
-                            '</span>'
-                        ) ?>
-                    </p>
-                </div>
-                <div class="notice-verse">
-                    <div class="inline-editor notice-verse--inner">
-                        <p id="notice-verse-editor" contenteditable="true"><?php _e( "Kdo v naději žije, neumírá ...\n\n<em>F. Hrubín</em>", NG_SLUG ) ?></p>
-                    </div>
-                    <p class="description notice-verse--desc"><?php printf( __( 'Vyberte si %sjiný verš%s nebo napište vlastní.', NG_SLUG ), '<span class="notice-verses-dlg-link span-link">', '</span>' ) ?></p>
-                </div>
-            </fieldset>
-            <fieldset id="ngform_sec2">
-                <legend><?php _e( 'Text oznámení', NG_SLUG ) ?></legend>
-                <div class="notice-text">
-                    <div class="inline-editor notice-text--inner">
-                        <p id="notice-text-editor" contenteditable="true"><?php _e( "S bolestí v srdci oznamujeme všem příbuzným, přátelům a známým,\nže nás navždy opustil náš milovaný ...", NG_SLUG ) ?></p>
-                    </div>
-                    <p class="description notice-text--desc"><?php _e( 'Pokud chcete zvýraznit tučně pouze část textu, dejte před něj a za něj hvězdičku, např. <strong>*Váš*</strong> Pokud chcete text na nový řádek, stiskněte <em>ENTER</em>', NG_SLUG ) ?></p>
-                </div>
-            </fieldset>
-            <fieldset id="ngform_sec3">
-                <legend><?php _e( 'Jméno zesnulého', NG_SLUG ) ?></legend>
-                <div class="notice-deceased">
-                    <div class="inline-editor notice-deceased--inner">
-                        <p id="notice-deceased-editor" contenteditable="true"><?php _e( "Jan Novák", NG_SLUG ) ?></p>
-                    </div>
-                    <p class="description notice-thanks--desc"><?php _e( '', NG_SLUG ) ?></p>
-                </div>
-            </fieldset>
-            <fieldset id="ngform_sec4">
-                <legend><?php _e( 'Fotografie zesnulého', NG_SLUG ) ?></legend>
-                <div class="notice-photo">
-                    <div class="inline-editor notice-photo--inner">
-                        <p><?php _e( 'Můžete nahrát <a href="#">fotografii zesnulého</a>', NG_SLUG ) ?></p>
-                    </div>
-                    <p class="description notice-photo--desc"><?php _e( '', NG_SLUG ) ?></p>
-                </div>
-                <p class="odwpng-todo"><code>TODO</code> Nahrát fotografii <small>(a rovnou zobrazit)</small>!</p>
-            </fieldset>
-            <fieldset id="ngform_sec5">
-                <legend><?php _e( 'Datum úmrtí', NG_SLUG ) ?></legend>
-                <div class="notice-death_date">
-                    <div class="inline-editor notice-death_date--inner">
-                        <p id="notice-death_date-editor" contenteditable="true"><?php _e( 'Zemřel tiše v sobotu 3. dubna 2011', NG_SLUG ) ?></p>
-                    </div>
-                    <p class="description notice-thanks--desc"><?php _e( '', NG_SLUG ) ?></p>
-                </div>
-            </fieldset>
-            <fieldset id="ngform_sec6">
-                <legend><?php _e( 'Místo posledního rozloučení', NG_SLUG ) ?></legend>
-                <div class="notice-location">
-                    <div class="inline-editor notice-location--inner">
-                        <p id="notice-location-editor" contenteditable="true"><?php _e( "S naším drahým zesnulým se naposledy rozloučíme v pátek 15. dubna 2011\nv malé obřadní síni krematoria v ...", NG_SLUG ) ?></p>
-                    </div>
-                    <p class="description notice-location--desc"><?php _e( '', NG_SLUG ) ?></p>
-                </div>
-            </fieldset>
-            <fieldset id="ngform_sec7">
-                <legend><?php _e( 'Jménem pozůstalých', NG_SLUG ) ?></legend>
-                <div class="notice-survivors_text">
-                    <div class="inline-editor notice-survivors_text--inner">
-                        <p id="notice-survivors_text-editor" contenteditable="true"><?php _e( 'Jménem pozůstalých', NG_SLUG ) ?></p>
-                    </div>
-                    <p class="description notice-survivors_text--desc"><?php _e( '', NG_SLUG ) ?></p>
-                </div>
-            </fieldset>
-            <fieldset id="ngform_sec8">
-                <legend><?php _e( 'Pozůstalí', NG_SLUG ) ?></legend>
-                <div class="notice-survivors">
-                    <div class="notice-survivors--form">
-                        <label><?php _e( 'Zobrazit jako: ', NG_SLUG ) ?></label>
-                        <label class="notice-radio">
-                            <input type="radio" name="ng-survivors-columns" value="1" checked="checked">
-                            <?php _e( 'jeden sloupec', NG_SLUG ) ?>
-                        </label>
-                        <label class="notice-radio">
-                            <input type="radio" name="ng-survivors-columns" value="2">
-                            <?php _e( 'dva sloupce', NG_SLUG ) ?>
-                        </label>
-                        <label class="notice-radio">
-                            <input type="radio" name="ng-survivors-columns" value="3">
-                            <?php _e( 'tři sloupce', NG_SLUG ) ?>
-                        </label>
-                    </div>
-                    <div class="inline-editor notice-survivors--inner">
-                        <p id="notice-survivors-editor" contenteditable="true"><?php _e( "Dcera s rodinou, bratr s rodinou", NG_SLUG ) ?></p>
-                    </div>
-                    <p class="description notice-survivors--desc"><?php _e( 'Můžete napsat více jmen - oddělujte je čárkou. Jednotlivá jména pak budou zobrazena na samostatném řádku. Do sloupců budou jména případně rozřazena automaticky.', NG_SLUG ) ?></p>
-                </div>
-            </fieldset>
-            <fieldset id="ngform_sec9">
-                <legend><?php _e( 'Projevy a soustrasti', NG_SLUG ) ?></legend>
-                <div class="notice-thanks">
-                    <div class="inline-editor notice-thanks--inner">
-                        <p id="notice-thanks-editor" contenteditable="true"><?php _e( 'Za projevy soustrasti děkujeme', NG_SLUG ) ?></p>
-                    </div>
-                    <p class="description notice-thanks--desc"><?php _e( '', NG_SLUG ) ?></p>
-                </div>
-            </fieldset>
-            <fieldset id="ngform_sec10">
-                <legend><?php _e( 'Adresa', NG_SLUG ) ?></legend>
-                <div class="notice-address">
-                    <div class="inline-editor notice-address--inner">
-                        <p id="notice-address-editor" contenteditable="true"><?php _e( "Vaše adresa", NG_SLUG ) ?></p>
-                    </div>
-                    <p class="description notice-address--desc"><?php _e( '', NG_SLUG ) ?></p>
-                </div>
-            </fieldset>
-            <p class="buttons">
-                <span id="odwpng-button_print" class="button button-primary"><?php _e( 'Pokračovat', NG_SLUG ) ?></span>
-                <span id="odwpng-button_preview" class="button button-primary"><?php _e( 'Náhled', NG_SLUG ) ?></span>
-                <span id="odwpng-button_borders" class="button button-secondary"><?php _e( 'Vybrat ohraničení', NG_SLUG ) ?></span>
-                <span id="odwpng-button_background" class="button button-secondary button-disabled"><?php _e( 'Vybrat pozadí', NG_SLUG ) ?></span>
-            </p>
-        </div>
-    </form>
-    <div id="notice-images-dlg" class="dlg-container">
-        <div class="dlg-header">
-            <h3><?php _e( 'Vyberte obrázek', NG_SLUG ) ?></h3>
-        </div>
-        <div class="dlg-body">
-            <ul class="images-list">
-                <?php foreach( $notice_images as $image ) : ?>
-                <li class="images-item">
-                    <span class="images-item--cont">
-                        <img src="<?php echo $image ?>"
-                             title="<?php printf( __( 'Vyberte obrázek %s.', NG_SLUG ), $image ) ?>">
-                    </span>
-                </li>
-                <?php endforeach ?>
-            </ul>
-        </div>
-        <div class="dlg-footer">
-            <span class="button button-cancel"><?php _e( 'Zrušit', NG_SLUG ) ?></span>
-        </div>
+    <p class="buttons">
+      <span id="odwpng-button_print" class="button button-primary"><?php _e( 'Pokračovat', NG_SLUG ) ?></span>
+      <span id="odwpng-button_preview" class="button button-primary"><?php _e( 'Náhled', NG_SLUG ) ?></span>
+      <span id="odwpng-button_borders" class="button button-secondary"><?php _e( 'Vybrat ohraničení', NG_SLUG ) ?></span>
+      <span id="odwpng-button_background" class="button button-secondary"><?php _e( 'Vybrat pozadí', NG_SLUG ) ?></span>
+    </p>
+  </form>
+  <div id="notice-images-dlg" class="dlg-container">
+    <div class="dlg-header">
+      <h3><?php _e( 'Vyberte obrázek', NG_SLUG ) ?></h3>
     </div>
-    <div id="notice-verses-dlg" class="dlg-container">
-        <div class="dlg-header">
-            <h3><?php _e( 'Vyberte smuteční verš', NG_SLUG ) ?></h3>
-        </div>
-        <div class="dlg-body">
-            <ul class="verses-list">
-                <?php foreach( $notice_verses as $verse ) : ?>
-                <li class="verses-item"><?php echo str_replace( "\n", ' ', $verse ) ?></li>
-                <?php endforeach ?>
-            </ul>
-        </div>
-        <div class="dlg-footer">
-            <span class="button button-cancel"><?php _e( 'Zrušit', NG_SLUG ) ?></span>
-        </div>
+    <div class="dlg-body">
+      <ul class="images-list">
+        <?php foreach( $notice_images as $image ) : ?>
+        <li class="images-item">
+          <span class="images-item--cont">
+            <img src="<?php echo $image ?>" title="<?php printf( __( 'Vyberte obrázek %s.', NG_SLUG ), $image ) ?>">
+          </span>
+        </li>
+        <?php endforeach ?>
+      </ul>
     </div>
-    <div id="notice-borders-dlg" class="dlg-container">
-        <div class="dlg-header">
-            <h3><?php _e( 'Vyberte ohraničení', NG_SLUG ) ?></h3>
-        </div>
-        <div class="dlg-body">
-            <ul class="borders-list">
-                <li class="borders-item border border-01" title="<?php _e( 'Vyberte okraj 1', NG_SLUG ) ?>">01</li>
-                <li class="borders-item border border-02" title="<?php _e( 'Vyberte okraj 2', NG_SLUG ) ?>">02</li>
-                <li class="borders-item border border-03" title="<?php _e( 'Vyberte okraj 3', NG_SLUG ) ?>">03</li>
-                <li class="borders-item border border-04" title="<?php _e( 'Vyberte okraj 4', NG_SLUG ) ?>">04</li>
-            </ul>
-        </div>
-        <div class="dlg-footer">
-            <span class="button button-cancel"><?php _e( 'Zrušit', NG_SLUG ) ?></span>
-        </div>
+    <div class="dlg-footer">
+        <span class="button button-cancel"><?php _e( 'Zrušit', NG_SLUG ) ?></span>
     </div>
+  </div>
+  <div id="notice-verses-dlg" class="dlg-container">
+    <div class="dlg-header">
+      <h3><?php _e( 'Vyberte smuteční verš', NG_SLUG ) ?></h3>
+    </div>
+    <div class="dlg-body">
+      <ul class="verses-list">
+        <?php foreach( $notice_verses as $verse ) : ?>
+        <li class="verses-item"><?php echo str_replace( "\n", ' ', $verse ) ?></li>
+        <?php endforeach ?>
+      </ul>
+    </div>
+    <div class="dlg-footer">
+      <span class="button button-cancel"><?php _e( 'Zrušit', NG_SLUG ) ?></span>
+    </div>
+  </div>
+  <div id="notice-borders-dlg" class="dlg-container">
+    <div class="dlg-header">
+      <h3><?php _e( 'Vyberte ohraničení', NG_SLUG ) ?></h3>
+    </div>
+    <div class="dlg-body">
+      <ul class="borders-list">
+        <li class="borders-item border border-01" title="<?php _e( 'Vyberte okraj 1', NG_SLUG ) ?>"><?php _e( '01', NG_SLUG ) ?></li>
+        <li class="borders-item border border-02" title="<?php _e( 'Vyberte okraj 2', NG_SLUG ) ?>"><?php _e( '02', NG_SLUG ) ?></li>
+        <li class="borders-item border border-03" title="<?php _e( 'Vyberte okraj 3', NG_SLUG ) ?>"><?php _e( '03', NG_SLUG ) ?></li>
+        <li class="borders-item border border-04" title="<?php _e( 'Vyberte okraj 4', NG_SLUG ) ?>"><?php _e( '04', NG_SLUG ) ?></li>
+      </ul>
+    </div>
+    <div class="dlg-footer">
+      <span class="button button-cancel"><?php _e( 'Zrušit', NG_SLUG ) ?></span>
+    </div>
+  </div>
+  <?php else : ?>
+  <div class="notices-generator--auth_error">
+    <p><?php printf(
+      __( 'Pro zobrazení generátoru smutečních oznámení musíte být přihlášeným uživatelem. Pro více informací kontaktujte <a href="%s">administrátora</a>.', NG_SLUG ),
+      'about:blank'
+    ) ?></p>
+  </div>
+  <?php endif ?>
 </div>
