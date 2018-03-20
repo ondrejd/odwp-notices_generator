@@ -7,14 +7,18 @@
  * @see NG_Plugin::render_shortcode()
  * @since 1.0.0
  *
- * @todo Nahradit radio inputy v sekci "Pozůstalí" obrázky (ikonkami)!
- *
  * Parameters passed from {@see Notices_Generator_Plugin::shortcode_notice_designer_render}:
  *
  * @var array $notice_bckgs   Array with notice backgrounds.
  * @var array $notice_borders Array with notice borders.
  * @var array $notice_images  Array with notice images.
  * @var array $notice_verses  Array with funeral verses.
+ *
+ * @todo Nahradit radio inputy v sekci "Pozůstalí" obrázky (ikonkami).
+ * @todo Dokončit nahrávání fotografií zesnulého.
+ * @todo Umožnit skrýt jednotlivé položky.
+ * @todo Dokončit ukládání do našeho CPT.
+ * @todo Dokončit administraci okolo našeho CPT.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -40,7 +44,10 @@ if ( ! defined( 'ABSPATH' ) ) {
     <div class="notices-generator--cont border border-01">
       <input id="odwpng-notice_border" name="notice-border" type="hidden" value="border01">
       <fieldset id="notice-section-1">
-        <legend><?php _e( 'Obrázek a verš', NG_SLUG ) ?></legend>
+        <legend>
+          <?php _e( 'Obrázek a verš', NG_SLUG ) ?>
+          <a href="#" class="disable-part-link disable-part-link--image_verse" title="<?php _e( 'Skrýt toto pole', NG_SLUG ) ?>"><?php _e( 'Skrýt', NG_SLUG ) ?></a>
+        </legend>
         <div class="notice-image">
           <div class="notice-image--inner">
             <?php printf(
@@ -67,7 +74,10 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
       </fieldset>
       <fieldset id="ngform_sec2">
-        <legend><?php _e( 'Text oznámení', NG_SLUG ) ?></legend>
+        <legend>
+          <?php _e( 'Text oznámení', NG_SLUG ) ?>
+          <a href="#" class="disable-part-link disable-part-link--text" title="<?php _e( 'Skrýt toto pole', NG_SLUG ) ?>"><?php _e( 'Skrýt', NG_SLUG ) ?></a>
+        </legend>
         <div class="notice-text">
           <div class="inline-editor notice-text--inner">
             <div class="inline-editor--inner">
@@ -78,7 +88,10 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
       </fieldset>
       <fieldset id="ngform_sec3">
-        <legend><?php _e( 'Jméno zesnulého', NG_SLUG ) ?></legend>
+        <legend>
+          <?php _e( 'Jméno zesnulého', NG_SLUG ) ?>
+          <a href="#" class="disable-part-link disable-part-link--deceased" title="<?php _e( 'Skrýt toto pole', NG_SLUG ) ?>"><?php _e( 'Skrýt', NG_SLUG ) ?></a>
+        </legend>
         <div class="notice-deceased">
           <div class="inline-editor notice-deceased--inner">
             <div class="inline-editor--inner">
@@ -89,7 +102,10 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
       </fieldset>
       <fieldset id="ngform_sec4">
-        <legend><?php _e( 'Fotografie zesnulého', NG_SLUG ) ?></legend>
+        <legend>
+          <?php _e( 'Fotografie zesnulého', NG_SLUG ) ?>
+          <a href="#" class="disable-part-link disable-part-link--photo" title="<?php _e( 'Skrýt toto pole', NG_SLUG ) ?>"><?php _e( 'Skrýt', NG_SLUG ) ?></a>
+        </legend>
         <div class="notice-photo">
           <div class="inline-editor notice-photo--inner">
             <div class="inline-editor--inner">
@@ -102,7 +118,10 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
       </fieldset>
       <fieldset id="ngform_sec5">
-        <legend><?php _e( 'Datum úmrtí', NG_SLUG ) ?></legend>
+        <legend>
+          <?php _e( 'Datum úmrtí', NG_SLUG ) ?>
+          <a href="#" class="disable-part-link disable-part-link--deathdate" title="<?php _e( 'Skrýt toto pole', NG_SLUG ) ?>"><?php _e( 'Skrýt', NG_SLUG ) ?></a>
+        </legend>
         <div class="notice-death_date">
           <div class="inline-editor notice-death_date--inner">
             <div class="inline-editor--inner">
@@ -113,7 +132,10 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
       </fieldset>
       <fieldset id="ngform_sec6">
-        <legend><?php _e( 'Místo posledního rozloučení', NG_SLUG ) ?></legend>
+        <legend>
+          <?php _e( 'Místo posledního rozloučení', NG_SLUG ) ?>
+          <a href="#" class="disable-part-link disable-part-link--location" title="<?php _e( 'Skrýt toto pole', NG_SLUG ) ?>"><?php _e( 'Skrýt', NG_SLUG ) ?></a>
+        </legend>
         <div class="notice-location">
           <div class="inline-editor notice-location--inner">
             <div class="inline-editor--inner">
@@ -124,7 +146,10 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
       </fieldset>
       <fieldset id="ngform_sec7">
-        <legend><?php _e( 'Jménem pozůstalých', NG_SLUG ) ?></legend>
+        <legend>
+          <?php _e( 'Jménem pozůstalých', NG_SLUG ) ?>
+          <a href="#" class="disable-part-link disable-part-link--survivors_text" title="<?php _e( 'Skrýt toto pole', NG_SLUG ) ?>"><?php _e( 'Skrýt', NG_SLUG ) ?></a>
+        </legend>
         <div class="notice-survivors_text">
           <div class="inline-editor notice-survivors_text--inner">
             <div class="inline-editor--inner">
@@ -135,7 +160,10 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
       </fieldset>
       <fieldset id="ngform_sec8">
-        <legend><?php _e( 'Pozůstalí', NG_SLUG ) ?></legend>
+        <legend>
+          <?php _e( 'Pozůstalí', NG_SLUG ) ?>
+          <a href="#" class="disable-part-link disable-part-link--survivors" title="<?php _e( 'Skrýt toto pole', NG_SLUG ) ?>"><?php _e( 'Skrýt', NG_SLUG ) ?></a>
+        </legend>
         <div class="notice-survivors">
           <div class="inline-editor notice-survivors--inner">
             <div class="inline-editor--inner">
@@ -157,7 +185,10 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
       </fieldset>
       <fieldset id="ngform_sec9">
-        <legend><?php _e( 'Projevy a soustrasti', NG_SLUG ) ?></legend>
+        <legend>
+          <?php _e( 'Projevy a soustrasti', NG_SLUG ) ?>
+          <a href="#" class="disable-part-link disable-part-link--thanks" title="<?php _e( 'Skrýt toto pole', NG_SLUG ) ?>"><?php _e( 'Skrýt', NG_SLUG ) ?></a>
+        </legend>
         <div class="notice-thanks">
           <div class="inline-editor notice-thanks--inner">
             <div class="inline-editor--inner">
@@ -168,8 +199,12 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
       </fieldset>
       <fieldset id="ngform_sec10">
-        <legend><?php _e( 'Adresa', NG_SLUG ) ?></legend>
+        <legend>
+          <?php _e( 'Adresa', NG_SLUG ) ?>
+          <a href="#" class="disable-part-link disable-part-link--address" title="<?php _e( 'Skrýt toto pole', NG_SLUG ) ?>"><?php _e( 'Skrýt', NG_SLUG ) ?></a>
+        </legend>
         <div class="notice-address">
+          
           <div class="inline-editor notice-address--inner">
             <div class="inline-editor--inner">
               <p id="notice-address-editor" contenteditable="true"><?php _e( "Vaše adresa", NG_SLUG ) ?></p>

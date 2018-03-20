@@ -1,12 +1,12 @@
 /**
- * @author Ondřej Doněk <ondrejd@gmail.com>
- * @link https://github.com/ondrejd/odwp-notices_generator for the canonical source repository
- * @license https://www.gnu.org/licenses/gpl-3.0.en.html GNU General Public License 3.0
- * @package odwp-notices_generator
- */
+* @author Ondřej Doněk <ondrejd@gmail.com>
+* @link https://github.com/ondrejd/odwp-notices_generator for the canonical source repository
+* @license https://www.gnu.org/licenses/gpl-3.0.en.html GNU General Public License 3.0
+* @package odwp-notices_generator
+*/
 
 /*
- XXX REMOVE THIS!
+XXX REMOVE THIS!
 */
 .odwpng-todo { color: #f30; font-size: 14px; font-weight: bold; margin: 0 0 0 0; }
 .odwpng-todo code { background-color: #f30; color: #fff; font-size: 14px; font-weight: normal; padding: 0px 3px 0px 3px; }
@@ -28,54 +28,79 @@ body {
 
 /* Chybove hlasky */
 .notices-generator--auth_error, .notices-generator--options_error {
-  font-size: 1.2rem;
-  font-weight: 500;
+    font-size: 1.2rem;
+    font-weight: 500;
 }
 
 /* Obecne styly pro formular s generatorem */
 
 /* Fieldset */
 .notices-generator form fieldset {
-  border: 0px none;
-  padding: 0px 0px 0px 0px !important;
-  margin: 0px 0px 10px 0px !important;
-  width: 100%;
+    border: 0px none;
+    padding: 0px 0px 0px 0px !important;
+    margin: 0px 0px 10px 0px !important;
+    width: 100%;
 }
 .notices-generator form fieldset legend {
-  color: #999;
-  font-weight: 200;
-  line-height: 1em;
-  padding: 0;
-  text-transform: uppercase;
+    color: #999;
+    font-weight: 200;
+    line-height: 1em;
+    padding: 0 0 0.2em 0;
+    text-transform: uppercase;
+    width: 100%;
 }
+
+/* Odkaz na skryti casti navrhare */
+.notices-generator form fieldset legend .disable-part-link {
+    color: #999;
+    float: right;
+    font-size: 0.89rem;
+    text-decoration: none !important;
+    text-transform: none;
+    border: 0px none !important;
+    box-shadow: inherit !important;
+}
+.notices-generator form fieldset legend .disable-part-link:hover {
+    color: #000;
+}
+.notices-generator form fieldset legend .disable-part-link.disable-part-link--image_verse {}
+.notices-generator form fieldset legend .disable-part-link.disable-part-link--text {}
+.notices-generator form fieldset legend .disable-part-link.disable-part-link--deceased {}
+.notices-generator form fieldset legend .disable-part-link.disable-part-link--photo {}
+.notices-generator form fieldset legend .disable-part-link.disable-part-link--deathdate {}
+.notices-generator form fieldset legend .disable-part-link.disable-part-link--location {}
+.notices-generator form fieldset legend .disable-part-link.disable-part-link--survivors_text {}
+.notices-generator form fieldset legend .disable-part-link.disable-part-link--survivors {}
+.notices-generator form fieldset legend .disable-part-link.disable-part-link--thanks {}
+.notices-generator form fieldset legend .disable-part-link.disable-part-link--address {}
 
 /* Links (from <span>s) */
 .span-link {
-  cursor: pointer;
-  text-decoration: underline;
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 /* Inline editor */
 .notices-generator form fieldset .inline-editor {
-  border: 1px dashed #999;
-  display: table;
-  overflow: auto;
-  padding: 8px 1em 5px 1em;
-  width: 100%;
+    border: 1px dashed #999;
+    display: table;
+    overflow: auto;
+    padding: 8px 1em 5px 1em;
+    width: 100%;
 }
 .notices-generator form fieldset .inline-editor--inner {
-  display: table-row;
+    display: table-row;
 }
 .notices-generator form fieldset .inline-editor--inner > p {
-  margin-bottom: 0px;
-  text-align: center;
-  display: table-cell;
-  vertical-align: middle;
+    margin-bottom: 0px;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 /* Tlacitka */
 .notices-generator .buttons {
-  margin: 0 0 0 1em
+    margin: 0 0 0 1em
 }
 .notices-generator .button {
     background-color: #000;
@@ -104,18 +129,18 @@ body {
 }
 
 /*
- * Popisek
- */
+* Popisek
+*/
 .notices-generator form fieldset .description {
-  color: #999;
-  font-size: 0.85rem;
-  margin-bottom: 0px;
-  margin-top: 1px;
+    color: #999;
+    font-size: 0.85rem;
+    margin-bottom: 0px;
+    margin-top: 1px;
 }
 
 /*
- * Obrazek
- */
+* Obrazek
+*/
 .notices-generator .notice-image {
     float: left;
     padding: 0 2% 0 0;
@@ -136,27 +161,27 @@ body {
 .notices-generator .notice-images-dlg-link {}
 
 /*
- * Vers
- */
+* Vers
+*/
 .notices-generator .notice-verse {
     float: left;
     padding: 0 0 0 2%;
-    width: 48%;
+    width: 50%;
 }
 .notices-generator .notice-verse--inner {
     height: 200px;
 }
 .notices-generator #notice-verse-editor {
-  height: 180px;
-  margin: 5px 5px 5px 5px;
-  overflow: hidden;
+    height: 180px;
+    margin: 5px 5px 5px 5px;
+    overflow: hidden;
 }
 .notices-generator .notice-verse--desc {}
 .notices-generator .notice-verses-dlg-link {}
 
 /*
- * Text oznameni
- */
+* Text oznameni
+*/
 .notices-generator .notice-text {
     padding: 0 0 0 0;
     width: 100%;
@@ -166,8 +191,8 @@ body {
 .notices-generator .notice-text--desc {}
 
 /*
- * Jmeno zemreleho
- */
+* Jmeno zemreleho
+*/
 .notices-generator .notice-deceased {
     padding: 0 0 0 0;
     width: 100%;
@@ -180,8 +205,8 @@ body {
 .notices-generator .notice-deceased--desc { display: none; }
 
 /*
- * Fotografie zesnuleho
- */
+* Fotografie zesnuleho
+*/
 .notices-generator .notice-photo {
     padding: 0 0 0 0;
     width: 100%;
@@ -189,8 +214,8 @@ body {
 .notices-generator .notice-photo--inner { height: 180px; }
 
 /*
- * Datum umrti
- */
+* Datum umrti
+*/
 .notices-generator .notice-death_date {
     padding: 0 0 0 0;
     width: 100%;
@@ -200,8 +225,8 @@ body {
 .notices-generator .notice-death_date--desc { display: none; }
 
 /*
- * Misto posledniho rozlouceni
- */
+* Misto posledniho rozlouceni
+*/
 .notices-generator .notice-location {
     padding: 0 0 0 0;
     width: 100%;
@@ -211,8 +236,8 @@ body {
 .notices-generator .notice-location--desc { display: none; }
 
 /*
- * Fotografie zesnuleho
- */
+* Fotografie zesnuleho
+*/
 .notices-generator .notice-photo {
     padding: 0 0 0 0;
     width: 100%;
@@ -223,8 +248,8 @@ body {
 .notices-generator .notice-photo--desc {}
 
 /*
- * Jmenem pozustalych
- */
+* Jmenem pozustalych
+*/
 .notices-generator .notice-survivors_text {
     padding: 0 0 0 0;
     width: 100%;
@@ -233,34 +258,34 @@ body {
 .notices-generator .notice-survivors_text--desc { display: none; }
 
 /*
- * Pozustali
- */
+* Pozustali
+*/
 .notices-generator .notice-survivors {
-  padding: 0 0 0 0;
-  width: 100%;
+    padding: 0 0 0 0;
+    width: 100%;
 }
 .notices-generator .notice-survivors--form {
-  font-size: 0.89rem;
-  font-weight: 200;
+    font-size: 0.89rem;
+    font-weight: 200;
 }
 .notices-generator .notice-survivors--form label {
-  color: #666;
-  display: inline-block;
-  font-weight: normal;
-  padding: 0;
+    color: #666;
+    display: inline-block;
+    font-weight: normal;
+    padding: 0;
 }
 .notices-generator .notice-survivors--form label input[type="radio"] {
-  position: relative;
-  right: -2px;
-  top: 2px;
+    position: relative;
+    right: -2px;
+    top: 2px;
 }
 .notices-generator .notice-survivors--inner { height: 120px; }
 .notices-generator #notice-survivors-editor {}
 .notices-generator .notice-survivors--desc {}
 
 /*
- * Podekovani za projevy soustrasti
- */
+* Podekovani za projevy soustrasti
+*/
 .notices-generator .notice-thanks {
     padding: 0 0 0 0;
     width: 100%;
@@ -270,8 +295,8 @@ body {
 .notices-generator .notice-thanks--desc { display: none; }
 
 /*
- * Adresa
- */
+* Adresa
+*/
 .notices-generator .notice-address {
     padding: 0 0 0 0;
     width: 100%;
@@ -282,8 +307,8 @@ body {
 
 
 /*
- * Dialogy
- */
+* Dialogy
+*/
 
 /* Obal dialogu */
 .dlg-container {
@@ -325,21 +350,21 @@ body {
 }
 /* Paticka dialogu */
 .dlg-container .dlg-footer {
-  background-color: #fff;
-  height: 4em;
-  padding: 1em 0 2em 0;
-  text-align: right;
-  width: 100%;
-  clear: both;
-  border-top: 1px solid #666;
+    background-color: #fff;
+    height: 4em;
+    padding: 1em 0 2em 0;
+    text-align: right;
+    width: 100%;
+    clear: both;
+    border-top: 1px solid #666;
 }
 .dlg-container .dlg-footer .button-cancel {
     margin: 0 1em 0 0;
 }
 
 /*
- * Dialog s obrazky.
- */
+* Dialog s obrazky.
+*/
 #notice-images-dlg {
     display: none;
 }
@@ -366,8 +391,8 @@ body {
 }
 
 /*
- * Dialog s versi.
- */
+* Dialog s versi.
+*/
 #notice-verses-dlg {
     display: none;
 }
@@ -386,27 +411,27 @@ body {
 }
 
 /*
- * Dialog s ohranicenim
- */
+* Dialog s ohranicenim
+*/
 #notice-borders-dlg { display: none; }
 #notice-borders-dlg .borders-list { list-style: none; }
 #notice-borders-dlg .borders-list .borders-item {
-  color: #000;
-  cursor: pointer;
-  display: block;
-  float: left;
-  font-size: smaller;
-  font-weight: 600;
-  font-family: sans-serif;
-  height: 4.3em;
-  text-align: center;
-  width: 4.5em;
+    color: #000;
+    cursor: pointer;
+    display: block;
+    float: left;
+    font-size: smaller;
+    font-weight: 600;
+    font-family: sans-serif;
+    height: 4.3em;
+    text-align: center;
+    width: 4.5em;
 }
 #notice-borders-dlg .borders-list .borders-item:hover { background-color: #ccc; }
 
 /*
- * Jednotlive okraje
- */
+* Jednotlive okraje
+*/
 .border {
     border-color: #000;
     border-width: 0.5em;
