@@ -598,9 +598,7 @@ class NG_Plugin {
         ob_start( function() {} );
 
         // Get default variables
-        // XXX $notice_bckgs = self::get_notice_backgrounds();
         // XXX $notice_borders = self::get_notice_borders();
-        $notice_bckgs   = [];
         $notice_borders = [];
         $notice_images  = self::get_notice_images();
         $notice_verses  = self::get_verses();

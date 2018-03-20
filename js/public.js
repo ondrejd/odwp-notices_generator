@@ -31,7 +31,6 @@ jQuery( document ).ready( function() {
     jQuery( ".notices-generator form fieldset .notice-survivors--form" ).show();
     jQuery( "#odwpng-button_print" ).removeClass( "button-disabled" );
     jQuery( "#odwpng-button_borders" ).removeClass( "button-disabled" );
-    jQuery( "#odwpng-button_background" ).removeClass( "button-disabled" );
   };
 
   var previewOn = function() {
@@ -48,7 +47,6 @@ jQuery( document ).ready( function() {
     // zakazeme tlacitka pro vyber okraju a pozadi
     jQuery( "#odwpng-button_print" ).addClass( "button-disabled" );
     jQuery( "#odwpng-button_borders" ).addClass( "button-disabled" );
-    jQuery( "#odwpng-button_background" ).addClass( "button-disabled" );
 
     // pozustali (zjistime pocet sloupecku a vytvorime pole pozustalych, ktere vytiskneme)
     var cols_count = parseInt( jQuery( "input[name=ng-survivors-columns]:checked", ".notices-generator form" ).val() );
@@ -237,11 +235,6 @@ console.log( odwpng.msg04 );
     hideDlg( "#notice-borders-dlg" );
     shown_dialog = null;
   } );
-
-  /**
-   * Background dialog
-   */
-  /* XXX Finish this */
 
   /**
    * Submit button
