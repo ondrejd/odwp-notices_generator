@@ -459,7 +459,9 @@ class NG_Plugin {
             'msg01' => __( 'Nahrávám obrázek&hellip;', NG_SLUG ),
             'msg02' => __( 'Nahrávám obrázek (dokončeno %%DONE%%%)&hellip;', NG_SLUG ),
             'msg03' => __( 'Obrázek byl úspěšně nahrán. <a href="#" class="btn-change-image">Změnit?</a>', NG_SLUG ),
-            'msg04' => __( 'Obrázek nebyl úspěšně nahrán. Zkuste to znovu.', NG_SLUG )
+            'msg04' => __( 'Obrázek nebyl úspěšně nahrán. Zkuste to znovu.', NG_SLUG ),
+            'msg05' => __( 'Zobrazit', NG_SLUG ),
+            'msg06' => __( 'Skrýt', NG_SLUG )
         ] );
         wp_enqueue_style( NG_SLUG, plugins_url( 'css/public.css', NG_FILE ) );
     }

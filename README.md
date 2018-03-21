@@ -8,6 +8,7 @@ __Plugin je aktuálně ve vývoji a ne vše je funkční!__
 
 ![Návrhář smutečních oznámení #1](screenshot-01.png "Návrhář smutečních oznámení #1")
 ![Návrhář smutečních oznámení #2](screenshot-02.png "Návrhář smutečních oznámení #2")
-![Nastavení pluginu](screenshot-03.png "Nastavení pluginu")
+![Návrhář smutečních oznámení #3](screenshot-03.png "Návrhář smutečních oznámení #3")
+![Nastavení pluginu](screenshot-04.png "Nastavení pluginu")
 
 [1]: https://wordpress.org/

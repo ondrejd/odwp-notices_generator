@@ -11,11 +11,11 @@ jQuery( document ).ready( function() {
   var photo_noimg = jQuery( "#photo-upload-noimg" );
   var photo_file = form.find( "[name=photo-upload]" );
   var photo_id = form.find( "[name=photo_id]" );
+  var hidden_parts = new Object();
 
   // Functions for showing/hiding dialog
   var showDlg = function( id ) {
     jQuery( id ).show();
-    window.scrollTo( 0, 0 );
   };
 
   var hideDlg = function( id ) {
@@ -25,30 +25,28 @@ jQuery( document ).ready( function() {
   // Functions for turning preview mode on/off
   var previewOff = function() {
     jQuery( ".notices-generator form fieldset legend").show();
-    jQuery( ".notices-generator form fieldset .inline-editor" ).css( "border-color", "#000" );
+    jQuery( ".notices-generator form fieldset .inline-editor" ).css( "border-color", "#999" );
     jQuery( ".notices-generator form .description " ).show();
     jQuery( ".notices-generator #ngform_sec4" ).show();
     jQuery( ".notices-generator form fieldset .notice-survivors--form" ).show();
+    jQuery( ".inline-editor--body" ).attr( "contenteditable", "true" );
     jQuery( "#odwpng-button_print" ).removeClass( "button-disabled" );
     jQuery( "#odwpng-button_borders" ).removeClass( "button-disabled" );
+    jQuery( ".notices-generator .notice-image--inner" ).css( "border", "1px dashed #999" );
   };
 
   var previewOn = function() {
-    // Schovat všechny názvy sekcí formuláře
     jQuery( ".notices-generator form fieldset legend").hide();
-    /// schovat okraje editorů
     jQuery( ".notices-generator form fieldset .inline-editor" ).css( "border-color", "transparent" );
-    // skryt popisky
     jQuery( ".notices-generator form .description " ).hide();
-    // skrýt pole fotografie, pokud žádná není nahrána
     jQuery( "#ngform_sec4" ).hide();
-    // skryjeme radioboxy u pozustalych
     jQuery( ".notices-generator form fieldset .notice-survivors--form" ).hide();
-    // zakazeme tlacitka pro vyber okraju a pozadi
+    jQuery( ".inline-editor--body" ).removeAttr( "contenteditable" );
     jQuery( "#odwpng-button_print" ).addClass( "button-disabled" );
     jQuery( "#odwpng-button_borders" ).addClass( "button-disabled" );
+    jQuery( ".notices-generator .notice-image--inner" ).css( "border", "0px none" );
 
-    // pozustali (zjistime pocet sloupecku a vytvorime pole pozustalych, ktere vytiskneme)
+    // survivors (get count of columns, create array of survivers, than render array)
     var cols_count = parseInt( jQuery( "input[name=ng-survivors-columns]:checked", ".notices-generator form" ).val() );
     var survivors_raw = jQuery( "#notice-survivors-editor" ).html().split( "," );
     var survivors = new Array();
@@ -59,6 +57,7 @@ jQuery( document ).ready( function() {
     );
 
     console.log( survivors );
+
     // XXX Finish this!!!
   };
   
@@ -86,20 +85,20 @@ jQuery( document ).ready( function() {
   /**
    * Images dialog
    */
-  // 1) Open dialog
-  jQuery( ".notice-images-dlg-link,#selected_notice_img" ).click( function( e ) {
+  /* Open dialog */
+  jQuery( "#selected_notice_img" ).click( function( e ) {
     if( is_preview === true ) {
       return;
     }
     shown_dialog = "#notice-images-dlg";
     showDlg( shown_dialog );
   } );
-  // 2) Close dialog
+  /* Close dialog */
   jQuery( "#notice-images-dlg .button-cancel" ).click( function( e ) {
     hideDlg( "#notice-images-dlg" );
     shown_dialog = null;
   } );
-  // 3) Pick image and close dialog
+  /* Pick image and close dialog */
   jQuery( "#notice-images-dlg .images-item--cont" ).click( function( e ) {
     var image = jQuery( this ).find( "img" ).attr( "src" );
     jQuery( "#selected_notice_img" ).attr( "src", image );
@@ -110,7 +109,7 @@ jQuery( document ).ready( function() {
   /**
    * Verses dialog
    */
-  // 1) Open dialog
+  /* Open dialog */
   jQuery( ".notice-verses-dlg-link" ).click( function( e ) {
     if( is_preview === true ) {
       return;
@@ -118,12 +117,12 @@ jQuery( document ).ready( function() {
     shown_dialog = "#notice-verses-dlg";
     showDlg( shown_dialog );
   } );
-  // 2) Close dialog
+  /* Close dialog */
   jQuery( "#notice-verses-dlg .button-cancel" ).click( function( e ) {
     hideDlg( "#notice-verses-dlg" );
     shown_dialog = null;
   } );
-  // 3) Pick verse and close dialog
+  /* Pick verse and close dialog */
   jQuery( "#notice-verses-dlg .verses-list li" ).click( function( e ) {
     var verse = jQuery( this ).html();
     jQuery( "#notice-verse-editor" ).html( verse );
@@ -194,6 +193,7 @@ console.log( odwpng.msg04 );
     } );
   } );
 
+  /* Change uploaded photo */
   form.on( "click", ".btn-change-image", function() {
     photo_notice.empty().hide();
     photo_file.val( "" ).show();
@@ -201,6 +201,7 @@ console.log( odwpng.msg04 );
     photo_preview.empty().hide();
   } );
 
+  /* Change uploaded photo */
   photo_file.on( "click", function() {
     photo_file.val( "" );
     photo_id.val( "" );
@@ -239,7 +240,10 @@ console.log( odwpng.msg04 );
   /**
    * Submit button
    */
-  /* XXX Finish this */
+  jQuery( "#odwpng-button_print" ).click( function() {
+    console.log( "XXX Button is submitted!" );
+    //...
+  } );
 
   /**
    * Preview button
@@ -254,10 +258,80 @@ console.log( odwpng.msg04 );
     is_preview = !is_preview;
   } );
 
+  var getPartByFieldset = function( jqelm ) {
+    switch( jqelm.attr( "id" ) ) {
+      case "ngform_sec2"  : return "text";
+      case "ngform_sec3"  : return "deceased";
+      case "ngform_sec4"  : return "photo";
+      case "ngform_sec5"  : return "death_date";
+      case "ngform_sec6"  : return "location";
+      case "ngform_sec7"  : return "survivors_text";
+      case "ngform_sec8"  : return "survivors";
+      case "ngform_sec9"  : return "thanks";
+      case "ngform_sec10" : return "address";
+      case "ngform_sec1"  : // image + verse
+      default: return "unknown";
+    }
+  }
+
   /**
    * Hide section links
    */
-  jQuery( ".disable-part-link" ).click( function( mouse_event ) {
-    jQuery( this ).parent().siblings().toggle();
+  jQuery( ".disable-part-link" ).click( function( e ) {
+    e.preventDefault();
+
+    var elm = jQuery( this ),
+        cls = "disable-part-link--toggled",
+        part = getPartByFieldset( elm.parent().parent() );
+    
+    if( elm.hasClass( cls ) ) {
+      elm.html( odwpng.msg06 );
+      elm.parent().siblings().show();
+      elm.removeClass( cls );
+      
+      if( part != "unknown" ) {
+        delete hidden_parts[part];
+      }
+    } else {
+      elm.html( odwpng.msg05 );
+      elm.parent().siblings().hide();
+      elm.addClass( cls );
+
+      if( part != "unknown" ) {
+        hidden_parts[part] = true;
+      }
+    }
+  } );
+
+  /**
+   * Switch from one column to two columns.
+   */
+  jQuery( "input[name=ng-survivors-columns]" ).click( function() {
+    var val = jQuery( "input[name=ng-survivors-columns]:checked", form ).val(),
+        editor1 = jQuery( "#notice-survivors-editor" ),
+        editor2 = jQuery( "#notice-survivors-editor-2" );
+    
+    if( val == "1" ) {
+      // adjust panels
+      jQuery( "#ng-survivors-panel-2" ).hide();
+      jQuery( "#ng-survivors-panel-1" ).removeClass( "panel-left" );
+      // set editors content
+      var arr1 = editor1.html().split( "<br>" );
+      var arr2 = editor2.html().split( "<br>" );
+      var arr = arr1.concat( arr2 );
+      editor1.html( arr.join( "<br>" ) );
+    } else {
+      // adjust panels
+      jQuery( "#ng-survivors-panel-1" ).addClass( "panel-left" );
+      jQuery( "#ng-survivors-panel-2" ).show();
+      // set editors content
+      var arr = editor1.html().split( "<br>" );
+      var len = arr.length;
+      var half = Math.ceil( len / 2 );
+      var arr1 = arr.slice( 0, half );
+      var arr2 = arr.slice( half, len );
+      editor1.html( arr1.join( "<br>" ) );
+      editor2.html( arr2.join( "<br>" ) );
+    }
   } );
 } );

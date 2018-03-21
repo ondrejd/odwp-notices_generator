@@ -12,27 +12,23 @@ XXX REMOVE THIS!
 .odwpng-todo code { background-color: #f30; color: #fff; font-size: 14px; font-weight: normal; padding: 0px 3px 0px 3px; }
 /* #@! */
 
-html {}
 body {
     font-family: sans-serif;
 }
 
-/* Generator oznameni */
+/* Notices generator */
 .notices-generator {
     margin: 1em auto 1em auto;
     width: 100%;
 }
 
-.notices-generator > form {}
-.notices-generator > form .notices-generator--cont {}
-
-/* Chybove hlasky */
+/* Error messages */
 .notices-generator--auth_error, .notices-generator--options_error {
     font-size: 1.2rem;
     font-weight: 500;
 }
 
-/* Obecne styly pro formular s generatorem */
+/* General styles */
 
 /* Fieldset */
 .notices-generator form fieldset {
@@ -50,7 +46,19 @@ body {
     width: 100%;
 }
 
-/* Odkaz na skryti casti navrhare */
+/* Float panels */
+.notices-generator .panel-left {
+    float: left;
+    padding: 0 2% 0 0;
+    width: 50%;
+}
+.notices-generator .panel-right {
+    float: left;
+    padding: 0 0 0 2%;
+    width: 50%;
+}
+
+/* Show/hide section links */
 .notices-generator form fieldset legend .disable-part-link {
     color: #999;
     float: right;
@@ -63,20 +71,14 @@ body {
 .notices-generator form fieldset legend .disable-part-link:hover {
     color: #000;
 }
-.notices-generator form fieldset legend .disable-part-link.disable-part-link--image_verse {}
-.notices-generator form fieldset legend .disable-part-link.disable-part-link--text {}
-.notices-generator form fieldset legend .disable-part-link.disable-part-link--deceased {}
-.notices-generator form fieldset legend .disable-part-link.disable-part-link--photo {}
-.notices-generator form fieldset legend .disable-part-link.disable-part-link--deathdate {}
-.notices-generator form fieldset legend .disable-part-link.disable-part-link--location {}
-.notices-generator form fieldset legend .disable-part-link.disable-part-link--survivors_text {}
-.notices-generator form fieldset legend .disable-part-link.disable-part-link--survivors {}
-.notices-generator form fieldset legend .disable-part-link.disable-part-link--thanks {}
-.notices-generator form fieldset legend .disable-part-link.disable-part-link--address {}
 
 /* Links (from <span>s) */
 .span-link {
     cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+}
+.span-link:hover {
     text-decoration: underline;
 }
 
@@ -98,7 +100,7 @@ body {
     vertical-align: middle;
 }
 
-/* Tlacitka */
+/* Buttons */
 .notices-generator .buttons {
     margin: 0 0 0 1em
 }
@@ -118,8 +120,6 @@ body {
 .notices-generator .button-primary {
     font-weight: bold;
 }
-.notices-generator .button-secondary {}
-.notices-generator .button-cancel {}
 .notices-generator .button-disabled {
     cursor: default;
     opacity: 0.25;
@@ -128,9 +128,7 @@ body {
     text-decoration: none;
 }
 
-/*
-* Popisek
-*/
+/* Descriptions */
 .notices-generator form fieldset .description {
     color: #999;
     font-size: 0.85rem;
@@ -139,8 +137,8 @@ body {
 }
 
 /*
-* Obrazek
-*/
+ * Image symbol
+ */
 .notices-generator .notice-image {
     float: left;
     padding: 0 2% 0 0;
@@ -157,12 +155,10 @@ body {
     height: 180px;
     margin: 10px 0px 10px 0px;
 }
-.notices-generator .notice-image--desc {}
-.notices-generator .notice-images-dlg-link {}
 
 /*
-* Vers
-*/
+ * Verse
+ */
 .notices-generator .notice-verse {
     float: left;
     padding: 0 0 0 2%;
@@ -176,23 +172,19 @@ body {
     margin: 5px 5px 5px 5px;
     overflow: hidden;
 }
-.notices-generator .notice-verse--desc {}
-.notices-generator .notice-verses-dlg-link {}
 
 /*
-* Text oznameni
-*/
+ * Text of notice
+ */
 .notices-generator .notice-text {
     padding: 0 0 0 0;
     width: 100%;
 }
 .notices-generator .notice-text--inner { height: 100px; }
-.notices-generator #notice-text-editor {}
-.notices-generator .notice-text--desc {}
 
 /*
-* Jmeno zemreleho
-*/
+ * Name of dead
+ */
 .notices-generator .notice-deceased {
     padding: 0 0 0 0;
     width: 100%;
@@ -205,8 +197,8 @@ body {
 .notices-generator .notice-deceased--desc { display: none; }
 
 /*
-* Fotografie zesnuleho
-*/
+ * Photo of dead
+ */
 .notices-generator .notice-photo {
     padding: 0 0 0 0;
     width: 100%;
@@ -214,57 +206,49 @@ body {
 .notices-generator .notice-photo--inner { height: 180px; }
 
 /*
-* Datum umrti
-*/
+ * Date of death
+ */
 .notices-generator .notice-death_date {
     padding: 0 0 0 0;
     width: 100%;
 }
 .notices-generator .notice-death_date--inner { height: 50px; }
-.notices-generator #notice-death_date-editor {}
 .notices-generator .notice-death_date--desc { display: none; }
 
 /*
-* Misto posledniho rozlouceni
-*/
+ * Place of ceremony
+ */
 .notices-generator .notice-location {
     padding: 0 0 0 0;
     width: 100%;
 }
-.notices-generator .notice-location--inner { height: 90px; }
-.notices-generator #notice-location-editor {}
-.notices-generator .notice-location--desc { display: none; }
-
-/*
-* Fotografie zesnuleho
-*/
-.notices-generator .notice-photo {
-    padding: 0 0 0 0;
-    width: 100%;
+.notices-generator .notice-location--inner {
+    height: 90px;
 }
-.notices-generator .notice-photo--inner {}
-.notices-generator .notice-photo--inner img {}
-.notices-generator .notice-photo--inner p { margin: 5px 0 0 0; }
-.notices-generator .notice-photo--desc {}
+.notices-generator .notice-location--desc {
+    display: none;
+}
 
 /*
-* Jmenem pozustalych
+* Survivors (text)
 */
 .notices-generator .notice-survivors_text {
-    padding: 0 0 0 0;
+    padding: 0;
     width: 100%;
 }
-.notices-generator .notice-survivors_text--inner {}
-.notices-generator .notice-survivors_text--desc { display: none; }
+.notices-generator .notice-survivors_text--desc {
+    display: none;
+}
 
 /*
-* Pozustali
-*/
-.notices-generator .notice-survivors {
-    padding: 0 0 0 0;
-    width: 100%;
+ * Survivors
+ */
+.notices-generator .notice-survivors--inner {
+    height: 120px;
+    min-height: 120px;
 }
 .notices-generator .notice-survivors--form {
+    clear: both;
     font-size: 0.89rem;
     font-weight: 200;
 }
@@ -279,38 +263,32 @@ body {
     right: -2px;
     top: 2px;
 }
-.notices-generator .notice-survivors--inner { height: 120px; }
-.notices-generator #notice-survivors-editor {}
-.notices-generator .notice-survivors--desc {}
 
 /*
-* Podekovani za projevy soustrasti
-*/
+ * Thanks
+ */
 .notices-generator .notice-thanks {
-    padding: 0 0 0 0;
+    padding: 0;
     width: 100%;
 }
 .notices-generator .notice-thanks--inner { height: 90px; }
-.notices-generator #notice-thanks-editor {}
 .notices-generator .notice-thanks--desc { display: none; }
 
 /*
-* Adresa
-*/
+ * Address
+ */
 .notices-generator .notice-address {
     padding: 0 0 0 0;
     width: 100%;
 }
 .notices-generator .notice-address--inner { height: 110px; }
-.notices-generator #notice-address-editor {}
 .notices-generator .notice-address--desc { display: none; }
 
 
 /*
-* Dialogy
-*/
+ * Dialogs
+ */
 
-/* Obal dialogu */
 .dlg-container {
     background-color: #000;
     border: 3px solid #000;
@@ -325,7 +303,6 @@ body {
     max-width: 800px;
     z-index: 9999;
 }
-/* Hlavicka dialogu */
 .dlg-container .dlg-header {
     background-color: #000;
     height: 3em;
@@ -339,7 +316,6 @@ body {
     margin: 0 0 0 0;
     padding: 0 0 0 0;
 }
-/* Telo dialogu */
 .dlg-container .dlg-body {
     background-color: #f2f2f2;
     height: 300px;
@@ -348,7 +324,6 @@ body {
     padding: 0 0 0 0;
     width: 100%;
 }
-/* Paticka dialogu */
 .dlg-container .dlg-footer {
     background-color: #fff;
     height: 4em;
@@ -363,8 +338,8 @@ body {
 }
 
 /*
-* Dialog s obrazky.
-*/
+ * Dialog with image symbols
+ */
 #notice-images-dlg {
     display: none;
 }
@@ -372,15 +347,16 @@ body {
     list-style: none;
 }
 #notice-images-dlg .images-list .images-item {
-    border: 5px solid #fff;
+    border: 5px solid transparent;
     display: block;
     float: left;
     height: 210px;
 }
 #notice-images-dlg .images-list .images-item .images-item--cont {
+    background-color: #fff;
     border: 5px solid #ccc;
     display: block;
-    padding: 10px;
+    padding: 0 5px 0 5px;
 }
 #notice-images-dlg .images-list .images-item .images-item--cont:hover {
     border: 5px solid #666;
@@ -391,8 +367,8 @@ body {
 }
 
 /*
-* Dialog s versi.
-*/
+ * Dialog with verses
+ */
 #notice-verses-dlg {
     display: none;
 }
@@ -411,8 +387,8 @@ body {
 }
 
 /*
-* Dialog s ohranicenim
-*/
+ * Dialog with borders
+ */
 #notice-borders-dlg { display: none; }
 #notice-borders-dlg .borders-list { list-style: none; }
 #notice-borders-dlg .borders-list .borders-item {
@@ -429,9 +405,7 @@ body {
 }
 #notice-borders-dlg .borders-list .borders-item:hover { background-color: #ccc; }
 
-/*
-* Jednotlive okraje
-*/
+/* Single borders */
 .border {
     border-color: #000;
     border-width: 0.5em;
