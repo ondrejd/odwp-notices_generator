@@ -138,80 +138,18 @@ if( ! function_exists( 'odwpng_deactivate_raw' ) ) :
 endif;
 
 
-if( ! function_exists( 'odwpng_error_log' ) ) :
-    /**
-     * @internal Write message to the `wp-content/debug.log` file.
-     * @param string $message
-     * @param integer $message_type (Optional.)
-     * @param string $destination (Optional.)
-     * @param string $extra_headers (Optional.)
-     * @return void
-     * @since 1.0.0
-     */
-    function odwpng_error_log( $message, $message_type = 0, $destination = null, $extra_headers = '' ) {
-        if( ! file_exists( DL_LOG ) || ! is_writable( DL_LOG ) ) {
-            return;
-        }
-
-        $record = '[' . date( 'd-M-Y H:i:s', time() ) . ' UTC] ' . $message;
-        file_put_contents( DL_LOG, PHP_EOL . $record, FILE_APPEND );
-    }
-endif;
-
-
-if( ! function_exists( 'odwpng_write_log' ) ) :
-    /**
-     * Write record to the `wp-content/debug.log` file.
-     * @param mixed $log
-     * @return void
-     * @since 1.0.0
-     */
-    function odwpng_write_log( $log ) {
-        if( is_array( $log ) || is_object( $log ) ) {
-            odwpng_error_log( print_r( $log, true ) );
-        } else {
-            odwpng_error_log( $log );
-        }
-    }
-endif;
-
-
-if( ! function_exists( 'readonly' ) ) :
-    /**
-     * Prints HTML readonly attribute. It's an addition to WP original
-     * functions {@see disabled()} and {@see checked()}.
-     * @param mixed $value
-     * @param mixed $current (Optional.) Defaultly TRUE.
-     * @return string
-     * @since 1.0.0
-     */
-    function readonly( $current, $value = true ) {
-        if( $current == $value ) {
-            echo ' readonly';
-        }
-    }
-endif;
-
 /**
  * Errors from the requirements check
  * @var array
  */
 $odwpng_errs = odwpng_check_requirements( [
     'php' => [
-        // Enter minimum PHP version you needs
         'version' => '5.6',
-        // Enter extensions that your plugin needs
-        'extensions' => [
-            //'gd',
-        ],
+        'extensions' => [],
     ],
     'wp' => [
-        // Enter minimum WP version you need
         'version' => '4.7',
-        // Enter WP plugins that your plugin needs
-        'plugins' => [
-            //'woocommerce/woocommerce.php',
-        ],
+        'plugins' => [],
     ],
 ] );
 
@@ -223,10 +161,12 @@ if( count( $odwpng_errs ) > 0 ) {
 
     // In administration print errors
     if( is_admin() ) {
-        $err_head = __( '<b>Generátor oznámení</b>: ', NG_SLUG );
-        foreach( $odwpng_errs as $err ) {
-            printf( '<div class="error"><p>%s</p></div>', $err_head . $err );
-        }
+        add_action( 'admin_notices', function() use ( $odwpng_errs ) {
+            $err_head = __( '<b>Generátor oznámení</b>: ', NG_SLUG );
+            foreach( $odwpng_errs as $err ) {
+                printf( '<div class="error"><p>%s</p></div>', $err_head . $err );
+            }
+        } );
     }
 } else {
     // Requirements are met so initialize the plugin.
