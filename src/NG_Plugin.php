@@ -6,11 +6,11 @@
  * @package odwp-notices_generator
  * @since 1.0.0
  *
- * @todo Přidat tlačítko do editoru pro shortcode!
- * @todo Přidat nastavení pluginu (včetně nastavení obrázků, veršů atp. pro editor)
+ * @todo Přidat tlačítko do editoru pro shortcode
  * @todo Oznámení musí fungovat jako samostatný typ. Akorát v administraci bude
  *       skrytá defaultní položka menu "Nové oznámení" a místo toho tam bude přidán
- *       odkaz, který povede na front-end.
+ *       odkaz, který povede na front-end
+ * @todo Dokončit nastavení pluginu (včetně nastavení obrázků, veršů atp. pro editor)
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -390,6 +390,34 @@ class NG_Plugin {
         // Initialize dashboard widgets
         //include( NG_PATH . 'src/NG_Dashboard_Widget.php' );
         //add_action( 'wp_dashboard_setup', ['NG_Dashboard_Widget', 'init'] );
+
+        // Initialize TinyMCE buttons for our shortcodes
+        if( get_user_option( 'rich_editing' ) == 'true' ) {
+            add_filter( 'mce_external_plugins', [__CLASS__, 'tinymce_external_plugins'] );
+            add_filter( 'mce_buttons', [__CLASS__, 'tinymce_add_button'] );
+        }
+    }
+
+    /**
+     * Adds support for our shortcodes into the TinyMCE.
+     * @param array $plugins
+     * @return array
+     * @since 1.0.0
+     */
+    public static function tinymce_external_plugins( $plugins ) {
+        $plugins['odwpng_designer_shortcode'] = plugins_url( 'js/admin-tinymce.js', NG_FILE );
+        return $plugins;
+    }
+
+    /**
+     * Adss TinyMCE buttons.
+     * @param array $buttons
+     * @return array
+     * @since 1.0.0
+     */
+    public static function tinymce_add_button( $buttons ) {
+        $buttons[] = 'odwpng_designer_shortcode';
+        return $buttons;
     }
 
     /**

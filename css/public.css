@@ -1,23 +1,13 @@
 /**
-* @author Ondřej Doněk <ondrejd@gmail.com>
-* @link https://github.com/ondrejd/odwp-notices_generator for the canonical source repository
-* @license https://www.gnu.org/licenses/gpl-3.0.en.html GNU General Public License 3.0
-* @package odwp-notices_generator
-*/
-
-/*
-XXX REMOVE THIS!
-*/
-.odwpng-todo { color: #f30; font-size: 14px; font-weight: bold; margin: 0 0 0 0; }
-.odwpng-todo code { background-color: #f30; color: #fff; font-size: 14px; font-weight: normal; padding: 0px 3px 0px 3px; }
-/* #@! */
-
-body {
-    font-family: sans-serif;
-}
+ * @author Ondřej Doněk <ondrejd@gmail.com>
+ * @link https://github.com/ondrejd/odwp-notices_generator for the canonical source repository
+ * @license https://www.gnu.org/licenses/gpl-3.0.en.html GNU General Public License 3.0
+ * @package odwp-notices_generator
+ */
 
 /* Notices generator */
-.notices-generator {
+.notices-generator, .notices-generator * {
+    font-family: sans-serif;
     margin: 1em auto 1em auto;
     width: 100%;
 }
